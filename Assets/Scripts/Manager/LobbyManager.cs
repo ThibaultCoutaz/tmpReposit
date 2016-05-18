@@ -131,7 +131,6 @@ public class LobbyManager : MonoBehaviour {
     {
         Debug.Log("Launching Game");
         DontDestroyOnLoad(HUDManager.Instance.gameObject);
-        DontDestroyOnLoad(InputManager.Instance.gameObject);
         PhotonNetwork.isMessageQueueRunning = false;
         SceneManager.LoadScene("Main");
 

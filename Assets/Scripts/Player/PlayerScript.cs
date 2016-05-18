@@ -9,50 +9,47 @@ public class PlayerScript : MonoBehaviour {
     private Transform mainHand;
 
     private PhotonView view;
-
+    
     [HideInInspector]
-    public bool hasBall;
-
-    [HideInInspector]
-    public GameObject ball;
+    public bool hasBall = false;
     
 	void Start ()
     {
         PhotonNetwork.isMessageQueueRunning = true;
-        hasBall = false;
         view = GetComponentInParent<PhotonView>();
     }
 
 	void Update () {
         if (hasBall)
         {
-            ball.transform.position = mainHand.position;
+            Debug.LogError(PhotonNetwork.isMasterClient+" Has ball");
+            GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().useGravity = true;
+            GameManager.Instance.ballOfGame.transform.position = mainHand.position;
         }
 
         if (hasBall && view.isMine)
         {
             if (InputManager.Instance.IsPassing)
             {
-                hasBall = false;
                 if (PhotonNetwork.offlineMode) //ne va surment jamais étre utiliser car jeu est toujours Online .
                 {
                     Debug.LogError("Be carefull you are offLine");
-                    ShootBall(10.0f);
                 }
                 else
                 {
-                    view.RPC("ShootBall",
-                            PhotonTargets.All,
-                            new object[] {10.0f}
-                            );
+                    ShootBall();
+                    //NetworkManager.Instance.TransalteBall(ball,10);
                 }
+                Debug.LogError(PhotonNetwork.isMasterClient + " thow ball");
             }
         }
 	}
 
-    [PunRPC]
-    private void ShootBall(float power)
+    private void ShootBall()
     {
-        ball.GetComponent<Rigidbody>().velocity = transform.forward * power;
+        Debug.Log("Shoot");
+        hasBall = false;
+        GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().useGravity = false;
+        GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
     }
 }

@@ -210,6 +210,7 @@
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDConnectInfos.cs" />
     <Compile Include="Assets\Scripts\InfosRoom.cs" />
     <Compile Include="Assets\Scripts\InitGame.cs" />
+    <Compile Include="Assets\Scripts\Manager\GameManager.cs" />
     <Compile Include="Assets\Scripts\Manager\HUDManager.cs" />
     <Compile Include="Assets\Scripts\Manager\InputManager.cs" />
     <Compile Include="Assets\Scripts\Manager\LobbyManager.cs" />

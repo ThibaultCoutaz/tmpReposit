@@ -61,7 +61,7 @@ public class BallBehaviour : MonoBehaviour {
             OwnerBall = col.gameObject;
             PlayerScript ps = col.gameObject.GetComponent<PlayerScript>();
             ps.hasBall = true;
-            ps.ball = this.gameObject;
+            //GetComponent<PhotonView>().TransferOwnership(col.gameObject.GetComponent<PhotonView>().viewID);
         }
     }
 }

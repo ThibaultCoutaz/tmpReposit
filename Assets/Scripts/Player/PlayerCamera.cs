@@ -160,10 +160,4 @@ public class PlayerCamera : CameraController
             base.Update();
         }
     }
-
-    public override void SetPause(bool p)
-    {
-        base.SetPause(p);
-        Pause = p;
-    }
 }
