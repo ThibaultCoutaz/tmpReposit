@@ -11,7 +11,7 @@ public class NetworkManager : Singleton<NetworkManager>
     [SerializeField]
     private GameObject characterPrefab;
 
-    [SerializeField]private GameObject Ball;
+    public GameObject Ball;
 
     private PhotonView view;
 
@@ -29,7 +29,7 @@ public class NetworkManager : Singleton<NetworkManager>
         view = GetComponent<PhotonView>();
         if (PhotonNetwork.isMasterClient)
         {
-            GameManager.Instance.ballOfGame = PhotonNetwork.Instantiate("Prefabs/Objects/" + Ball.name, new Vector3(0, 10, 0), Quaternion.identity, 0);
+             GameManager.Instance.ballOfGame = PhotonNetwork.InstantiateSceneObject("Prefabs/Objects/" + Ball.name, new Vector3(0, 10, 0), Quaternion.identity, 0,null);
         }
 
         GameObject tmpCharacter = PhotonNetwork.Instantiate("Prefabs/Character/" + characterPrefab.name, characterPrefab.transform.position, Quaternion.identity, 0);
@@ -55,12 +55,4 @@ public class NetworkManager : Singleton<NetworkManager>
         new object[] { ball,power }
         );
     }
-
-
-
-
-
-
-
-
 }

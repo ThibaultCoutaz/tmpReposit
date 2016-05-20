@@ -2,8 +2,7 @@
 using System.Collections;
 
 public class BallBehaviour : MonoBehaviour {
-
-    private GameObject OwnerBall;
+    
     private Rigidbody rigb;
 
     void Start()
@@ -13,12 +12,12 @@ public class BallBehaviour : MonoBehaviour {
 
     void FixedUpdate()
     {
-            if (!GetComponent<PhotonView>().isMine)
-            {
-                syncTime += Time.deltaTime;
-                transform.position = Vector3.Lerp(syncStartPosition, syncEndPosition, syncTime / syncDelay);
-            }
-
+        if (!GetComponent<PhotonView>().isMine)
+        {
+            syncTime += Time.deltaTime;
+            transform.position = Vector3.Lerp(syncStartPosition, syncEndPosition, syncTime / syncDelay);
+        }
+        Debug.LogError(GetComponent<PhotonView>().ownerId+"---"+ GameManager.Instance.ballOfGame.GetComponent<PhotonView>().ownerId);
     }
 
     private float lastSyncTime = 0;
@@ -35,14 +34,16 @@ public class BallBehaviour : MonoBehaviour {
         if (stream.isWriting)
         {
             stream.SendNext(transform.position);
-            //stream.SendNext(rigb.position);
             stream.SendNext(rigb.velocity);
+            stream.SendNext(rigb.useGravity);
+            //stream.SendNext(GetComponent<PhotonView>().ownerId);
         }
         else
         {
             syncPositionBall = (Vector3)stream.ReceiveNext();
-
             syncVelocityBall = (Vector3)stream.ReceiveNext();
+            rigb.useGravity = (bool)stream.ReceiveNext();
+            //GetComponent<PhotonView>().ownerId = (int)stream.ReceiveNext();
 
             syncTime = 0;
             syncDelay = Time.time - lastSyncTime;
@@ -58,10 +59,10 @@ public class BallBehaviour : MonoBehaviour {
 
         if (col.gameObject.GetComponent<PlayerScript>())
         {
-            OwnerBall = col.gameObject;
             PlayerScript ps = col.gameObject.GetComponent<PlayerScript>();
             ps.hasBall = true;
-            //GetComponent<PhotonView>().TransferOwnership(col.gameObject.GetComponent<PhotonView>().viewID);
+            GetComponent<PhotonView>().TransferOwnership(col.gameObject.GetComponent<PhotonView>().viewID);
+            rigb.useGravity = false;
         }
     }
 }

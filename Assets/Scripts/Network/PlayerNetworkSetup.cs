@@ -85,6 +85,7 @@ public class PlayerNetworkSetup : MonoBehaviour {
 
         if (stream.isWriting)
         {
+            //Pensez a faire la rotation
             stream.SendNext(transform.position);
             stream.SendNext(rigb.velocity);
         }

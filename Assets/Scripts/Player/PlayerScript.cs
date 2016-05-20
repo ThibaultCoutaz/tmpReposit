@@ -15,20 +15,17 @@ public class PlayerScript : MonoBehaviour {
     
 	void Start ()
     {
-        PhotonNetwork.isMessageQueueRunning = true;
+        //PhotonNetwork.isMessageQueueRunning = true;
         view = GetComponentInParent<PhotonView>();
     }
 
 	void Update () {
-        if (hasBall)
+        //Debug.LogError(hasBall +"--"+ view.isMine +"--"+ GameManager.Instance.ballOfGame.GetComponent<PhotonView>().ownerId +"/"+ GetComponent<PhotonView>().viewID);
+        if (hasBall && view.isMine && GameManager.Instance.ballOfGame.GetComponent<PhotonView>().ownerId == GetComponent<PhotonView>().viewID)
         {
-            Debug.LogError(PhotonNetwork.isMasterClient+" Has ball");
-            GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().useGravity = true;
+            Debug.LogError("Gotit");
             GameManager.Instance.ballOfGame.transform.position = mainHand.position;
-        }
 
-        if (hasBall && view.isMine)
-        {
             if (InputManager.Instance.IsPassing)
             {
                 if (PhotonNetwork.offlineMode) //ne va surment jamais étre utiliser car jeu est toujours Online .
@@ -37,19 +34,17 @@ public class PlayerScript : MonoBehaviour {
                 }
                 else
                 {
-                    ShootBall();
-                    //NetworkManager.Instance.TransalteBall(ball,10);
+                    view.RPC("ShootBall", PhotonTargets.AllBuffered);
                 }
-                Debug.LogError(PhotonNetwork.isMasterClient + " thow ball");
             }
         }
 	}
 
+    [PunRPC]
     private void ShootBall()
     {
-        Debug.Log("Shoot");
         hasBall = false;
-        GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().useGravity = false;
+        GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().useGravity = true;
         GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
     }
 }

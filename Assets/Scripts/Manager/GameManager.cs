@@ -7,6 +7,14 @@ public class GameManager : Singleton<GameManager>
 {
     protected GameManager() { }
 
-    public GameObject ballOfGame;
+    public GameObject ballOfGame= null;
+
+    void Update()
+    {
+        if (ballOfGame == null && GameObject.FindGameObjectWithTag("Ball"))
+        {
+            ballOfGame = GameObject.FindGameObjectWithTag("Ball");
+        }
+    }
 
 }
