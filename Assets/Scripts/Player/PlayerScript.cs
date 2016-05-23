@@ -24,7 +24,7 @@ public class PlayerScript : MonoBehaviour {
         if (hasBall && view.isMine && GameManager.Instance.ballOfGame.GetComponent<PhotonView>().ownerId == GetComponent<PhotonView>().viewID)
         {
             Debug.LogError("Gotit");
-            GameManager.Instance.ballOfGame.transform.position = mainHand.position;
+            view.RPC("CarryBall", PhotonTargets.AllBuffered);
 
             if (InputManager.Instance.IsPassing)
             {
@@ -44,7 +44,13 @@ public class PlayerScript : MonoBehaviour {
     private void ShootBall()
     {
         hasBall = false;
-        GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().useGravity = true;
+        GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().isKinematic = false;
         GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
+    }
+
+    [PunRPC]
+    private void CarryBall()
+    {
+        GameManager.Instance.ballOfGame.transform.position = mainHand.position;
     }
 }

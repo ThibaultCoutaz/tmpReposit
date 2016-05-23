@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class BallBehaviour : MonoBehaviour {
-    
+
     private Rigidbody rigb;
 
     void Start()
@@ -17,8 +17,14 @@ public class BallBehaviour : MonoBehaviour {
             syncTime += Time.deltaTime;
             transform.position = Vector3.Lerp(syncStartPosition, syncEndPosition, syncTime / syncDelay);
         }
-        Debug.LogError(GetComponent<PhotonView>().ownerId+"---"+ GameManager.Instance.ballOfGame.GetComponent<PhotonView>().ownerId);
     }
+
+    //[PunRPC]
+    //void BallMove()
+    //{
+    //    syncTime += Time.deltaTime;
+    //    transform.position = Vector3.Lerp(syncStartPosition, syncEndPosition, syncTime / syncDelay);
+    //}
 
     private float lastSyncTime = 0;
     private float syncDelay = 0;
@@ -35,14 +41,14 @@ public class BallBehaviour : MonoBehaviour {
         {
             stream.SendNext(transform.position);
             stream.SendNext(rigb.velocity);
-            stream.SendNext(rigb.useGravity);
+            //stream.SendNext(rigb.isKinematic);
             //stream.SendNext(GetComponent<PhotonView>().ownerId);
         }
         else
         {
             syncPositionBall = (Vector3)stream.ReceiveNext();
             syncVelocityBall = (Vector3)stream.ReceiveNext();
-            rigb.useGravity = (bool)stream.ReceiveNext();
+            //rigb.isKinematic = (bool)stream.ReceiveNext();
             //GetComponent<PhotonView>().ownerId = (int)stream.ReceiveNext();
 
             syncTime = 0;
@@ -62,7 +68,7 @@ public class BallBehaviour : MonoBehaviour {
             PlayerScript ps = col.gameObject.GetComponent<PlayerScript>();
             ps.hasBall = true;
             GetComponent<PhotonView>().TransferOwnership(col.gameObject.GetComponent<PhotonView>().viewID);
-            rigb.useGravity = false;
+            rigb.isKinematic = true;
         }
     }
 }
