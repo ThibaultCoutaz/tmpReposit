@@ -153,6 +153,9 @@ public class PlayerCamera : CameraController
             // Smoothly rotate cam towards the target point
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * DeltaTimeRot);
 
+            //PlayerTransform.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * DeltaTimeRot);
+
+
             MoveToPlayer();
         }
         else

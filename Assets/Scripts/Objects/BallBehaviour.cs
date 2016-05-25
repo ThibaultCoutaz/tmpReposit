@@ -5,8 +5,12 @@ public class BallBehaviour : MonoBehaviour {
 
     private Rigidbody rigb;
 
+    [HideInInspector]
+    public int IDPreviousOwner; //could do it with some state like , catch , free , and owned
+
     void Start()
     {
+        IDPreviousOwner = -1;
         rigb = GetComponent<Rigidbody>();
     }
 
@@ -41,15 +45,11 @@ public class BallBehaviour : MonoBehaviour {
         {
             stream.SendNext(transform.position);
             stream.SendNext(rigb.velocity);
-            //stream.SendNext(rigb.isKinematic);
-            //stream.SendNext(GetComponent<PhotonView>().ownerId);
         }
         else
         {
             syncPositionBall = (Vector3)stream.ReceiveNext();
             syncVelocityBall = (Vector3)stream.ReceiveNext();
-            //rigb.isKinematic = (bool)stream.ReceiveNext();
-            //GetComponent<PhotonView>().ownerId = (int)stream.ReceiveNext();
 
             syncTime = 0;
             syncDelay = Time.time - lastSyncTime;
@@ -62,9 +62,12 @@ public class BallBehaviour : MonoBehaviour {
 
     void OnCollisionEnter(Collision col)
     {
-
-        if (col.gameObject.GetComponent<PlayerScript>())
+        Debug.Log("IDOwner = " + IDPreviousOwner);
+        if (col.gameObject.GetComponent<PlayerScript>() && IDPreviousOwner != col.gameObject.GetComponent<PhotonView>().viewID)
         {
+            Debug.LogError("Gotit");
+            IDPreviousOwner = col.gameObject.GetComponent<PhotonView>().viewID;
+            GetComponent<Collider>().enabled = false;
             PlayerScript ps = col.gameObject.GetComponent<PlayerScript>();
             ps.hasBall = true;
             GetComponent<PhotonView>().TransferOwnership(col.gameObject.GetComponent<PhotonView>().viewID);

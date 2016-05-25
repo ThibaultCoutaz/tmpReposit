@@ -41,18 +41,4 @@ public class NetworkManager : Singleton<NetworkManager>
         HUDManager.Instance.EditTextIsMaster("MasterClient : " + PhotonNetwork.isMasterClient);
         HUDManager.Instance.EditTextPing("Ping : " + PhotonNetwork.GetPing() + "ms");
     }
-
-    [PunRPC]
-    private void RPCTranslateBall(GameObject ball,float power)
-    {
-        ball.GetComponent<Rigidbody>().velocity = transform.forward * power;
-    }
-
-    public void TransalteBall(string ball ,float power)
-    {
-        view.RPC("RPCTranslateBall",
-        PhotonTargets.All,
-        new object[] { ball,power }
-        );
-    }
 }

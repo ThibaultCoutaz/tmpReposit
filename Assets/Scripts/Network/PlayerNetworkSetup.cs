@@ -9,13 +9,6 @@ public class PlayerNetworkSetup : MonoBehaviour {
     [SerializeField]
     GameObject playerCamera;
 
-    [SerializeField]
-    GameObject Character;
-    //[SerializeField]
-    //PlayerScript playerScript;
-    //[SerializeField]
-    //PlayerUserControl playerController;
-
     //public Vector3 spawn_pos;
     //public float spawn_ray;
     public Vector3 movement { get; private set; }
@@ -24,14 +17,14 @@ public class PlayerNetworkSetup : MonoBehaviour {
     private Vector3 m_Forward; // The current forward direction of the camera
     private Rigidbody rigb;
     private PlayerCamera camScript;
-    private CharacterControllerMoba characterControl;
+    private Animator m_animator;
 
 
     void Awake()
     {
         view = GetComponentInParent<PhotonView>();
-        rigb = Character.GetComponent<Rigidbody>();
-        characterControl = Character.GetComponent<CharacterControllerMoba>(); 
+        rigb = GetComponent<Rigidbody>();
+        m_animator = GetComponent<Animator>();
 
         if (playerCamera != null)
             camScript = playerCamera.GetComponent<PlayerCamera>();
@@ -39,27 +32,13 @@ public class PlayerNetworkSetup : MonoBehaviour {
         if (GetComponent<PhotonView>().isMine)
         {
             playerCamera.SetActive(true);
-            //playerScript.Init();
-            //playerController.Init();
             //transform.position = spawn_pos + new Vector3(Random.Range(0f, spawn_ray), 0, Random.Range(0f, spawn_ray));
-        }
-        else
-        {
-            //playerScript.enabled = false;
-            //playerController.enabled = false;
         }
     }
 
     void Update()
     {
-        if (view.isMine)
-        {
-            // Calculate relative direction to move
-            m_Forward = Vector3.Scale(camScript.TargetDir, new Vector3(1, 0, 1)).normalized;
-
-            rigb.velocity = (characterControl.movement.z * m_Forward + Quaternion.Euler(0f, 90f, 0f) * m_Forward * characterControl.movement.x) * speed;
-        }
-        else
+        if (!view.isMine)
         {
             SyncMovement();
         }
@@ -69,6 +48,7 @@ public class PlayerNetworkSetup : MonoBehaviour {
     {
         syncTime += Time.deltaTime;
         transform.position = Vector3.Lerp(syncStartPosition, syncEndPosition, syncTime / syncDelay);
+        transform.rotation = Quaternion.Lerp(transform.rotation, syncEndRotation, syncTime / syncDelay);
     }
 
     private float lastSyncTime = 0;
@@ -81,23 +61,29 @@ public class PlayerNetworkSetup : MonoBehaviour {
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo message)
     {
         Vector3 syncPosition = Vector3.zero;
+        Quaternion syncRotation = Quaternion.identity;
         Vector3 syncVelocity = Vector3.zero;
 
         if (stream.isWriting)
         {
             //Pensez a faire la rotation
             stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
             stream.SendNext(rigb.velocity);
+            stream.SendNext(m_animator.GetFloat("Forward"));
         }
         else
         {
             syncPosition = (Vector3)stream.ReceiveNext();
+            syncRotation = (Quaternion)stream.ReceiveNext();
             syncVelocity = (Vector3)stream.ReceiveNext();
+            m_animator.SetFloat("Forward", (float)stream.ReceiveNext());
 
             syncTime = 0;
             syncDelay = Time.time - lastSyncTime;
             lastSyncTime = Time.time;
             syncStartPosition = transform.position;
+            syncEndRotation = syncRotation;
 
             syncEndPosition = syncPosition + syncVelocity * syncDelay;
             syncStartPosition = transform.position;

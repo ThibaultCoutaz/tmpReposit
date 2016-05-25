@@ -23,7 +23,6 @@ public class PlayerScript : MonoBehaviour {
         //Debug.LogError(hasBall +"--"+ view.isMine +"--"+ GameManager.Instance.ballOfGame.GetComponent<PhotonView>().ownerId +"/"+ GetComponent<PhotonView>().viewID);
         if (hasBall && view.isMine && GameManager.Instance.ballOfGame.GetComponent<PhotonView>().ownerId == GetComponent<PhotonView>().viewID)
         {
-            Debug.LogError("Gotit");
             view.RPC("CarryBall", PhotonTargets.AllBuffered);
 
             if (InputManager.Instance.IsPassing)
@@ -45,7 +44,14 @@ public class PlayerScript : MonoBehaviour {
     {
         hasBall = false;
         GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().isKinematic = false;
-        GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
+        GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().AddForce(cameraPlayer.transform.forward * 100);
+        GameManager.Instance.ballOfGame.GetComponent<Collider>().enabled = true;
+        Invoke("ResetOwnerBall", 1f);
+    }
+
+    private void ResetOwnerBall()
+    {
+        GameManager.Instance.ballOfGame.GetComponent<BallBehaviour>().IDPreviousOwner = -1;
     }
 
     [PunRPC]
