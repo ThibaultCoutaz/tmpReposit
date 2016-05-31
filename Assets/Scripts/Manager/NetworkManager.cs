@@ -13,8 +13,6 @@ public class NetworkManager : Singleton<NetworkManager>
 
     public GameObject Ball;
 
-    private PhotonView view;
-
     //Dictionary<string, GameObject> _objects;
 
     void Start()
@@ -25,8 +23,7 @@ public class NetworkManager : Singleton<NetworkManager>
 
         //foreach (GameObject go in objects)
         //    _objects.Add(go.name, go);
-
-        view = GetComponent<PhotonView>();
+        
         if (PhotonNetwork.isMasterClient)
         {
              GameManager.Instance.ballOfGame = PhotonNetwork.InstantiateSceneObject("Prefabs/Objects/" + Ball.name, new Vector3(0, 10, 0), Quaternion.identity, 0,null);

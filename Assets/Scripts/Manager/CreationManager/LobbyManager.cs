@@ -110,7 +110,7 @@ public class LobbyManager : MonoBehaviour {
     {
         Debug.Log("Launching Game");
         DontDestroyOnLoad(HUDManager.Instance.gameObject);
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("CreationRoom");
 
     }
 

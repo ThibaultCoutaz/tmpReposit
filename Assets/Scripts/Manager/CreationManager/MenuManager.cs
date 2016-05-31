@@ -25,10 +25,10 @@ public class MenuManager : MonoBehaviour {
         
         InitNamePlayer();
     }
-       
 
-    void Start()
+    void Update()
     {
+        HUDManager.Instance.EditTextPing("Ping : " + PhotonNetwork.GetPing() + "ms");
     }
 
     //To Init the Player Name
