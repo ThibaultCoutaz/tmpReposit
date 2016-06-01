@@ -1,76 +1,126 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class CreationRoom : MonoBehaviour {
+public class CreationRoom : Singleton<CreationRoom>
+{
+
+    protected CreationRoom() { }
     
     public GameObject infosPlayer;
     public Transform redTeam;
     public Transform blueTeam;
 
 	// Use this for initialization
-	void Start () {
-        if (PhotonNetwork.isMasterClient)
+	void Start ()
+    {
+        PhotonNetwork.player.SetPlayerTeam(TeamScript.Team.none);
+        InitTeam();
+
+        ChooseTeam();
+    }
+
+    private void InitTeam()
+    {
+        Array enumVals = Enum.GetValues(typeof(TeamScript.Team));
+        foreach (var enumVal in enumVals)
         {
-            GameObject tmp = PhotonNetwork.InstantiateSceneObject("Prefabs/UI/" + infosPlayer.name, new Vector3(0, 0, 0), Quaternion.identity, 0, null);
-            tmp.transform.SetParent(redTeam);
-            tmp.GetComponent<Image>().color = Color.red;
-            PhotonNetwork.player.SetTeam(PunTeams.Team.red);
+            TeamScript.PlayersPerTeam[(TeamScript.Team)enumVal].Clear();
         }
-        else
+
+        for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
         {
-            ChooseTeam();
+            PhotonPlayer player = PhotonNetwork.playerList[i];
+            TeamScript.Team playerTeam = player.GetPlayerTeam();
+            TeamScript.PlayersPerTeam[playerTeam].Add(player);
         }
     }
 
-    private int nbRed = 0;
-    private int nbBlue = 0;
-
     private void ChooseTeam()
-    {
+    {    
+        int nbRed = 0;
+        int nbBlue = 0;
         //We start with Red
         List<PhotonPlayer> listPlayer;
-        if(PunTeams.PlayersPerTeam.TryGetValue(PunTeams.Team.red,out listPlayer))
+        if(TeamScript.PlayersPerTeam.TryGetValue(TeamScript.Team.red,out listPlayer))
         {
-            Debug.Log("someOne in the red team");
             foreach(PhotonPlayer p in listPlayer)
-            {
                 nbRed++;
-            }
-        }
-        else
-        {
-            Debug.Log("NoOne in the red team");
+
+            //if(nbRed >0)
+            //    Debug.Log("someOne in the red team = " + nbRed + " personnes.");
+            //else
+            //    Debug.Log("NoOne in the red team");
         }
 
 
         //Then Blue Team
-        if (PunTeams.PlayersPerTeam.TryGetValue(PunTeams.Team.blue, out listPlayer))
+        if (TeamScript.PlayersPerTeam.TryGetValue(TeamScript.Team.blue, out listPlayer))
         {
-            Debug.Log("someOne in the blue team");
             foreach (PhotonPlayer p in listPlayer)
-            {
                 nbBlue++;
-            }
+
+            //if (nbBlue > 0)
+            //    Debug.Log("someOne in the blue team = " + nbBlue + " personnes.");
+            //else
+            //    Debug.Log("NoOne in the blue team");
+        }
+
+        if(nbRed > nbBlue && nbBlue < 5)
+        {
+            //Debug.Log("lets go in the blue team");
+            GameObject tmp = PhotonNetwork.Instantiate("Prefabs/UI/" + infosPlayer.name, new Vector3(0, 0, 0), Quaternion.identity, 0, null);
+            tmp.GetComponent<InfosCharacter>().colorTeam = TeamScript.Team.blue;
+            tmp.transform.SetParent(blueTeam);
+            tmp.GetComponent<Image>().color = Color.blue;
+            PhotonNetwork.player.SetPlayerTeam(TeamScript.Team.blue);
+        }
+        else if(nbRed < 5)
+        {
+            //Debug.Log("lets go in the red team");
+            GameObject tmp = PhotonNetwork.Instantiate("Prefabs/UI/" + infosPlayer.name, new Vector3(0, 0, 0), Quaternion.identity, 0, null);
+            tmp.GetComponent<InfosCharacter>().colorTeam = TeamScript.Team.red;
+            tmp.transform.SetParent(redTeam);
+            tmp.GetComponent<Image>().color = Color.red;
+            PhotonNetwork.player.SetPlayerTeam(TeamScript.Team.red);
         }
         else
         {
-            Debug.Log("NoOne in the blue team");
-        }
-
-        if(nbRed > nbBlue)
-        {
-            Debug.Log("lets go in the blue team");
-            PhotonNetwork.player.SetTeam(PunTeams.Team.blue);
-        }else
-        {
-            Debug.Log("lets go in the red team");
-            PhotonNetwork.player.SetTeam(PunTeams.Team.red);
+            Debug.Log("a bah la tu es perdu jeune fou il n'y a plus de place ");
         }
     }
 
 	// Update is called once per frame
 	void Update () {
-	
+
+        DisplayTeam();
 	}
+
+    private void DisplayTeam()
+    {
+        int nbRed = 0;
+        int nbBlue = 0;
+        //We start with Red
+        List<PhotonPlayer> listPlayer;
+        if (TeamScript.PlayersPerTeam.TryGetValue(TeamScript.Team.red, out listPlayer))
+        {
+            foreach (PhotonPlayer p in listPlayer)
+            {
+                nbRed++;
+            }
+        }
+
+
+        //Then Blue Team
+        if (TeamScript.PlayersPerTeam.TryGetValue(TeamScript.Team.blue, out listPlayer))
+        {
+            foreach (PhotonPlayer p in listPlayer)
+            {
+                nbBlue++;
+            }
+        }
+
+        Debug.LogError("Team Red = " + nbRed + "/" + "Team Blue = " + nbBlue);
+    }
 }

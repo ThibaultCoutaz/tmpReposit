@@ -208,6 +208,7 @@
     <Compile Include="Assets\Scripts\Data\GameData.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDConnectInfos.cs" />
+    <Compile Include="Assets\Scripts\InfosCharacter.cs" />
     <Compile Include="Assets\Scripts\InfosRoom.cs" />
     <Compile Include="Assets\Scripts\InitGame.cs" />
     <Compile Include="Assets\Scripts\Manager\CreationManager\CreationRoom.cs" />
@@ -219,6 +220,7 @@
     <Compile Include="Assets\Scripts\Manager\InputManager.cs" />
     <Compile Include="Assets\Scripts\Manager\NetworkManager.cs" />
     <Compile Include="Assets\Scripts\Network\PlayerNetworkSetup.cs" />
+    <Compile Include="Assets\Scripts\Network\TeamScript.cs" />
     <Compile Include="Assets\Scripts\Objects\BallBehaviour.cs" />
     <Compile Include="Assets\Scripts\Objects\ObjectifFloor.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCamera.cs" />
