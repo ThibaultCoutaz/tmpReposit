@@ -8,9 +8,8 @@ public class PlayerNetworkSetup : MonoBehaviour {
 
     [SerializeField]
     GameObject playerCamera;
+    
 
-    //public Vector3 spawn_pos;
-    //public float spawn_ray;
     public Vector3 movement { get; private set; }
 
     private PhotonView view;
@@ -29,15 +28,17 @@ public class PlayerNetworkSetup : MonoBehaviour {
         if (playerCamera != null)
             camScript = playerCamera.GetComponent<PlayerCamera>();
 
-        if (GetComponent<PhotonView>().isMine)
+        if (view.isMine)
         {
             playerCamera.SetActive(true);
-            //transform.position = spawn_pos + new Vector3(Random.Range(0f, spawn_ray), 0, Random.Range(0f, spawn_ray));
         }
     }
 
     void Update()
     {
+        if (m_animator == null)
+            m_animator = GetComponent<Animator>();
+
         if (!view.isMine)
         {
             SyncMovement();

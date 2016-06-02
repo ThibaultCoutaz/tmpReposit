@@ -29,13 +29,6 @@ public class LobbyManager : MonoBehaviour {
         roomName.text = "MyRoom of "+playerName.text;
     }
 
-    //When name is Submit
-    public void OnNameSubmit()
-    {
-        PhotonNetwork.playerName = playerName.text;
-        PlayerPrefs.SetString("playerName", PhotonNetwork.playerName.ToString());
-    }
-
     //To create a room
     public void CreateARoom()
     {
@@ -106,9 +99,8 @@ public class LobbyManager : MonoBehaviour {
 
     //**********************************//
 
-    public void LaunchGame()
+    public void LaunchRoom()
     {
-        Debug.Log("Launching Game");
         DontDestroyOnLoad(HUDManager.Instance.gameObject);
         SceneManager.LoadScene("CreationRoom");
 
@@ -118,12 +110,12 @@ public class LobbyManager : MonoBehaviour {
 
     void OnCreateRoom()
     {
-        LaunchGame();
+        LaunchRoom();
     }
 
     void OnJoinedRoom()
     {
-        LaunchGame();
+        LaunchRoom();
         Debug.Log("You join a Room !");
     }
 

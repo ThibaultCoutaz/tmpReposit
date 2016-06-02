@@ -15,12 +15,11 @@ public class PlayerScript : MonoBehaviour {
     
 	void Start ()
     {
-        //PhotonNetwork.isMessageQueueRunning = true;
         view = GetComponentInParent<PhotonView>();
     }
 
 	void Update () {
-        //Debug.LogError(hasBall +"--"+ view.isMine +"--"+ GameManager.Instance.ballOfGame.GetComponent<PhotonView>().ownerId +"/"+ GetComponent<PhotonView>().viewID);
+        //Debug.LogError(InputManager.Instance + "------" + GameObject.Find("InputManager"));
         if (hasBall && view.isMine && GameManager.Instance.ballOfGame.GetComponent<PhotonView>().ownerId == GetComponent<PhotonView>().viewID)
         {
             view.RPC("CarryBall", PhotonTargets.AllBuffered);
@@ -51,12 +50,14 @@ public class PlayerScript : MonoBehaviour {
 
     private void ResetOwnerBall()
     {
-        GameManager.Instance.ballOfGame.GetComponent<BallBehaviour>().IDPreviousOwner = -1;
+        if (GameManager.Instance.ballOfGame != null)
+            GameManager.Instance.ballOfGame.GetComponent<BallBehaviour>().IDPreviousOwner = -1;
     }
 
     [PunRPC]
     private void CarryBall()
     {
-        GameManager.Instance.ballOfGame.transform.position = mainHand.position;
+        if (GameManager.Instance.ballOfGame != null)
+            GameManager.Instance.ballOfGame.transform.position = mainHand.position;
     }
 }

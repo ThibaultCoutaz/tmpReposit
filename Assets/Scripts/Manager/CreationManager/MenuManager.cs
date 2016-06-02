@@ -45,8 +45,17 @@ public class MenuManager : MonoBehaviour {
         {
             PhotonNetwork.playerName = "Guest" + Random.Range(1, 9999);
             playerName.text = PhotonNetwork.playerName.ToString();
+            PlayerPrefs.SetString("playerName", PhotonNetwork.playerName.ToString());
         }
     }
+
+    //When name is Submit
+    public void OnNameSubmit()
+    {
+        PhotonNetwork.playerName = playerName.text;
+        PlayerPrefs.SetString("playerName", PhotonNetwork.playerName.ToString());
+    }
+
 
     public void ClickLobbyJoinCreate()
     {

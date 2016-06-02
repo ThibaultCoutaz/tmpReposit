@@ -62,10 +62,10 @@ public class BallBehaviour : MonoBehaviour {
 
     void OnCollisionEnter(Collision col)
     {
-        Debug.Log("IDOwner = " + IDPreviousOwner);
+        //Debug.Log("IDOwner = " + IDPreviousOwner);
         if (col.gameObject.GetComponent<PlayerScript>() && IDPreviousOwner != col.gameObject.GetComponent<PhotonView>().viewID)
         {
-            Debug.LogError("Gotit");
+            //Debug.LogError("Gotit");
             IDPreviousOwner = col.gameObject.GetComponent<PhotonView>().viewID;
             GetComponent<Collider>().enabled = false;
             PlayerScript ps = col.gameObject.GetComponent<PlayerScript>();

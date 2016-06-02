@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class InfosCharacter : MonoBehaviour {
 
@@ -10,19 +11,26 @@ public class InfosCharacter : MonoBehaviour {
     public TeamScript.Team colorTeam;
 
     public GameObject switchTeam;
+    public Text NamePlayer;
 
 	// Use this for initialization
 	void Start () {
         view = GetComponent<PhotonView>();
-        view.RPC("InstantiateCharacter", PhotonTargets.OthersBuffered, colorTeam);
+
         if (view.isMine)
+        {
             switchTeam.SetActive(true);
+            NamePlayer.text = PlayerPrefs.GetString("playerName");
+        }
+
+        view.RPC("InstantiateCharacter", PhotonTargets.OthersBuffered, colorTeam);
+
     }
 	
 	// Update is called once per frame
 	void Update () {
-        //if (view.isMine)
-        //    Debug.LogError("je suis dans l'equipe : " + PhotonNetwork.player.GetTeam() + "----" + view.viewID);
+        if (PhotonNetwork.player.isMasterClient && CreationRoom.Instance.viewMaster == null)
+            CreationRoom.Instance.viewMaster = view;
     }
     
     public void ButtonSwitchTeam()
@@ -54,10 +62,6 @@ public class InfosCharacter : MonoBehaviour {
             this.transform.SetParent(CreationRoom.Instance.blueTeam);
             this.GetComponent<Image>().color = Color.blue;
         }
-        else
-        {
-           // Debug.LogError("The team " + colorTeam.ToString() + " doesn't exist");
-        }
     }
 
     [PunRPC]
@@ -75,9 +79,14 @@ public class InfosCharacter : MonoBehaviour {
             this.GetComponent<Image>().color = Color.red;
             colorTeam = TeamScript.Team.red;
         }
-        else
-        {
-            //Debug.LogError("The team " + colorTeam.ToString() + " doesn't exist");
-        }
     }
+
+    [PunRPC]
+    private void LaunchGame()
+    {
+        DontDestroyOnLoad(HUDManager.Instance.gameObject);
+        DontDestroyOnLoad(GameObject.Find("ScriptTeam"));
+        SceneManager.LoadScene("Main");
+    }
+
 }

@@ -54,6 +54,11 @@ public class TeamScript : MonoBehaviour
         this.UpdateTeams();
     }
 
+    public void OnPhotonPlayerDisconnected(PhotonPlayer player)
+    {
+        this.UpdateTeams();
+    }
+
     #endregion
 
 

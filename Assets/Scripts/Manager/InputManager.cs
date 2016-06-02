@@ -3,6 +3,8 @@ using System.Collections;
 
 public class InputManager : Singleton<InputManager>
 {
+    protected InputManager() { }
+
     public bool IsRunning { get; private set; }
     public bool IsWalking { get; private set; }
     public bool IsJumping { get; private set; }
@@ -13,15 +15,9 @@ public class InputManager : Singleton<InputManager>
     public bool IsInGodMode { get; private set; }
     
 
-    protected InputManager() { }
-
-    void Awake()
-    {
-
-    }
-
     void Update()
     {
+
         //IsRunning = Input.GetButton("Run") || Input.GetAxis("Run") > 0f;
         IsWalking = (Input.GetAxis("Horizontal") > 0 || Input.GetAxis("Vertical") > 0 || Input.GetAxis("Vertical") < 0 || Input.GetAxis("Horizontal") < 0);
         IsJumping = Input.GetButtonDown("Jump");

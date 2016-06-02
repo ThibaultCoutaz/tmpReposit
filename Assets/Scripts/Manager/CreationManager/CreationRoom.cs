@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CreationRoom : Singleton<CreationRoom>
 {
@@ -11,11 +12,17 @@ public class CreationRoom : Singleton<CreationRoom>
     public GameObject infosPlayer;
     public Transform redTeam;
     public Transform blueTeam;
+    public Button bPlay;
+
+    [HideInInspector]
+    public PhotonView viewMaster;
 
 	// Use this for initialization
 	void Start ()
     {
-        PhotonNetwork.player.SetPlayerTeam(TeamScript.Team.none);
+        if (PhotonNetwork.player.isMasterClient)
+            bPlay.interactable = true;
+
         InitTeam();
 
         ChooseTeam();
@@ -47,11 +54,6 @@ public class CreationRoom : Singleton<CreationRoom>
         {
             foreach(PhotonPlayer p in listPlayer)
                 nbRed++;
-
-            //if(nbRed >0)
-            //    Debug.Log("someOne in the red team = " + nbRed + " personnes.");
-            //else
-            //    Debug.Log("NoOne in the red team");
         }
 
 
@@ -60,16 +62,10 @@ public class CreationRoom : Singleton<CreationRoom>
         {
             foreach (PhotonPlayer p in listPlayer)
                 nbBlue++;
-
-            //if (nbBlue > 0)
-            //    Debug.Log("someOne in the blue team = " + nbBlue + " personnes.");
-            //else
-            //    Debug.Log("NoOne in the blue team");
         }
 
         if(nbRed > nbBlue && nbBlue < 5)
         {
-            //Debug.Log("lets go in the blue team");
             GameObject tmp = PhotonNetwork.Instantiate("Prefabs/UI/" + infosPlayer.name, new Vector3(0, 0, 0), Quaternion.identity, 0, null);
             tmp.GetComponent<InfosCharacter>().colorTeam = TeamScript.Team.blue;
             tmp.transform.SetParent(blueTeam);
@@ -78,7 +74,6 @@ public class CreationRoom : Singleton<CreationRoom>
         }
         else if(nbRed < 5)
         {
-            //Debug.Log("lets go in the red team");
             GameObject tmp = PhotonNetwork.Instantiate("Prefabs/UI/" + infosPlayer.name, new Vector3(0, 0, 0), Quaternion.identity, 0, null);
             tmp.GetComponent<InfosCharacter>().colorTeam = TeamScript.Team.red;
             tmp.transform.SetParent(redTeam);
@@ -94,8 +89,13 @@ public class CreationRoom : Singleton<CreationRoom>
 	// Update is called once per frame
 	void Update () {
 
-        DisplayTeam();
+        //DisplayTeam();
 	}
+
+    public void Play()
+    {
+        viewMaster.RPC("LaunchGame", PhotonTargets.AllBuffered);
+    }
 
     private void DisplayTeam()
     {
@@ -122,5 +122,15 @@ public class CreationRoom : Singleton<CreationRoom>
         }
 
         Debug.LogError("Team Red = " + nbRed + "/" + "Team Blue = " + nbBlue);
+    }
+
+
+    //When the master client switch
+    void OnMasterClientSwitched(PhotonPlayer newMaster)
+    {
+        if (PhotonNetwork.isMasterClient)
+        {
+            bPlay.interactable = true;
+        }
     }
 }

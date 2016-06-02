@@ -14,7 +14,7 @@ public class InitGame : MonoBehaviour {
         DontDestroyOnLoad(HUDManager.Instance.gameObject);
         //PhotonNetwork.isMessageQueueRunning = false;  //a remetre si ca bug 
         PhotonNetwork.autoJoinLobby = true;
-        PhotonNetwork.autoCleanUpPlayerObjects = false;
+        //PhotonNetwork.autoCleanUpPlayerObjects = false;
         SceneManager.LoadScene("LobbyMatchMaking");
 
     }

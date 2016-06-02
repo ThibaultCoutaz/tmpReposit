@@ -15,11 +15,11 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         
         private void Start()
         {
-            // get the transform of the main camera
-            if (Camera.main != null)
-            {
-                m_Cam = Camera.main.transform;
-            }
+            //// get the transform of the main camera
+            //if (Camera.main != null)
+            //{
+            //    m_Cam = Camera.main.transform;
+            //}
 
             // get the third person character ( this should never be null due to require component )
             m_Character = GetComponent<ThirdPersonCharacter>();
@@ -62,6 +62,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             // pass all parameters to the character control script
             if (GetComponent<PhotonView>().isMine)
                 m_Character.Move(m_Move, crouch, m_Jump);
+
             m_Jump = false;
         }
     }
