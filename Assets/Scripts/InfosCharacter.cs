@@ -20,10 +20,10 @@ public class InfosCharacter : MonoBehaviour {
         if (view.isMine)
         {
             switchTeam.SetActive(true);
-            NamePlayer.text = PlayerPrefs.GetString("playerName");
+            NamePlayer.text = view.owner.name;
         }
 
-        view.RPC("InstantiateCharacter", PhotonTargets.OthersBuffered, colorTeam);
+        view.RPC("InstantiateCharacter", PhotonTargets.OthersBuffered, colorTeam,view.owner.name);
 
     }
 	
@@ -50,7 +50,7 @@ public class InfosCharacter : MonoBehaviour {
 
     //RPC function
     [PunRPC]
-    private void InstantiateCharacter(TeamScript.Team team)
+    private void InstantiateCharacter(TeamScript.Team team, string name)
     {
         if (team == TeamScript.Team.red)
         {
@@ -62,6 +62,7 @@ public class InfosCharacter : MonoBehaviour {
             this.transform.SetParent(CreationRoom.Instance.blueTeam);
             this.GetComponent<Image>().color = Color.blue;
         }
+        this.GetComponent<InfosCharacter>().NamePlayer.text = name;
     }
 
     [PunRPC]

@@ -26,7 +26,7 @@ public class LobbyManager : MonoBehaviour {
     //To Init the Room Name
     private void InitRoomName()
     {
-        roomName.text = "MyRoom of "+playerName.text;
+        roomName.text = "Room of "+playerName.text;
     }
 
     //To create a room

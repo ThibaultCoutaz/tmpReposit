@@ -31,13 +31,13 @@ public class MenuManager : MonoBehaviour {
         HUDManager.Instance.EditTextPing("Ping : " + PhotonNetwork.GetPing() + "ms");
     }
 
-    //To Init the Player Name
+    //To Init the Player Name  ////****TO DO******case a cocher pour le cas ou le joueur souhaiterait se souvenir de son pseudo pour ne pas avoir a le reecrire a chaque fois********///
     private void InitNamePlayer()
     {
         // generate a name for this player, if none is assigned yet
         if (PlayerPrefs.GetString("playerName") != null)
         {
-            PhotonNetwork.playerName = PlayerPrefs.GetString("playerName");
+            PhotonNetwork.playerName = PhotonNetwork.playerName;
             playerName.text = PhotonNetwork.playerName.ToString();
         }
 
@@ -45,7 +45,6 @@ public class MenuManager : MonoBehaviour {
         {
             PhotonNetwork.playerName = "Guest" + Random.Range(1, 9999);
             playerName.text = PhotonNetwork.playerName.ToString();
-            PlayerPrefs.SetString("playerName", PhotonNetwork.playerName.ToString());
         }
     }
 
@@ -53,7 +52,6 @@ public class MenuManager : MonoBehaviour {
     public void OnNameSubmit()
     {
         PhotonNetwork.playerName = playerName.text;
-        PlayerPrefs.SetString("playerName", PhotonNetwork.playerName.ToString());
     }
 
 
