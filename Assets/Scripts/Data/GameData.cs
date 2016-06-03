@@ -10,7 +10,8 @@ namespace Game
     public enum UI_Types
     {
         NULL,
-        ConnectionInfos
+        ConnectionInfos,
+        TimerInGame
     }
 
     public enum Lerp_Type

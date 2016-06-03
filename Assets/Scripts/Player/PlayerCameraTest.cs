@@ -22,12 +22,13 @@ public class PlayerCameraTest : MonoBehaviour {
     void Update()
     {
         float horizontal = GameObject.Find("InputManager").GetComponent<InputManager>().GetHorizontalMouse() * rotateSpeed; // DEEEEEEEEEEGEUX !
+        float verticale = GameObject.Find("InputManager").GetComponent<InputManager>().GetVerticalMouse() * rotateSpeed;
         player.transform.Rotate(0, horizontal, 0);
 
         float desiredAngle = player.transform.eulerAngles.y;
         Quaternion rotation = Quaternion.Euler(0, desiredAngle, 0);
         transform.position = player.transform.position - (rotation * offset);
 
-        transform.LookAt(player.transform.position + player.transform.forward*2);
+        transform.LookAt(player.transform.position + player.transform.forward*2+Vector3.up);
     }
 }

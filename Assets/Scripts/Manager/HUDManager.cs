@@ -56,8 +56,8 @@ public class HUDManager : Singleton<HUDManager>
 
     void disableElement(Game.UI_Types key, HUDElement element)
     {
-        //if (key == Game.UI_Types.)
-        //    element.displayGroup(false, .0f, false, false);
+        if (key == Game.UI_Types.TimerInGame)
+            element.displayGroup(false, .0f, false, false);
     }
 
     //to get the gameObject we want from the dictionnary
@@ -108,6 +108,24 @@ public class HUDManager : Singleton<HUDManager>
         {
             ((HUDConnectInfos)connectInfo).EditTextPing(text);
 
+        }
+    }
+
+    public void DisplayTimerInGame(bool display)
+    {
+        HUDElement timer;
+        if (elements.TryGetValue(Game.UI_Types.TimerInGame, out timer))
+        {
+            timer.displayGroup(display);
+        }
+    }
+
+    public void EditTimerInGame(float time)
+    {
+        HUDElement timer;
+        if (elements.TryGetValue(Game.UI_Types.TimerInGame, out timer))
+        {
+            timer.setChrono(time);
         }
     }
 }
