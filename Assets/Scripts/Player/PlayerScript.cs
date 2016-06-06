@@ -5,6 +5,8 @@ public class PlayerScript : MonoBehaviour {
     
     public Camera cameraPlayer;
 
+    public float ShootPower = 500;
+
     [SerializeField]
     private Transform mainHand;
 
@@ -43,15 +45,19 @@ public class PlayerScript : MonoBehaviour {
     {
         hasBall = false;
         GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().isKinematic = false;
-        GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().AddForce(cameraPlayer.transform.forward * 100);
-        GameManager.Instance.ballOfGame.GetComponent<Collider>().enabled = true;
-        Invoke("ResetOwnerBall", 1f);
+        Debug.Log(cameraPlayer.transform.forward);
+        GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().AddForce(cameraPlayer.transform.forward * ShootPower);
+        //GameManager.Instance.ballOfGame.GetComponent<Collider>().enabled = true;
+        Invoke("ResetOwnerBall", 0.5f);
     }
 
     private void ResetOwnerBall()
     {
         if (GameManager.Instance.ballOfGame != null)
+        {
             GameManager.Instance.ballOfGame.GetComponent<BallBehaviour>().IDPreviousOwner = -1;
+            Physics.IgnoreCollision(GameManager.Instance.ballOfGame.GetComponent<Collider>(), GetComponent<Collider>(),false);
+        }
     }
 
     [PunRPC]
@@ -60,4 +66,11 @@ public class PlayerScript : MonoBehaviour {
         if (GameManager.Instance.ballOfGame != null)
             GameManager.Instance.ballOfGame.transform.position = mainHand.position;
     }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(cameraPlayer.transform.position, cameraPlayer.transform.forward * ShootPower);
+    }
+
 }

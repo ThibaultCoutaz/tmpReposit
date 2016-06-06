@@ -4,31 +4,46 @@ using System.Collections;
 public class PlayerCameraTest : MonoBehaviour {
 
     public Transform player;
-    public Transform pivotPlayer;
-    public float rotateSpeed = 5;
+    public Transform pivotView;
+    public float sensibilityX = 5;
+    public float sensibilityY = 5;
+
+    float verticale = 0f;
+    public float minimumY = -30F;
+    public float maximumY = 30F;
 
     private Vector3 offset;
-    //private Vector3 target;
 
     private InputManager inputs;
+    private float zoom = 0;
+    public Vector2 zoomMaxMin; 
+    public float zoomSpeed = 1f;
 
     void Awake()
     {
         inputs = InputManager.Instance;
-        offset = player.transform.position - transform.position;
-        //target = pivotPlayer.transform.position + pivotPlayer.transform.forward /** TargetPlayerRadius*/;
+        offset = pivotView.transform.position - transform.position;
     }
 
     void Update()
     {
-        float horizontal = GameObject.Find("InputManager").GetComponent<InputManager>().GetHorizontalMouse() * rotateSpeed; // DEEEEEEEEEEGEUX !
-        float verticale = GameObject.Find("InputManager").GetComponent<InputManager>().GetVerticalMouse() * rotateSpeed;
+        float horizontal = GameObject.Find("InputManager").GetComponent<InputManager>().GetHorizontalMouse() * sensibilityY; // DEEEEEEEEEEGEUX !
+        verticale += GameObject.Find("InputManager").GetComponent<InputManager>().GetVerticalMouse() * sensibilityX;
+        verticale = Mathf.Clamp(verticale, minimumY, maximumY);
+
+        //For the rotation in Y of the Player
         player.transform.Rotate(0, horizontal, 0);
+        float desiredAngleY = player.transform.eulerAngles.y;
 
-        float desiredAngle = player.transform.eulerAngles.y;
-        Quaternion rotation = Quaternion.Euler(0, desiredAngle, 0);
-        transform.position = player.transform.position - (rotation * offset);
+        Quaternion rotation = Quaternion.Euler(-verticale, desiredAngleY, 0);
 
-        transform.LookAt(player.transform.position + player.transform.forward*2+Vector3.up);
+        //For the Zoom
+        zoom -= Input.GetAxis("Mouse ScrollWheel")*zoomSpeed;
+        zoom = Mathf.Clamp(zoom, zoomMaxMin.x, zoomMaxMin.y);
+
+        transform.position = pivotView.transform.position - (rotation * (offset + offset*zoom));
+
+        transform.LookAt(pivotView);
+        
     }
 }

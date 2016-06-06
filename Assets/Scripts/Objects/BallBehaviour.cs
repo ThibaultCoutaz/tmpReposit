@@ -67,7 +67,8 @@ public class BallBehaviour : MonoBehaviour {
         {
             //Debug.LogError("Gotit");
             IDPreviousOwner = col.gameObject.GetComponent<PhotonView>().viewID;
-            GetComponent<Collider>().enabled = false;
+            Physics.IgnoreCollision(col.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
+            //GetComponent<Collider>().enabled = false;
             PlayerScript ps = col.gameObject.GetComponent<PlayerScript>();
             ps.hasBall = true;
             GetComponent<PhotonView>().TransferOwnership(col.gameObject.GetComponent<PhotonView>().viewID);

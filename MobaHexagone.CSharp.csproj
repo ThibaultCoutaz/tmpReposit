@@ -223,6 +223,7 @@
     <Compile Include="Assets\Scripts\Network\TeamScript.cs" />
     <Compile Include="Assets\Scripts\Objects\BallBehaviour.cs" />
     <Compile Include="Assets\Scripts\Objects\ObjectifFloor.cs" />
+    <Compile Include="Assets\Scripts\Player\AimCamera.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCamera.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCameraTest.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerScript.cs" />
