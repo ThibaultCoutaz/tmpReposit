@@ -94,6 +94,7 @@ public class CreationRoom : Singleton<CreationRoom>
 
     public void Play()
     {
+        PhotonNetwork.room.visible = false;
         viewMaster.RPC("LaunchGame", PhotonTargets.AllBuffered);
     }
 

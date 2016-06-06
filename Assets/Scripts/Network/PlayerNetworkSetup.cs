@@ -18,6 +18,8 @@ public class PlayerNetworkSetup : MonoBehaviour {
     private PlayerCamera camScript;
     private Animator m_animator;
 
+    //For the RolePlay
+    private float money = 0f;
 
     void Awake()
     {

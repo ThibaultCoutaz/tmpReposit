@@ -59,7 +59,7 @@ public class LobbyManager : MonoBehaviour {
 
 
         InfoListPlayers.text = PhotonNetwork.countOfPlayers + " users are online, " + PhotonNetwork.countOfPlayersInRooms + " users are online in a Room";
-        InfoListRooms.text = PhotonNetwork.countOfRooms + " rooms available";
+        InfoListRooms.text = PhotonNetwork.countOfRooms + " rooms";
 
         if (reload)
         {
@@ -82,11 +82,14 @@ public class LobbyManager : MonoBehaviour {
 
             foreach (RoomInfo roomInfo in PhotonNetwork.GetRoomList())
             {
-                GameObject tmp = (GameObject)Instantiate(infosRoom);
-                tmp.GetComponent<InfosRoom>().EditServeurName(roomInfo.name);
-                tmp.GetComponent<InfosRoom>().EditNumberPlayers(roomInfo.playerCount.ToString());
-                tmp.transform.SetParent(ListRooms);
-                tmp.transform.localScale = new Vector3(1, 1, 1); // NEed to find a solution later ! it's not beautiful to set the scale after setting the parent
+                if (roomInfo.visible)
+                {
+                    GameObject tmp = (GameObject)Instantiate(infosRoom);
+                    tmp.GetComponent<InfosRoom>().EditServeurName(roomInfo.name);
+                    tmp.GetComponent<InfosRoom>().EditNumberPlayers(roomInfo.playerCount.ToString());
+                    tmp.transform.SetParent(ListRooms);
+                    tmp.transform.localScale = new Vector3(1, 1, 1); // NEed to find a solution later ! it's not beautiful to set the scale after setting the parent
+                }
             }
         }
         reload = true;
