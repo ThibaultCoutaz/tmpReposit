@@ -226,6 +226,7 @@
     <Compile Include="Assets\Scripts\Player\AimCamera.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCamera.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCameraTest.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerControl.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerScript.cs" />
     <Compile Include="Assets\Scripts\Player\ThirdPersonCharacter.cs" />
     <Compile Include="Assets\Scripts\Player\ThirdPersonUserControl.cs" />

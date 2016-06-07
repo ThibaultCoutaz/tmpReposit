@@ -56,8 +56,6 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			m_TurnAmount = Mathf.Atan2(move.x, move.z);
 			m_ForwardAmount = move.z;
 
-			//ApplyExtraTurnRotation();
-
 			// control and velocity handling is different when grounded and airborne:
 			if (m_IsGrounded)
 			{
@@ -195,7 +193,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 				// we preserve the existing y part of the current velocity.
 				v.y = m_Rigidbody.velocity.y;
 				m_Rigidbody.velocity = v;
-			}
+            }
 		}
 
 

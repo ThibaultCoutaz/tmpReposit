@@ -56,7 +56,8 @@ public class HUDManager : Singleton<HUDManager>
 
     void disableElement(Game.UI_Types key, HUDElement element)
     {
-        if (key == Game.UI_Types.TimerInGame)
+        if (key == Game.UI_Types.TimerInGame ||
+            key == Game.UI_Types.AmountGold)
             element.displayGroup(false, .0f, false, false);
     }
 
@@ -126,6 +127,24 @@ public class HUDManager : Singleton<HUDManager>
         if (elements.TryGetValue(Game.UI_Types.TimerInGame, out timer))
         {
             timer.setChrono(time);
+        }
+    }
+
+    public void DisplayMoney(bool display)
+    {
+        HUDElement money;
+        if (elements.TryGetValue(Game.UI_Types.AmountGold, out money))
+        {
+            money.displayGroup(display);
+        }
+    }
+
+    public void EditGold(float amount)
+    {
+        HUDElement gold;
+        if (elements.TryGetValue(Game.UI_Types.AmountGold, out gold))
+        {
+            gold.setText("Gold = "+ amount);
         }
     }
 }

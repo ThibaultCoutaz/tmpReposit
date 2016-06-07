@@ -9,7 +9,6 @@ public class GameManager : Singleton<GameManager>
 
     public float timeSinceGameStart = 0.0f; //TimerManagement a faire !
     public float moneyEarnPerSecond = 10f;
-    private float startTime;
 
     public GameObject ballOfGame= null;
     
@@ -20,12 +19,41 @@ public class GameManager : Singleton<GameManager>
 
     void Update()
     {
-        timeSinceGameStart += Time.deltaTime;
+        if (PhotonNetwork.isMasterClient)
+        {
+            timeSinceGameStart += Time.deltaTime;
+            //GetComponent<PhotonView>().RPC("SyncTime", PhotonTargets.AllViaServer);
+        }
+        else
+        {
+            timeSinceGameStart = tmpTime;
+        }
         HUDManager.Instance.EditTimerInGame(timeSinceGameStart);
+
         if (ballOfGame == null && GameObject.FindGameObjectWithTag("Ball"))
         {
             ballOfGame = GameObject.FindGameObjectWithTag("Ball");
         }
     }
 
+    //[PunRPC]
+    //private void SyncTime()
+    //{
+    //    timeSinceGameStart += Time.deltaTime;
+    //    HUDManager.Instance.EditTimerInGame(timeSinceGameStart);
+    //}
+
+    private float tmpTime;
+
+    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo message)
+    {
+        if (stream.isWriting)
+        {
+            stream.SendNext(timeSinceGameStart);
+        }
+        else
+        {
+            tmpTime = (float)stream.ReceiveNext();
+        }
+    }
 }

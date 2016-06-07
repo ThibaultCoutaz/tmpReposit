@@ -11,7 +11,8 @@ namespace Game
     {
         NULL,
         ConnectionInfos,
-        TimerInGame
+        TimerInGame,
+        AmountGold
     }
 
     public enum Lerp_Type

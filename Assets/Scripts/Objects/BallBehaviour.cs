@@ -6,14 +6,20 @@ public class BallBehaviour : MonoBehaviour {
     private Rigidbody rigb;
 
     [HideInInspector]
+    public TrailRenderer lineEffect;
+
+    [HideInInspector]
     public int IDPreviousOwner; //could do it with some state like , catch , free , and owned
 
-    void Start()
+    void Awake()
     {
         IDPreviousOwner = -1;
         rigb = GetComponent<Rigidbody>();
+        lineEffect = GetComponent<TrailRenderer>();
+        lineEffect.enabled = false;
     }
 
+    //Still need to manage the trail renderer to stop it zhen the magnitude is < to a number.
     void FixedUpdate()
     {
         if (!GetComponent<PhotonView>().isMine)
@@ -23,12 +29,6 @@ public class BallBehaviour : MonoBehaviour {
         }
     }
 
-    //[PunRPC]
-    //void BallMove()
-    //{
-    //    syncTime += Time.deltaTime;
-    //    transform.position = Vector3.Lerp(syncStartPosition, syncEndPosition, syncTime / syncDelay);
-    //}
 
     private float lastSyncTime = 0;
     private float syncDelay = 0;
@@ -68,7 +68,8 @@ public class BallBehaviour : MonoBehaviour {
             //Debug.LogError("Gotit");
             IDPreviousOwner = col.gameObject.GetComponent<PhotonView>().viewID;
             Physics.IgnoreCollision(col.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
-            //GetComponent<Collider>().enabled = false;
+            if (lineEffect.enabled == true)
+                lineEffect.enabled = false;
             PlayerScript ps = col.gameObject.GetComponent<PlayerScript>();
             ps.hasBall = true;
             GetComponent<PhotonView>().TransferOwnership(col.gameObject.GetComponent<PhotonView>().viewID);

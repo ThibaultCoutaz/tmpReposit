@@ -40,10 +40,9 @@ public class PlayerCameraTest : MonoBehaviour {
         //For the Zoom
         zoom -= Input.GetAxis("Mouse ScrollWheel")*zoomSpeed;
         zoom = Mathf.Clamp(zoom, zoomMaxMin.x, zoomMaxMin.y);
-
+        
         transform.position = pivotView.transform.position - (rotation * (offset + offset*zoom));
 
         transform.LookAt(pivotView);
-        
     }
 }

@@ -4,24 +4,28 @@ using System.Collections;
 public class PlayerScript : MonoBehaviour {
     
     public Camera cameraPlayer;
-
     public float ShootPower = 500;
+    public float StartingGold = 250;
 
     [SerializeField]
     private Transform mainHand;
 
     private PhotonView view;
-    
+    private float currentAmoutOfGold = 0;
+
     [HideInInspector]
     public bool hasBall = false;
     
 	void Start ()
     {
+        HUDManager.Instance.DisplayMoney(true);
+        currentAmoutOfGold = StartingGold;
+        HUDManager.Instance.EditGold(currentAmoutOfGold);
         view = GetComponentInParent<PhotonView>();
+        InvokeRepeating("MoneyInPocket", 1.0f, 1.0f);
     }
 
 	void Update () {
-        //Debug.LogError(InputManager.Instance + "------" + GameObject.Find("InputManager"));
         if (hasBall && view.isMine && GameManager.Instance.ballOfGame.GetComponent<PhotonView>().ownerId == GetComponent<PhotonView>().viewID)
         {
             view.RPC("CarryBall", PhotonTargets.AllBuffered);
@@ -38,16 +42,22 @@ public class PlayerScript : MonoBehaviour {
                 }
             }
         }
+
 	}
+
+    void MoneyInPocket()
+    {
+        currentAmoutOfGold += GameManager.Instance.moneyEarnPerSecond;
+        HUDManager.Instance.EditGold(currentAmoutOfGold);
+    }
 
     [PunRPC]
     private void ShootBall()
     {
         hasBall = false;
         GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().isKinematic = false;
-        Debug.Log(cameraPlayer.transform.forward);
         GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().AddForce(cameraPlayer.transform.forward * ShootPower);
-        //GameManager.Instance.ballOfGame.GetComponent<Collider>().enabled = true;
+        GameManager.Instance.ballOfGame.GetComponent<BallBehaviour>().lineEffect.enabled = true;
         Invoke("ResetOwnerBall", 0.5f);
     }
 
@@ -67,10 +77,11 @@ public class PlayerScript : MonoBehaviour {
             GameManager.Instance.ballOfGame.transform.position = mainHand.position;
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(cameraPlayer.transform.position, cameraPlayer.transform.forward * ShootPower);
-    }
+    //To see the direction of the shoot
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.blue;
+    //    Gizmos.DrawLine(cameraPlayer.transform.position, cameraPlayer.transform.forward * ShootPower);
+    //}
 
 }

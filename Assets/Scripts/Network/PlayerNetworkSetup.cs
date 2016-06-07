@@ -73,14 +73,14 @@ public class PlayerNetworkSetup : MonoBehaviour {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             stream.SendNext(rigb.velocity);
-            stream.SendNext(m_animator.GetFloat("Forward"));
+            stream.SendNext(m_animator.GetFloat("Magnitude"));
         }
         else
         {
             syncPosition = (Vector3)stream.ReceiveNext();
             syncRotation = (Quaternion)stream.ReceiveNext();
             syncVelocity = (Vector3)stream.ReceiveNext();
-            m_animator.SetFloat("Forward", (float)stream.ReceiveNext());
+            m_animator.SetFloat("Magnitude", (float)stream.ReceiveNext());
 
             syncTime = 0;
             syncDelay = Time.time - lastSyncTime;
