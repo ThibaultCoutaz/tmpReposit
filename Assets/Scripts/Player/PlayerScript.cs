@@ -1,11 +1,32 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
 
 public class PlayerScript : MonoBehaviour {
     
+    public enum stateCharacter
+    {
+        Normal,
+        Stunt,
+        slow,
+        Dead,
+        Dash
+    }
+
+    public GameObject[] spellObject;
+    private Spell[] spell;
+
+    public stateCharacter currentState;
     public Camera cameraPlayer;
     public float ShootPower = 500;
     public float StartingGold = 250;
+
+    //Spell Part
+    public List<Sprite> spell1;
+    public List<Sprite> spell2;
+    public List<Sprite> spell3;
+    public List<Sprite> passif;
+
 
     [SerializeField]
     private Transform mainHand;
@@ -18,11 +39,24 @@ public class PlayerScript : MonoBehaviour {
     
 	void Start ()
     {
-        HUDManager.Instance.DisplayMoney(true);
+        HUDManager.Instance.DisplayCharacterInfos(true);
+
+        currentState = stateCharacter.Normal;
+        HUDManager.Instance.EditState(currentState.ToString());
+
         currentAmoutOfGold = StartingGold;
         HUDManager.Instance.EditGold(currentAmoutOfGold);
-        view = GetComponentInParent<PhotonView>();
         InvokeRepeating("MoneyInPocket", 1.0f, 1.0f);
+        
+        view = GetComponentInParent<PhotonView>();
+
+        HUDManager.Instance.InitSpell(spell1, spell2, spell3, passif);
+        HUDManager.Instance.DisplaySpell(true);
+
+        spell = new Spell[3];
+        spell[0] = new FireBall();
+
+        Debug.LogError("TAMERE"+spell[0]);
     }
 
 	void Update () {
@@ -43,7 +77,19 @@ public class PlayerScript : MonoBehaviour {
             }
         }
 
-	}
+        if (InputManager.Instance.IsSpellA)
+        {
+            Debug.LogError("Spell A");
+        }
+        if (InputManager.Instance.IsSpellE)
+        {
+            Debug.LogError("Spell E");
+        }
+        if (InputManager.Instance.IsSpellR)
+        {
+            Debug.LogError("Spell R");
+        }
+    }
 
     void MoneyInPocket()
     {
@@ -83,5 +129,11 @@ public class PlayerScript : MonoBehaviour {
     //    Gizmos.color = Color.blue;
     //    Gizmos.DrawLine(cameraPlayer.transform.position, cameraPlayer.transform.forward * ShootPower);
     //}
+
+    public void EditState(stateCharacter _state)
+    {
+        currentState = _state;
+        HUDManager.Instance.EditState(currentState.ToString());
+    }
 
 }

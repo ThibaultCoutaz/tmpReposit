@@ -57,7 +57,8 @@ public class HUDManager : Singleton<HUDManager>
     void disableElement(Game.UI_Types key, HUDElement element)
     {
         if (key == Game.UI_Types.TimerInGame ||
-            key == Game.UI_Types.AmountGold)
+            key == Game.UI_Types.CharacterInfos ||
+            key == Game.UI_Types.Spell)
             element.displayGroup(false, .0f, false, false);
     }
 
@@ -130,6 +131,15 @@ public class HUDManager : Singleton<HUDManager>
         }
     }
 
+    public void DisplayCharacterInfos(bool display)
+    {
+        HUDElement CInfos;
+        if (elements.TryGetValue(Game.UI_Types.CharacterInfos, out CInfos))
+        {
+            CInfos.displayGroup(display);
+        }
+    }
+
     public void DisplayMoney(bool display)
     {
         HUDElement money;
@@ -144,7 +154,43 @@ public class HUDManager : Singleton<HUDManager>
         HUDElement gold;
         if (elements.TryGetValue(Game.UI_Types.AmountGold, out gold))
         {
-            gold.setText("Gold = "+ amount);
+            gold.setText("Gold : "+ amount);
+        }
+    }
+
+    public void DisplayStateCharacter(bool display)
+    {
+        HUDElement StateC;
+        if (elements.TryGetValue(Game.UI_Types.StateCharacter, out StateC))
+        {
+            StateC.displayGroup(display);
+        }
+    }
+
+    public void EditState(string text)
+    {
+        HUDElement StateC;
+        if (elements.TryGetValue(Game.UI_Types.StateCharacter, out StateC))
+        {
+            StateC.setText("State : "+text);
+        }
+    }
+
+    public void DisplaySpell(bool display)
+    {
+        HUDElement spell;
+        if (elements.TryGetValue(Game.UI_Types.Spell, out spell))
+        {
+            spell.displayGroup(display);
+        }
+    }
+
+    public void InitSpell(List<Sprite> spell1, List<Sprite> spell2, List<Sprite> spell3, List<Sprite> spell4)
+    {
+        HUDElement spell;
+        if (elements.TryGetValue(Game.UI_Types.Spell, out spell))
+        {
+            ((HUDSpell)spell).InitSprites(spell1,spell2,spell3,spell4);
         }
     }
 }

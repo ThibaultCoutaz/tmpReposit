@@ -16,12 +16,14 @@ public class PlayerControl : MonoBehaviour {
     private bool grounded = true;
     private Rigidbody rigb;
     private Animator anim;
+    private PlayerScript ps;
 	
     void Awake()
     {
         rigb = GetComponent<Rigidbody>();
         rigb.useGravity = false; // to control by my self the gravity 
         anim = GetComponent<Animator>();
+        ps = GetComponent<PlayerScript>();
     }
 
 
@@ -59,7 +61,8 @@ public class PlayerControl : MonoBehaviour {
                 {
                     rigb.AddForce(transform.forward * powerDashFoward, ForceMode.VelocityChange);
                     pivotTrailRenderer.SetActive(true);
-                    Invoke("DiseableTrail", 1);
+                    ps.EditState(PlayerScript.stateCharacter.Dash);
+                    Invoke("DiseableTrail", 0.5f);
                 }
 
                 if (InputManager.Instance.IsDashingLeft)
@@ -83,6 +86,7 @@ public class PlayerControl : MonoBehaviour {
     void DiseableTrail()
     {
         pivotTrailRenderer.SetActive(false);
+        ps.EditState(PlayerScript.stateCharacter.Normal);
     }
 
     void UpdateAnimation(Vector3 move)

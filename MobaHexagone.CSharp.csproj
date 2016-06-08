@@ -208,6 +208,7 @@
     <Compile Include="Assets\Scripts\Data\GameData.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDConnectInfos.cs" />
+    <Compile Include="Assets\Scripts\HUD\HUDElement\HUDSpell.cs" />
     <Compile Include="Assets\Scripts\InfosCharacter.cs" />
     <Compile Include="Assets\Scripts\InfosRoom.cs" />
     <Compile Include="Assets\Scripts\InitGame.cs" />
@@ -230,6 +231,8 @@
     <Compile Include="Assets\Scripts\Player\PlayerScript.cs" />
     <Compile Include="Assets\Scripts\Player\ThirdPersonCharacter.cs" />
     <Compile Include="Assets\Scripts\Player\ThirdPersonUserControl.cs" />
+    <Compile Include="Assets\Scripts\Spell\FireBall.cs" />
+    <Compile Include="Assets\Scripts\Spell\Spell.cs" />
     <Compile Include="Assets\Scripts\Utils\CameraController.cs" />
     <Compile Include="Assets\Scripts\Utils\FPSCounter.cs" />
     <Compile Include="Assets\Scripts\Utils\MathTools.cs" />

@@ -12,7 +12,10 @@ namespace Game
         NULL,
         ConnectionInfos,
         TimerInGame,
-        AmountGold
+        AmountGold,
+        CharacterInfos,
+        StateCharacter,
+        Spell
     }
 
     public enum Lerp_Type
