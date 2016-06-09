@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using Game;
 
 public class PlayerScript : MonoBehaviour {
-    
+
     public enum stateCharacter
     {
         Normal,
@@ -12,30 +13,21 @@ public class PlayerScript : MonoBehaviour {
         Dead,
         Dash
     }
-
-    public GameObject[] spellObject;
-    private Spell[] spell;
+   
+    public Spell[] spells = new Spell[3];
 
     public stateCharacter currentState;
     public Camera cameraPlayer;
     public float ShootPower = 500;
     public float StartingGold = 250;
+    [SerializeField]private Transform mainHand;
 
-    //Spell Part
-    public List<Sprite> spell1;
-    public List<Sprite> spell2;
-    public List<Sprite> spell3;
-    public List<Sprite> passif;
-
-
-    [SerializeField]
-    private Transform mainHand;
+    [HideInInspector]
+    public bool hasBall = false;
 
     private PhotonView view;
     private float currentAmoutOfGold = 0;
 
-    [HideInInspector]
-    public bool hasBall = false;
     
 	void Start ()
     {
@@ -49,14 +41,12 @@ public class PlayerScript : MonoBehaviour {
         InvokeRepeating("MoneyInPocket", 1.0f, 1.0f);
         
         view = GetComponentInParent<PhotonView>();
-
-        HUDManager.Instance.InitSpell(spell1, spell2, spell3, passif);
+        spells[0].id = 0;
+        spells[1].id = 1;
+        spells[2].id = 2;
+        HUDManager.Instance.InitSpell(spells[0].spriteSpell, spells[1].spriteSpell, spells[2].spriteSpell,null);
         HUDManager.Instance.DisplaySpell(true);
 
-        spell = new Spell[3];
-        spell[0] = new FireBall();
-
-        Debug.LogError("TAMERE"+spell[0]);
     }
 
 	void Update () {
@@ -77,17 +67,24 @@ public class PlayerScript : MonoBehaviour {
             }
         }
 
+        Debug.Log(spells[0].canCast);
+        for (int i = 0; i < 3; i++)
+        {
+            if (!spells[i].canCast)
+                spells[i].ManageFilledSpell();
+        }
+
         if (InputManager.Instance.IsSpellA)
         {
-            Debug.LogError("Spell A");
+            spells[0].OnCast(this);
         }
         if (InputManager.Instance.IsSpellE)
         {
-            Debug.LogError("Spell E");
+            spells[1].OnCast(this);
         }
         if (InputManager.Instance.IsSpellR)
         {
-            Debug.LogError("Spell R");
+            spells[2].OnCast(this);
         }
     }
 
@@ -135,5 +132,4 @@ public class PlayerScript : MonoBehaviour {
         currentState = _state;
         HUDManager.Instance.EditState(currentState.ToString());
     }
-
 }

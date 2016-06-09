@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public class FireBall : Spell {
-
-    public string toto = "Putin ca marche cest trop cool";
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+public class FireBall : Spell
+{
+    public override void OnCast(PlayerScript ps)
+    {
+        if (canCast)
+        {
+            //GameObject tmp = PhotonNetwork.Instantiate("Prefabs/Spells/Projectil/FireBall", ps.transform.position, Quaternion.identity, 0);
+            //tmp.GetComponent<Rigidbody>().AddForce(ps.transform.forward * 1000);
+            Debug.LogError("FIRE");
+            //throw new NotImplementedException();
+            canCast = false;
+        }
+    }
 }

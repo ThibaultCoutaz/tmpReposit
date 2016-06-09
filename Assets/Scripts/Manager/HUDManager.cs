@@ -185,13 +185,42 @@ public class HUDManager : Singleton<HUDManager>
         }
     }
 
-    public void InitSpell(List<Sprite> spell1, List<Sprite> spell2, List<Sprite> spell3, List<Sprite> spell4)
+    public void InitSpell(List<Sprite> spell1, List<Sprite> spell2, List<Sprite> spell3,List<Sprite> passif)
     {
         HUDElement spell;
         if (elements.TryGetValue(Game.UI_Types.Spell, out spell))
         {
-            ((HUDSpell)spell).InitSprites(spell1,spell2,spell3,spell4);
+            ((HUDSpell)spell).InitSprites(spell1,spell2,spell3, passif);
         }
     }
+
+    public void ActivateFilledSpell(bool display, int whichOne)
+    {
+        HUDElement spell;
+        if (elements.TryGetValue(Game.UI_Types.Spell, out spell))
+        {
+            if (whichOne == 0)
+                ((HUDSpell)spell).ActivateFilled1(display);
+            else if (whichOne == 1)
+                ((HUDSpell)spell).ActivateFilled2(display);
+            else if (whichOne == 2)
+                ((HUDSpell)spell).ActivateFilled3(display);
+        }
+    }
+
+    public void EditFilledSpell(float amount, int whichOne)
+    {
+        HUDElement spell;
+        if (elements.TryGetValue(Game.UI_Types.Spell, out spell))
+        {
+            if(whichOne == 0)
+                ((HUDSpell)spell).EditFilled1(amount);
+            else if(whichOne == 1)
+                ((HUDSpell)spell).EditFilled2(amount);
+            else if(whichOne == 2)
+                ((HUDSpell)spell).EditFilled3(amount);
+        }
+    }
+
 }
 

@@ -26,9 +26,4 @@ namespace Game
         Smoothstep,
         Smootherstep
     }
-
-    public enum FX_Types
-    {
-       
-    }
 }
