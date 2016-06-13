@@ -19,7 +19,7 @@ public class InputManager : Singleton<InputManager>
     public bool IsSpellE { get; private set; }
     public bool IsSpellR { get; private set; }
 
-    private float cdButton = 0.5f;
+    private float cdButton = 0.1f;
     private int countButtonFoward = 0;
     private int countButtonRight = 0;
     private int countButtonLeft = 0;
@@ -46,7 +46,7 @@ public class InputManager : Singleton<InputManager>
             }
             else
             {
-                cdButton = 0.5f;
+                cdButton = 0.2f;
                 countButtonFoward += 1;
             }
         }
@@ -59,7 +59,7 @@ public class InputManager : Singleton<InputManager>
             }
             else
             {
-                cdButton = 0.5f;
+                cdButton = 0.2f;
                 countButtonRight += 1;
             }
         }

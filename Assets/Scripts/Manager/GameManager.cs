@@ -9,6 +9,7 @@ public class GameManager : Singleton<GameManager>
 
     public float timeSinceGameStart = 0.0f; //TimerManagement a faire !
     public float moneyEarnPerSecond = 10f;
+    public bool pause = false;
 
     public GameObject ballOfGame= null;
     
@@ -34,14 +35,21 @@ public class GameManager : Singleton<GameManager>
         {
             ballOfGame = GameObject.FindGameObjectWithTag("Ball");
         }
-    }
 
-    //[PunRPC]
-    //private void SyncTime()
-    //{
-    //    timeSinceGameStart += Time.deltaTime;
-    //    HUDManager.Instance.EditTimerInGame(timeSinceGameStart);
-    //}
+        if (InputManager.Instance.IsCancelling)
+        {
+            pause = !pause;
+            Cursor.visible = pause;
+            if (pause)
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
+    }
 
     private float tmpTime;
 

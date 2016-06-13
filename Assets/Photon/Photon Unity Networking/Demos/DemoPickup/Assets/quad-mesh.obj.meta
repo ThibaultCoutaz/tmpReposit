@@ -1,17 +1,17 @@
 fileFormatVersion: 2
-guid: 6ed3ffde68571d9439659fb1de061c9d
-timeCreated: 1464687383
+guid: 0c6cd9f45e9a74a48ae55746eb00e79e
+timeCreated: 1465802357
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: LevelCubes2[-934]
-    400000: //RootNode
-    400002: LevelCubes2[-934]
-    2300000: LevelCubes2[-934]
-    3300000: LevelCubes2[-934]
-    4300000: LevelCubes2[-934]
+    100000: Quad
+    100002: //RootNode
+    400000: Quad
+    400002: //RootNode
+    2300000: Quad
+    3300000: Quad
+    4300000: Quad
   materials:
     importMaterials: 1
     materialName: 0

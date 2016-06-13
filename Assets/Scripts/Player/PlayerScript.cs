@@ -31,6 +31,7 @@ public class PlayerScript : MonoBehaviour {
     
 	void Start ()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         HUDManager.Instance.DisplayCharacterInfos(true);
 
         currentState = stateCharacter.Normal;
@@ -66,8 +67,7 @@ public class PlayerScript : MonoBehaviour {
                 }
             }
         }
-
-        Debug.Log(spells[0].canCast);
+        
         for (int i = 0; i < 3; i++)
         {
             if (!spells[i].canCast)
@@ -76,15 +76,18 @@ public class PlayerScript : MonoBehaviour {
 
         if (InputManager.Instance.IsSpellA)
         {
-            spells[0].OnCast(this);
+            if(spells[0].canCast)
+                spells[0].OnCast(this);
         }
         if (InputManager.Instance.IsSpellE)
         {
-            spells[1].OnCast(this);
+            if (spells[1].canCast)
+                spells[1].OnCast(this);
         }
         if (InputManager.Instance.IsSpellR)
         {
-            spells[2].OnCast(this);
+            if (spells[2].canCast)
+                spells[2].OnCast(this);
         }
     }
 

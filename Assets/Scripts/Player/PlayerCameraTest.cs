@@ -27,22 +27,24 @@ public class PlayerCameraTest : MonoBehaviour {
 
     void Update()
     {
-        float horizontal = GameObject.Find("InputManager").GetComponent<InputManager>().GetHorizontalMouse() * sensibilityY; // DEEEEEEEEEEGEUX !
-        verticale += GameObject.Find("InputManager").GetComponent<InputManager>().GetVerticalMouse() * sensibilityX;
-        verticale = Mathf.Clamp(verticale, minimumY, maximumY);
+        if (!GameManager.Instance.pause) {
+            float horizontal = InputManager.Instance.GetHorizontalMouse() * sensibilityY; 
+            verticale += InputManager.Instance.GetVerticalMouse() * sensibilityX;
+            verticale = Mathf.Clamp(verticale, minimumY, maximumY);
 
-        //For the rotation in Y of the Player
-        player.transform.Rotate(0, horizontal, 0);
-        float desiredAngleY = player.transform.eulerAngles.y;
+            //For the rotation in Y of the Player
+            player.transform.Rotate(0, horizontal, 0);
+            float desiredAngleY = player.transform.eulerAngles.y;
 
-        Quaternion rotation = Quaternion.Euler(-verticale, desiredAngleY, 0);
+            Quaternion rotation = Quaternion.Euler(-verticale, desiredAngleY, 0);
 
-        //For the Zoom
-        zoom -= Input.GetAxis("Mouse ScrollWheel")*zoomSpeed;
-        zoom = Mathf.Clamp(zoom, zoomMaxMin.x, zoomMaxMin.y);
-        
-        transform.position = pivotView.transform.position - (rotation * (offset + offset*zoom));
+            //For the Zoom
+            zoom -= Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
+            zoom = Mathf.Clamp(zoom, zoomMaxMin.x, zoomMaxMin.y);
 
-        transform.LookAt(pivotView);
+            transform.position = pivotView.transform.position - (rotation * (offset + offset * zoom));
+
+            transform.LookAt(pivotView);
+        }
     }
 }
