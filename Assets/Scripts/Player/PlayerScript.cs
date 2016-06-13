@@ -63,7 +63,7 @@ public class PlayerScript : MonoBehaviour {
                 }
                 else
                 {
-                    view.RPC("ShootBall", PhotonTargets.AllBuffered);
+                    view.RPC("ShootBall", PhotonTargets.AllBuffered, cameraPlayer.transform.forward);
                 }
             }
         }
@@ -98,11 +98,11 @@ public class PlayerScript : MonoBehaviour {
     }
 
     [PunRPC]
-    private void ShootBall()
+    private void ShootBall(Vector3 camF) // for the futur is better to sync the camera rotation i think in Y that send the vector ( for exemple for the head movement )
     {
         hasBall = false;
         GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().isKinematic = false;
-        GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().AddForce(cameraPlayer.transform.forward * ShootPower);
+        GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().AddForce(camF * ShootPower);
         GameManager.Instance.ballOfGame.GetComponent<BallBehaviour>().lineEffect.enabled = true;
         Invoke("ResetOwnerBall", 0.5f);
     }
@@ -124,11 +124,11 @@ public class PlayerScript : MonoBehaviour {
     }
 
     //To see the direction of the shoot
-    //void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.blue;
-    //    Gizmos.DrawLine(cameraPlayer.transform.position, cameraPlayer.transform.forward * ShootPower);
-    //}
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(cameraPlayer.transform.position, cameraPlayer.transform.forward * ShootPower);
+    }
 
     public void EditState(stateCharacter _state)
     {
