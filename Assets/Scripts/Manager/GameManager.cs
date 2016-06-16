@@ -29,25 +29,27 @@ public class GameManager : Singleton<GameManager>
         {
             timeSinceGameStart = tmpTime;
         }
+
         HUDManager.Instance.EditTimerInGame(timeSinceGameStart);
 
         if (ballOfGame == null && GameObject.FindGameObjectWithTag("Ball"))
         {
             ballOfGame = GameObject.FindGameObjectWithTag("Ball");
         }
+    }
 
-        if (InputManager.Instance.IsCancelling)
+    public void GamePause()
+    {
+        Debug.LogError("Pause");
+        pause = !pause;
+        Cursor.visible = pause;
+        if (pause)
         {
-            pause = !pause;
-            Cursor.visible = pause;
-            if (pause)
-            {
-                Cursor.lockState = CursorLockMode.Confined;
-            }
-            else
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 

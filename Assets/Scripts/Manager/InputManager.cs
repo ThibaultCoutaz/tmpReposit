@@ -15,6 +15,7 @@ public class InputManager : Singleton<InputManager>
     public bool IsDashingFoward { get; private set; }
     public bool IsDashingRight { get; private set; }
     public bool IsDashingLeft { get; private set; }
+    public bool IsUsingSpell { get; private set; }
     public bool IsSpellA { get; private set; }
     public bool IsSpellE { get; private set; }
     public bool IsSpellR { get; private set; }
@@ -30,9 +31,10 @@ public class InputManager : Singleton<InputManager>
         IsWalking = (Input.GetAxis("Horizontal") > 0 || Input.GetAxis("Vertical") > 0 || Input.GetAxis("Vertical") < 0 || Input.GetAxis("Horizontal") < 0);
         IsJumping = Input.GetButtonDown("Jump");
         IsPassing = Input.GetButtonDown("Pass");
-        IsSpellA = Input.GetButtonDown("SpellA");
-        IsSpellE = Input.GetButtonDown("SpellE");
-        IsSpellR = Input.GetButtonDown("SpellR");
+        IsUsingSpell = Input.GetButtonDown("UseSpell");
+        IsSpellA = Input.GetButton("SpellA");
+        IsSpellE = Input.GetButton("SpellE");
+        IsSpellR = Input.GetButton("SpellR");
 
         IsDashingFoward = false;
         IsDashingRight = false;

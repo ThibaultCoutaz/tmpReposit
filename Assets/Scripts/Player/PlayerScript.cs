@@ -42,9 +42,9 @@ public class PlayerScript : MonoBehaviour {
         InvokeRepeating("MoneyInPocket", 1.0f, 1.0f);
         
         view = GetComponentInParent<PhotonView>();
-        spells[0].id = 0;
-        spells[1].id = 1;
-        spells[2].id = 2;
+        spells[0].id = 0; spells[0].canCast = true;
+        spells[1].id = 1; spells[1].canCast = true;
+        spells[2].id = 2; spells[2].canCast = true;
         HUDManager.Instance.InitSpell(spells[0].spriteSpell, spells[1].spriteSpell, spells[2].spriteSpell,null);
         HUDManager.Instance.DisplaySpell(true);
 
@@ -68,30 +68,97 @@ public class PlayerScript : MonoBehaviour {
             }
         }
         
+        ManageSpell();
+
+        if (InputManager.Instance.IsCancelling && view.isMine)
+        {
+            GameManager.Instance.GamePause();
+        }
+
+    }
+
+    private void ManageSpell()
+    {
         for (int i = 0; i < 3; i++)
         {
+            //Debug.Log("Spells["+i+"] = "+spells[i].canCast);
             if (!spells[i].canCast)
                 spells[i].ManageFilledSpell();
         }
 
-        if (InputManager.Instance.IsSpellA)
+        //Imput manage
+        if (InputManager.Instance.IsSpellA && spells[0].canCast)
         {
-            if(spells[0].canCast)
+            if (spells[0].targeting != Spell.Type_Spell.HimSelf)
+            {
+                if(spells[0].projectionSpell == null)
+                {
+                    InitFunctionProjection(spells[0]);
+                }
+
+                spells[0].projectionSpell(cameraPlayer.transform.position,cameraPlayer.transform.forward);
+
+                if (InputManager.Instance.IsUsingSpell)
+                        spells[0].OnCast(this);
+            }
+            else
+            {
                 spells[0].OnCast(this);
+            }
         }
-        if (InputManager.Instance.IsSpellE)
+        if (InputManager.Instance.IsSpellE && spells[1].canCast)
         {
-            if (spells[1].canCast)
+            if (spells[1].targeting != Spell.Type_Spell.HimSelf)
+            {
+                if (spells[1].projectionSpell == null)
+                {
+                    InitFunctionProjection(spells[1]);
+                }
+
+                //spells[1].projectionSpell(cameraPlayer.transform.forward);
+
+                if (InputManager.Instance.IsUsingSpell)
+                        spells[1].OnCast(this);
+            }
+            else
+            {
                 spells[1].OnCast(this);
+            }
         }
-        if (InputManager.Instance.IsSpellR)
+        if (InputManager.Instance.IsSpellR && spells[2].canCast)
         {
-            if (spells[2].canCast)
+            if (spells[2].targeting != Spell.Type_Spell.HimSelf)
+            {
+                if (spells[2].projectionSpell == null)
+                {
+                    InitFunctionProjection(spells[2]);
+                }
+
+                //spells[2].projectionSpell(Vector3.back);
+
+                if (InputManager.Instance.IsUsingSpell)
+                        spells[2].OnCast(this);
+            }
+            else
+            {
                 spells[2].OnCast(this);
+            }
         }
     }
 
-    void MoneyInPocket()
+    private void InitFunctionProjection(Spell spell)
+    {
+        if(spell.targeting == Spell.Type_Spell.Target)
+        {
+            spell.projectionSpell = spell.ProjectionTarget;
+        }
+        else if(spell.targeting == Spell.Type_Spell.AOE)
+        {
+            spell.projectionSpell = spell.ProjectionAOE;
+        }
+    }
+
+    private void MoneyInPocket()
     {
         currentAmoutOfGold += GameManager.Instance.moneyEarnPerSecond;
         HUDManager.Instance.EditGold(currentAmoutOfGold);
@@ -123,12 +190,12 @@ public class PlayerScript : MonoBehaviour {
             GameManager.Instance.ballOfGame.transform.position = mainHand.position;
     }
 
-    //To see the direction of the shoot
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(cameraPlayer.transform.position, cameraPlayer.transform.forward * ShootPower);
-    }
+    ////To see the direction of the shoot
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.blue;
+    //    Gizmos.DrawLine(cameraPlayer.transform.position, cameraPlayer.transform.forward * ShootPower);
+    //}
 
     public void EditState(stateCharacter _state)
     {
