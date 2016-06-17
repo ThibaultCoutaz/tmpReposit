@@ -5,6 +5,8 @@ using Game;
 
 public class PlayerScript : MonoBehaviour {
 
+    public string nameCharacter;
+
     public enum stateCharacter
     {
         Normal,
@@ -16,8 +18,19 @@ public class PlayerScript : MonoBehaviour {
    
     public Spell[] spells = new Spell[3];
 
+    //Variable about Life
+    public float maxLife = 500f;
+    private float _currentLife;
+    public float currentLife
+    {
+        get { return _currentLife; }
+    }
+    //**************************//
+
+
     public stateCharacter currentState;
     public Camera cameraPlayer;
+    public Transform pivot;
     public float ShootPower = 500;
     public float StartingGold = 250;
     [SerializeField]private Transform mainHand;
@@ -31,6 +44,11 @@ public class PlayerScript : MonoBehaviour {
     
 	void Start ()
     {
+        nameCharacter = PhotonNetwork.player.name;
+        name = nameCharacter;
+
+        _currentLife = maxLife;
+
         Cursor.lockState = CursorLockMode.Locked;
         HUDManager.Instance.DisplayCharacterInfos(true);
 
@@ -42,9 +60,9 @@ public class PlayerScript : MonoBehaviour {
         InvokeRepeating("MoneyInPocket", 1.0f, 1.0f);
         
         view = GetComponentInParent<PhotonView>();
-        spells[0].id = 0; spells[0].canCast = true;
-        spells[1].id = 1; spells[1].canCast = true;
-        spells[2].id = 2; spells[2].canCast = true;
+        spells[0].id = 0; if (spells[0].targeting != Spell.Type_Spell.Target) spells[0].canCast = true; else spells[0].canCast = false;
+        spells[1].id = 1; if (spells[1].targeting != Spell.Type_Spell.Target) spells[1].canCast = true; else spells[1].canCast = false;
+        spells[2].id = 2; if (spells[2].targeting != Spell.Type_Spell.Target) spells[2].canCast = true; else spells[2].canCast = false;
         HUDManager.Instance.InitSpell(spells[0].spriteSpell, spells[1].spriteSpell, spells[2].spriteSpell,null);
         HUDManager.Instance.DisplaySpell(true);
 
@@ -82,7 +100,7 @@ public class PlayerScript : MonoBehaviour {
         for (int i = 0; i < 3; i++)
         {
             //Debug.Log("Spells["+i+"] = "+spells[i].canCast);
-            if (!spells[i].canCast)
+            if (spells[i].reload)
                 spells[i].ManageFilledSpell();
         }
 
@@ -95,8 +113,8 @@ public class PlayerScript : MonoBehaviour {
                 {
                     InitFunctionProjection(spells[0]);
                 }
-
-                spells[0].projectionSpell(cameraPlayer.transform.position,cameraPlayer.transform.forward);
+                
+                spells[0].projectionSpell(this,pivot.position,cameraPlayer.transform.forward);
 
                 if (InputManager.Instance.IsUsingSpell)
                         spells[0].OnCast(this);

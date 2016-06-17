@@ -15,7 +15,9 @@ namespace Game
         AmountGold,
         CharacterInfos,
         StateCharacter,
-        Spell
+        Spell,
+        Targeting,
+        InfosTarget
     }
 
     public enum Lerp_Type

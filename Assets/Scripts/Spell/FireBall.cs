@@ -11,5 +11,6 @@ public class FireBall : Spell
         Debug.LogError("FIRE");
         //throw new NotImplementedException();
         canCast = false;
+        reload = true;
     }
 }

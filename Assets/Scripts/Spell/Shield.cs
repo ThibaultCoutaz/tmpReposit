@@ -8,5 +8,6 @@ public class Shield : Spell
         Debug.LogError("Shield");
         //throw new NotImplementedException();
         canCast = false;
+        reload = true;
     }
 }

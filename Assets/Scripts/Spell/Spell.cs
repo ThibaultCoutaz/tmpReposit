@@ -6,7 +6,7 @@ public abstract class Spell : MonoBehaviour {
 
     public int id = -1;
 
-    public delegate void ProjectionSpell(Vector3 posPlayer, Vector3 direction);
+    public delegate void ProjectionSpell(PlayerScript ps,Vector3 posPlayer, Vector3 direction);
     public ProjectionSpell projectionSpell;
 
     public enum APU_Spell
@@ -35,6 +35,8 @@ public abstract class Spell : MonoBehaviour {
 
     [HideInInspector]
     public bool canCast = true;
+    [HideInInspector]
+    public bool reload = false;
 
     public abstract void OnCast(PlayerScript ps);
 
@@ -56,30 +58,59 @@ public abstract class Spell : MonoBehaviour {
         {
             currentCouldown = 0;
             canCast = true;
+            reload = false;
             displayFilled = false;
             HUDManager.Instance.ActivateFilledSpell(displayFilled, id);
         }
     }
 
-    public void ProjectionTarget(Vector3 pos, Vector3 direction)
+    private bool displayInfos = false;
+
+    public void ProjectionTarget(PlayerScript ps,Vector3 pos, Vector3 direction)
     {
+        //HUDManager.Instance.DisplayTargeting(true);
+
         Debug.Log("Projection TArget");
         RaycastHit hit;
 
         //A REVOIR
-        if (Physics.Raycast(pos, direction, out hit))
-            if (hit.collider.gameObject.GetComponent<PlayerScript>())
+        if (Physics.Raycast(pos, direction, out hit, range))
+        {
+            if (hit.collider.gameObject.GetComponent<PlayerScript>() && hit.collider.gameObject.GetComponent<PlayerScript>() != ps)
             {
+                PlayerScript psTarget = hit.collider.gameObject.GetComponent<PlayerScript>();
                 Debug.LogError("Found a Character - distance: " + hit.distance);
+                if (!displayInfos)
+                {
+                    HUDManager.Instance.DisplayInfosTarget(true);
+                    displayInfos = true;
+                    canCast = true;
+                }
+                HUDManager.Instance.EditInfosTarget(psTarget.nameCharacter, psTarget.currentLife.ToString(), hit.distance.ToString());
             }
             else
             {
-                Debug.LogError("Personne ICI");
+                if (displayInfos)
+                {
+                    displayInfos = false;
+                    HUDManager.Instance.DisplayInfosTarget(false);
+                    canCast = false;
+                }
+                //Debug.LogError("Personne ICI");
             }
-            
+        }
+        else
+        {
+            if (displayInfos)
+            {
+                displayInfos = false;
+                HUDManager.Instance.DisplayInfosTarget(false);
+                canCast = false;
+            }
+        }
     }
 
-    public void ProjectionAOE(Vector3 posPlayer, Vector3 Direction)
+    public void ProjectionAOE(PlayerScript ps,Vector3 posPlayer, Vector3 Direction)
     {
         Debug.Log("Projection AOE");
     }

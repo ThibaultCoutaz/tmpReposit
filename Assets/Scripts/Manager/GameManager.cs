@@ -3,9 +3,25 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class GameManager : Singleton<GameManager>
+public class GameManager : MonoBehaviour//Singleton<GameManager>
 {
-    protected GameManager() { }
+    //protected GameManager() { }
+
+    public static GameManager Instance = null;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != null)
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(gameObject);
+    }
 
     public float timeSinceGameStart = 0.0f; //TimerManagement a faire !
     public float moneyEarnPerSecond = 10f;

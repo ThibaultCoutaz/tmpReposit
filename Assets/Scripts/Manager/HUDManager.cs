@@ -58,7 +58,9 @@ public class HUDManager : Singleton<HUDManager>
     {
         if (key == Game.UI_Types.TimerInGame ||
             key == Game.UI_Types.CharacterInfos ||
-            key == Game.UI_Types.Spell)
+            key == Game.UI_Types.Spell ||
+            key == Game.UI_Types.Targeting ||
+            key == Game.UI_Types.InfosTarget)
             element.displayGroup(false, .0f, false, false);
     }
 
@@ -219,6 +221,35 @@ public class HUDManager : Singleton<HUDManager>
                 ((HUDSpell)spell).EditFilled2(amount);
             else if(whichOne == 2)
                 ((HUDSpell)spell).EditFilled3(amount);
+        }
+    }
+
+    public void DisplayTargeting(bool display)
+    {
+        HUDElement targeting;
+        if (elements.TryGetValue(Game.UI_Types.Targeting, out targeting))
+        {
+            targeting.displayGroup(display);
+        }
+    }
+
+    public void DisplayInfosTarget(bool display)
+    {
+        HUDElement infosTarget;
+        if (elements.TryGetValue(Game.UI_Types.InfosTarget, out infosTarget))
+        {
+            infosTarget.displayGroup(display);
+        }
+    }
+
+    public void EditInfosTarget(string textName = "", string textLife = "", string textDistance = "")
+    {
+        HUDElement infosTarget;
+        if (elements.TryGetValue(Game.UI_Types.InfosTarget, out infosTarget))
+        {
+            ((HUDInfosTarget)infosTarget).EditName(textName);
+            ((HUDInfosTarget)infosTarget).EditLife(textLife);
+            ((HUDInfosTarget)infosTarget).EditDistance(textDistance);
         }
     }
 

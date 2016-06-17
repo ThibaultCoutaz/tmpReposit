@@ -8,5 +8,6 @@ public class Explosion : Spell
         Debug.LogError("ALLAH WAKBA");
         //throw new NotImplementedException();
         canCast = false;
+        reload = true;
     }
 }

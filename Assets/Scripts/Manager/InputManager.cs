@@ -1,9 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InputManager : Singleton<InputManager>
+public class InputManager : MonoBehaviour
 {
-    protected InputManager() { }
+    //protected InputManager() { }
+
+    public static InputManager Instance = null;
+
+    void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else if(Instance != null)
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(gameObject);
+    }
 
     public bool IsRunning { get; private set; }
     public bool IsWalking { get; private set; }

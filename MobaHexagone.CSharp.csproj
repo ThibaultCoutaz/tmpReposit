@@ -58,12 +58,6 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
@@ -214,6 +208,7 @@
     <Compile Include="Assets\Scripts\Data\GameData.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDConnectInfos.cs" />
+    <Compile Include="Assets\Scripts\HUD\HUDElement\HUDInfosTarget.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDSpell.cs" />
     <Compile Include="Assets\Scripts\InfosCharacter.cs" />
     <Compile Include="Assets\Scripts\InfosRoom.cs" />
