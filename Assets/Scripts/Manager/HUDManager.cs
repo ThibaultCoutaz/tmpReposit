@@ -229,7 +229,7 @@ public class HUDManager : Singleton<HUDManager>
         HUDElement targeting;
         if (elements.TryGetValue(Game.UI_Types.Targeting, out targeting))
         {
-            targeting.displayGroup(display);
+            targeting.displayGroup(display, 1);
         }
     }
 
@@ -238,7 +238,7 @@ public class HUDManager : Singleton<HUDManager>
         HUDElement infosTarget;
         if (elements.TryGetValue(Game.UI_Types.InfosTarget, out infosTarget))
         {
-            infosTarget.displayGroup(display);
+            infosTarget.displayGroup(display,1);
         }
     }
 

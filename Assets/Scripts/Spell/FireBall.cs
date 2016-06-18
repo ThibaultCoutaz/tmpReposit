@@ -10,7 +10,11 @@ public class FireBall : Spell
         //tmp.GetComponent<Rigidbody>().AddForce(ps.transform.forward * 1000);
         Debug.LogError("FIRE");
         //throw new NotImplementedException();
-        canCast = false;
         reload = true;
+        //if (displayInfosTarget)
+        //{
+        //    displayInfosTarget = false;
+        //    HUDManager.Instance.DisplayInfosTarget(false);
+        //}
     }
 }

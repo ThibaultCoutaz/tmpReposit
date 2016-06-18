@@ -5,6 +5,7 @@ using Game;
 
 public class PlayerScript : MonoBehaviour {
 
+    [HideInInspector]
     public string nameCharacter;
 
     public enum stateCharacter
@@ -15,8 +16,6 @@ public class PlayerScript : MonoBehaviour {
         Dead,
         Dash
     }
-   
-    public Spell[] spells = new Spell[3];
 
     //Variable about Life
     public float maxLife = 500f;
@@ -30,7 +29,6 @@ public class PlayerScript : MonoBehaviour {
 
     public stateCharacter currentState;
     public Camera cameraPlayer;
-    public Transform pivot;
     public float ShootPower = 500;
     public float StartingGold = 250;
     [SerializeField]private Transform mainHand;
@@ -60,11 +58,6 @@ public class PlayerScript : MonoBehaviour {
         InvokeRepeating("MoneyInPocket", 1.0f, 1.0f);
         
         view = GetComponentInParent<PhotonView>();
-        spells[0].id = 0; if (spells[0].targeting != Spell.Type_Spell.Target) spells[0].canCast = true; else spells[0].canCast = false;
-        spells[1].id = 1; if (spells[1].targeting != Spell.Type_Spell.Target) spells[1].canCast = true; else spells[1].canCast = false;
-        spells[2].id = 2; if (spells[2].targeting != Spell.Type_Spell.Target) spells[2].canCast = true; else spells[2].canCast = false;
-        HUDManager.Instance.InitSpell(spells[0].spriteSpell, spells[1].spriteSpell, spells[2].spriteSpell,null);
-        HUDManager.Instance.DisplaySpell(true);
 
     }
 
@@ -85,95 +78,12 @@ public class PlayerScript : MonoBehaviour {
                 }
             }
         }
-        
-        ManageSpell();
 
         if (InputManager.Instance.IsCancelling && view.isMine)
         {
             GameManager.Instance.GamePause();
         }
 
-    }
-
-    private void ManageSpell()
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            //Debug.Log("Spells["+i+"] = "+spells[i].canCast);
-            if (spells[i].reload)
-                spells[i].ManageFilledSpell();
-        }
-
-        //Imput manage
-        if (InputManager.Instance.IsSpellA && spells[0].canCast)
-        {
-            if (spells[0].targeting != Spell.Type_Spell.HimSelf)
-            {
-                if(spells[0].projectionSpell == null)
-                {
-                    InitFunctionProjection(spells[0]);
-                }
-                
-                spells[0].projectionSpell(this,pivot.position,cameraPlayer.transform.forward);
-
-                if (InputManager.Instance.IsUsingSpell)
-                        spells[0].OnCast(this);
-            }
-            else
-            {
-                spells[0].OnCast(this);
-            }
-        }
-        if (InputManager.Instance.IsSpellE && spells[1].canCast)
-        {
-            if (spells[1].targeting != Spell.Type_Spell.HimSelf)
-            {
-                if (spells[1].projectionSpell == null)
-                {
-                    InitFunctionProjection(spells[1]);
-                }
-
-                //spells[1].projectionSpell(cameraPlayer.transform.forward);
-
-                if (InputManager.Instance.IsUsingSpell)
-                        spells[1].OnCast(this);
-            }
-            else
-            {
-                spells[1].OnCast(this);
-            }
-        }
-        if (InputManager.Instance.IsSpellR && spells[2].canCast)
-        {
-            if (spells[2].targeting != Spell.Type_Spell.HimSelf)
-            {
-                if (spells[2].projectionSpell == null)
-                {
-                    InitFunctionProjection(spells[2]);
-                }
-
-                //spells[2].projectionSpell(Vector3.back);
-
-                if (InputManager.Instance.IsUsingSpell)
-                        spells[2].OnCast(this);
-            }
-            else
-            {
-                spells[2].OnCast(this);
-            }
-        }
-    }
-
-    private void InitFunctionProjection(Spell spell)
-    {
-        if(spell.targeting == Spell.Type_Spell.Target)
-        {
-            spell.projectionSpell = spell.ProjectionTarget;
-        }
-        else if(spell.targeting == Spell.Type_Spell.AOE)
-        {
-            spell.projectionSpell = spell.ProjectionAOE;
-        }
     }
 
     private void MoneyInPocket()

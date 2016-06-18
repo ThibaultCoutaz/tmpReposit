@@ -34,9 +34,13 @@ public abstract class Spell : MonoBehaviour {
     public float range = 10;
 
     [HideInInspector]
-    public bool canCast = true;
+    public bool CanGetReadyCast = true;
+    [HideInInspector]
+    public bool canCast = false;
     [HideInInspector]
     public bool reload = false;
+    [HideInInspector]
+    public List<PlayerScript> playersTarget;
 
     public abstract void OnCast(PlayerScript ps);
 
@@ -58,18 +62,19 @@ public abstract class Spell : MonoBehaviour {
         {
             currentCouldown = 0;
             canCast = true;
+            if (targeting == Type_Spell.Target)
+                canCast = false;
             reload = false;
             displayFilled = false;
             HUDManager.Instance.ActivateFilledSpell(displayFilled, id);
         }
     }
 
-    private bool displayInfos = false;
+    [HideInInspector]
+    public bool displayInfosTarget = false;
 
     public void ProjectionTarget(PlayerScript ps,Vector3 pos, Vector3 direction)
     {
-        //HUDManager.Instance.DisplayTargeting(true);
-
         Debug.Log("Projection TArget");
         RaycastHit hit;
 
@@ -80,19 +85,19 @@ public abstract class Spell : MonoBehaviour {
             {
                 PlayerScript psTarget = hit.collider.gameObject.GetComponent<PlayerScript>();
                 Debug.LogError("Found a Character - distance: " + hit.distance);
-                if (!displayInfos)
+                if (!displayInfosTarget)
                 {
                     HUDManager.Instance.DisplayInfosTarget(true);
-                    displayInfos = true;
+                    displayInfosTarget = true;
                     canCast = true;
                 }
                 HUDManager.Instance.EditInfosTarget(psTarget.nameCharacter, psTarget.currentLife.ToString(), hit.distance.ToString());
             }
             else
             {
-                if (displayInfos)
+                if (displayInfosTarget)
                 {
-                    displayInfos = false;
+                    displayInfosTarget = false;
                     HUDManager.Instance.DisplayInfosTarget(false);
                     canCast = false;
                 }
@@ -101,9 +106,9 @@ public abstract class Spell : MonoBehaviour {
         }
         else
         {
-            if (displayInfos)
+            if (displayInfosTarget)
             {
-                displayInfos = false;
+                displayInfosTarget = false;
                 HUDManager.Instance.DisplayInfosTarget(false);
                 canCast = false;
             }
@@ -113,5 +118,22 @@ public abstract class Spell : MonoBehaviour {
     public void ProjectionAOE(PlayerScript ps,Vector3 posPlayer, Vector3 Direction)
     {
         Debug.Log("Projection AOE");
+    }
+
+    public void DetectPlayerRange(Vector3 center)
+    {
+        playersTarget = new List<PlayerScript>();
+        Collider[] hitColliders = Physics.OverlapSphere(center, range);
+        int i = 0;
+        while (i < hitColliders.Length)
+        {
+            if (hitColliders[i].GetComponent<PlayerScript>())
+            {
+                playersTarget.Add(hitColliders[i].GetComponent<PlayerScript>());
+            }
+            i++;
+        }
+
+        Debug.LogError("Il y a " + playersTarget.Count + " Players in the area");
     }
 }
