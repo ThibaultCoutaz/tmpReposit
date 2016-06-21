@@ -84,7 +84,6 @@ public abstract class Spell : MonoBehaviour {
             if (hit.collider.gameObject.GetComponent<PlayerScript>() && hit.collider.gameObject.GetComponent<PlayerScript>() != ps)
             {
                 PlayerScript psTarget = hit.collider.gameObject.GetComponent<PlayerScript>();
-                Debug.LogError("Found a Character - distance: " + hit.distance);
                 if (!displayInfosTarget)
                 {
                     HUDManager.Instance.DisplayInfosTarget(true);

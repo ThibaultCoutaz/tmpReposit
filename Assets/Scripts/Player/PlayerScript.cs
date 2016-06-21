@@ -7,6 +7,8 @@ public class PlayerScript : MonoBehaviour {
 
     [HideInInspector]
     public string nameCharacter;
+    [HideInInspector]
+    public TeamScript.Team teamCharacter;
 
     public enum stateCharacter
     {
@@ -26,6 +28,9 @@ public class PlayerScript : MonoBehaviour {
     }
     //**************************//
 
+    private Shader highLight;
+    private Shader normal;
+    public GameObject MeshCharacter;
 
     public stateCharacter currentState;
     public Camera cameraPlayer;
@@ -38,12 +43,15 @@ public class PlayerScript : MonoBehaviour {
 
     private PhotonView view;
     private float currentAmoutOfGold = 0;
-
     
 	void Start ()
     {
-        nameCharacter = PhotonNetwork.player.name;
+        view = GetComponentInParent<PhotonView>();
+
+        nameCharacter = view.owner.name;
         name = nameCharacter;
+
+        teamCharacter = PhotonNetwork.player.GetPlayerTeam(); // Initialiser la team puis faire le highLight
 
         _currentLife = maxLife;
 
@@ -57,11 +65,75 @@ public class PlayerScript : MonoBehaviour {
         HUDManager.Instance.EditGold(currentAmoutOfGold);
         InvokeRepeating("MoneyInPocket", 1.0f, 1.0f);
         
-        view = GetComponentInParent<PhotonView>();
 
+        //***********Shado Managing Team***************//
+        highLight = Shader.Find("Outlined/Silhouetted Diffuse");
+        normal = MeshCharacter.GetComponent<Renderer>().material.shader;
+
+        HighLightTeam();
+        Debug.LogError("Passage dans le Start");
     }
 
-	void Update () {
+    public void ChangeHigleLight(Shader s, TeamScript.Team team = TeamScript.Team.none)
+    {
+        MeshCharacter.GetComponent<Renderer>().material.shader = s;
+        if(s == highLight && team != TeamScript.Team.none)
+        {
+            MeshCharacter.GetComponent<Renderer>().material.SetFloat("_Outline", 0.003f);
+            switch (team)
+            {
+                case TeamScript.Team.blue:
+                    MeshCharacter.GetComponent<Renderer>().material.SetColor("_OutlineColor", Color.blue);
+                    break;
+                case TeamScript.Team.red:
+                    MeshCharacter.GetComponent<Renderer>().material.SetColor("_OutlineColor", Color.red);
+                    break;
+            }
+        }
+       
+    }
+
+    private void HighLightTeam()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach(GameObject go in players)
+        {
+            if (go.GetComponent<PhotonView>().owner.GetPlayerTeam() == teamCharacter && !go.GetComponent<PlayerScript>().view.isMine)
+            {
+                Debug.LogError("player = " + go.GetComponent<PlayerScript>().nameCharacter + "--- Team = " + go.GetComponent<PlayerScript>().teamCharacter);
+                go.GetComponent<PlayerScript>().ChangeHigleLight(highLight, go.GetComponent<PlayerScript>().teamCharacter);
+            }
+        }
+    }
+
+    private void DisplayTeam()
+    {
+        int nbRed = 0;
+        int nbBlue = 0;
+        //We start with Red
+        List<PhotonPlayer> listPlayer;
+        if (TeamScript.PlayersPerTeam.TryGetValue(TeamScript.Team.red, out listPlayer))
+        {
+            foreach (PhotonPlayer p in listPlayer)
+            {
+                nbRed++;
+            }
+        }
+
+
+        //Then Blue Team
+        if (TeamScript.PlayersPerTeam.TryGetValue(TeamScript.Team.blue, out listPlayer))
+        {
+            foreach (PhotonPlayer p in listPlayer)
+            {
+                nbBlue++;
+            }
+        }
+
+        Debug.LogError("Team Red = " + nbRed + "/" + "Team Blue = " + nbBlue);
+    }
+
+    void Update () {
         if (hasBall && view.isMine && GameManager.Instance.ballOfGame.GetComponent<PhotonView>().ownerId == GetComponent<PhotonView>().viewID)
         {
             view.RPC("CarryBall", PhotonTargets.AllBuffered);
@@ -101,6 +173,7 @@ public class PlayerScript : MonoBehaviour {
         GameManager.Instance.ballOfGame.GetComponent<BallBehaviour>().lineEffect.enabled = true;
         Invoke("ResetOwnerBall", 0.5f);
     }
+
 
     private void ResetOwnerBall()
     {
