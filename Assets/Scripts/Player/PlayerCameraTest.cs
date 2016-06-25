@@ -11,13 +11,15 @@ public class PlayerCameraTest : MonoBehaviour {
     float verticale = 0f;
     public float minimumY = -30F;
     public float maximumY = 30F;
-
-    private Vector3 offset;
-
-    private InputManager inputs;
-    private float zoom = 0;
-    public Vector2 zoomMaxMin; 
+    public float SmoothTime = 0.2f;
+    public Vector2 zoomMaxMin;
     public float zoomSpeed = 1f;
+
+    private float zoom = 0;
+    private Vector3 offset;
+    private InputManager inputs;
+    private Vector3 velocity = Vector3.zero;
+
 
     void Awake()
     {
@@ -27,7 +29,7 @@ public class PlayerCameraTest : MonoBehaviour {
 
     void Update()
     {
-        if (!GameManager.Instance.pause) {
+        if (!GameManager.pause) {
             float horizontal = InputManager.Instance.GetHorizontalMouse() * sensibilityY; 
             verticale += InputManager.Instance.GetVerticalMouse() * sensibilityX;
             verticale = Mathf.Clamp(verticale, minimumY, maximumY);
@@ -42,7 +44,9 @@ public class PlayerCameraTest : MonoBehaviour {
             zoom -= Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
             zoom = Mathf.Clamp(zoom, zoomMaxMin.x, zoomMaxMin.y);
 
-            transform.position = pivotView.transform.position - (rotation * (offset + offset * zoom));
+            Vector3 tmpPosition = pivotView.transform.position - (rotation * (offset + offset * zoom));
+
+            transform.position = Vector3.SmoothDamp(transform.position, tmpPosition,ref velocity, SmoothTime);
 
             transform.LookAt(pivotView);
         }

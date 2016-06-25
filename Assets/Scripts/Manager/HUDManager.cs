@@ -60,7 +60,9 @@ public class HUDManager : Singleton<HUDManager>
             key == Game.UI_Types.CharacterInfos ||
             key == Game.UI_Types.Spell ||
             key == Game.UI_Types.Targeting ||
-            key == Game.UI_Types.InfosTarget)
+            key == Game.UI_Types.InfosTarget ||
+            key == Game.UI_Types.GetBall ||
+            key == Game.UI_Types.Debuging)
             element.displayGroup(false, .0f, false, false);
     }
 
@@ -124,7 +126,7 @@ public class HUDManager : Singleton<HUDManager>
         }
     }
 
-    public void EditTimerInGame(float time)
+    public void EditTimerInGame(double time)
     {
         HUDElement timer;
         if (elements.TryGetValue(Game.UI_Types.TimerInGame, out timer))
@@ -250,6 +252,42 @@ public class HUDManager : Singleton<HUDManager>
             ((HUDInfosTarget)infosTarget).EditName(textName);
             ((HUDInfosTarget)infosTarget).EditLife(textLife);
             ((HUDInfosTarget)infosTarget).EditDistance(textDistance);
+        }
+    }
+
+    public void EditGetBall(Sprite s)
+    {
+        HUDElement getBall;
+        if (elements.TryGetValue(Game.UI_Types.GetBall, out getBall))
+        {
+            getBall.SetImage(s);
+        }
+    }
+
+    public void DisplayGetBall(bool display)
+    {
+        HUDElement getBall;
+        if (elements.TryGetValue(Game.UI_Types.GetBall, out getBall))
+        {
+            getBall.displayGroup(display, 1);
+        }
+    }
+
+    public void InitDebug(PlayerScript _ps)
+    {
+        HUDElement debug;
+        if (elements.TryGetValue(Game.UI_Types.Debuging, out debug))
+        {
+            ((HUDDebug)debug).EditDebug(_ps);
+        }
+    }
+
+    public void DisplayDebuging(bool display)
+    {
+        HUDElement debug;
+        if (elements.TryGetValue(Game.UI_Types.Debuging, out debug))
+        {
+            debug.displayGroup(display, 1);
         }
     }
 

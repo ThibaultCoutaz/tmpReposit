@@ -42,6 +42,8 @@ public abstract class Spell : MonoBehaviour {
     [HideInInspector]
     public List<PlayerScript> playersTarget;
 
+    protected Vector3 CenterAOE;
+
     public abstract void OnCast(PlayerScript ps);
 
     private float currentCouldown = 0;
@@ -73,6 +75,8 @@ public abstract class Spell : MonoBehaviour {
     [HideInInspector]
     public bool displayInfosTarget = false;
 
+    private PlayerScript psTarget;
+
     public void ProjectionTarget(PlayerScript ps,Vector3 pos, Vector3 direction)
     {
         Debug.Log("Projection TArget");
@@ -83,11 +87,12 @@ public abstract class Spell : MonoBehaviour {
         {
             if (hit.collider.gameObject.GetComponent<PlayerScript>() && hit.collider.gameObject.GetComponent<PlayerScript>() != ps)
             {
-                PlayerScript psTarget = hit.collider.gameObject.GetComponent<PlayerScript>();
+                psTarget = hit.collider.gameObject.GetComponent<PlayerScript>();
                 if (!displayInfosTarget)
                 {
                     HUDManager.Instance.DisplayInfosTarget(true);
                     displayInfosTarget = true;
+                    //psTarget.GetComponent<ShaderManager>().GetTarget(true);
                     canCast = true;
                 }
                 HUDManager.Instance.EditInfosTarget(psTarget.nameCharacter, psTarget.currentLife.ToString(), hit.distance.ToString());
@@ -98,6 +103,7 @@ public abstract class Spell : MonoBehaviour {
                 {
                     displayInfosTarget = false;
                     HUDManager.Instance.DisplayInfosTarget(false);
+                    //psTarget.GetComponent<ShaderManager>().GetTarget(false);
                     canCast = false;
                 }
                 //Debug.LogError("Personne ICI");
@@ -109,14 +115,29 @@ public abstract class Spell : MonoBehaviour {
             {
                 displayInfosTarget = false;
                 HUDManager.Instance.DisplayInfosTarget(false);
+                //psTarget.GetComponent<ShaderManager>().GetTarget(false);
                 canCast = false;
             }
         }
     }
 
-    public void ProjectionAOE(PlayerScript ps,Vector3 posPlayer, Vector3 Direction)
+    public void ProjectionAOE(PlayerScript ps,Vector3 pos, Vector3 direction)
     {
         Debug.Log("Projection AOE");
+        RaycastHit hit;
+
+        //A REVOIR
+        if (Physics.Raycast(pos, direction, out hit))
+        {
+            //Remove the Y axis to have the point on the floor
+            CenterAOE = hit.point - new Vector3(0,hit.point.y,0);
+            Debug.LogError("CentreAOE = " + CenterAOE);
+        }
+        else if (Physics.Raycast(pos, direction, out hit))
+        {
+            Vector3 tmpPos = hit.point - new Vector3(0, hit.point.y, 0);
+            Debug.LogError("CentreAOE = " + CenterAOE);
+        }
     }
 
     public void DetectPlayerRange(Vector3 center)
@@ -135,4 +156,5 @@ public abstract class Spell : MonoBehaviour {
 
         Debug.LogError("Il y a " + playersTarget.Count + " Players in the area");
     }
+
 }

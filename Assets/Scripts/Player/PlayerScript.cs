@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Collections;
 using Game;
 
-public class PlayerScript : MonoBehaviour {
+public class PlayerScript : MonoBehaviour
+{
 
+    public bool Debuging = true;
     [HideInInspector]
     public string nameCharacter;
-    [HideInInspector]
-    public TeamScript.Team teamCharacter;
 
     public enum stateCharacter
     {
@@ -28,10 +28,6 @@ public class PlayerScript : MonoBehaviour {
     }
     //**************************//
 
-    private Shader highLight;
-    private Shader normal;
-    public GameObject MeshCharacter;
-
     public stateCharacter currentState;
     public Camera cameraPlayer;
     public float ShootPower = 500;
@@ -43,16 +39,25 @@ public class PlayerScript : MonoBehaviour {
 
     private PhotonView view;
     private float currentAmoutOfGold = 0;
+
+    private Transform posSpawn;
     
 	void Start ()
     {
+
+        if (Debuging)
+        {
+            HUDManager.Instance.InitDebug(this);
+            HUDManager.Instance.DisplayDebuging(true);
+        }
+
+
         view = GetComponentInParent<PhotonView>();
 
         nameCharacter = view.owner.name;
         name = nameCharacter;
 
-        teamCharacter = PhotonNetwork.player.GetPlayerTeam(); // Initialiser la team puis faire le highLight
-
+      
         _currentLife = maxLife;
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -64,47 +69,20 @@ public class PlayerScript : MonoBehaviour {
         currentAmoutOfGold = StartingGold;
         HUDManager.Instance.EditGold(currentAmoutOfGold);
         InvokeRepeating("MoneyInPocket", 1.0f, 1.0f);
-        
 
-        //***********Shado Managing Team***************//
-        highLight = Shader.Find("Outlined/Silhouetted Diffuse");
-        normal = MeshCharacter.GetComponent<Renderer>().material.shader;
+        HUDManager.Instance.EditGetBall(GameManager.ballOfGame.GetComponent<BallBehaviour>().ImgBall);
 
-        HighLightTeam();
-        Debug.LogError("Passage dans le Start");
-    }
-
-    public void ChangeHigleLight(Shader s, TeamScript.Team team = TeamScript.Team.none)
-    {
-        MeshCharacter.GetComponent<Renderer>().material.shader = s;
-        if(s == highLight && team != TeamScript.Team.none)
+        if(PhotonNetwork.player.GetPlayerTeam() == TeamScript.Team.red)
         {
-            MeshCharacter.GetComponent<Renderer>().material.SetFloat("_Outline", 0.003f);
-            switch (team)
-            {
-                case TeamScript.Team.blue:
-                    MeshCharacter.GetComponent<Renderer>().material.SetColor("_OutlineColor", Color.blue);
-                    break;
-                case TeamScript.Team.red:
-                    MeshCharacter.GetComponent<Renderer>().material.SetColor("_OutlineColor", Color.red);
-                    break;
-            }
+            posSpawn = GameManager._redSpawn;
         }
-       
-    }
-
-    private void HighLightTeam()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        foreach(GameObject go in players)
+        else
         {
-            if (go.GetComponent<PhotonView>().owner.GetPlayerTeam() == teamCharacter && !go.GetComponent<PlayerScript>().view.isMine)
-            {
-                Debug.LogError("player = " + go.GetComponent<PlayerScript>().nameCharacter + "--- Team = " + go.GetComponent<PlayerScript>().teamCharacter);
-                go.GetComponent<PlayerScript>().ChangeHigleLight(highLight, go.GetComponent<PlayerScript>().teamCharacter);
-            }
+            posSpawn = GameManager._blueSpawn;
         }
     }
+
+    
 
     private void DisplayTeam()
     {
@@ -133,34 +111,59 @@ public class PlayerScript : MonoBehaviour {
         Debug.LogError("Team Red = " + nbRed + "/" + "Team Blue = " + nbBlue);
     }
 
-    void Update () {
-        if (hasBall && view.isMine && GameManager.Instance.ballOfGame.GetComponent<PhotonView>().ownerId == GetComponent<PhotonView>().viewID)
-        {
-            view.RPC("CarryBall", PhotonTargets.AllBuffered);
+    private bool displayBall = false;
 
-            if (InputManager.Instance.IsPassing)
+    void Update () {
+        if (currentState != stateCharacter.Dead)
+        {
+
+            if (_currentLife <= 0)
             {
-                if (PhotonNetwork.offlineMode) //ne va surment jamais étre utiliser car jeu est toujours Online .
+                EditState(stateCharacter.Dead);
+            }
+
+            if (hasBall && view.isMine && GameManager.ballOfGame.GetComponent<PhotonView>().ownerId == GetComponent<PhotonView>().viewID)
+            {
+                if (!displayBall)
                 {
-                    Debug.LogError("Be carefull you are offLine");
+                    HUDManager.Instance.DisplayGetBall(true);
+                    displayBall = true;
                 }
-                else
+
+                view.RPC("CarryBall", PhotonTargets.AllBuffered);
+
+                if (InputManager.Instance.IsPassing)
                 {
-                    view.RPC("ShootBall", PhotonTargets.AllBuffered, cameraPlayer.transform.forward);
+                    if (PhotonNetwork.offlineMode) //ne va surment jamais étre utiliser car jeu est toujours Online .
+                    {
+                        Debug.LogError("Be carefull you are offLine");
+                    }
+                    else
+                    {
+                        HUDManager.Instance.DisplayGetBall(false);
+                        displayBall = false;
+                        view.RPC("ShootBall", PhotonTargets.AllBuffered, cameraPlayer.transform.forward);
+                    }
                 }
             }
-        }
 
-        if (InputManager.Instance.IsCancelling && view.isMine)
+            if (InputManager.Instance.IsCancelling && view.isMine)
+            {
+                GameManager.GamePause();
+            }
+        }
+        else
         {
-            GameManager.Instance.GamePause();
+            transform.position = posSpawn.position;//He is Dead ! AU REVOIR 
+            EditState(stateCharacter.Normal);
+            _currentLife = maxLife;
         }
 
     }
 
     private void MoneyInPocket()
     {
-        currentAmoutOfGold += GameManager.Instance.moneyEarnPerSecond;
+        //currentAmoutOfGold += GameManager.Instance.moneyEarnPerSecond;
         HUDManager.Instance.EditGold(currentAmoutOfGold);
     }
 
@@ -168,27 +171,27 @@ public class PlayerScript : MonoBehaviour {
     private void ShootBall(Vector3 camF) // for the futur is better to sync the camera rotation i think in Y that send the vector ( for exemple for the head movement )
     {
         hasBall = false;
-        GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().isKinematic = false;
-        GameManager.Instance.ballOfGame.GetComponent<Rigidbody>().AddForce(camF * ShootPower);
-        GameManager.Instance.ballOfGame.GetComponent<BallBehaviour>().lineEffect.enabled = true;
+        GameManager.ballOfGame.GetComponent<Rigidbody>().isKinematic = false;
+        GameManager.ballOfGame.GetComponent<Rigidbody>().AddForce(camF * ShootPower);
+        GameManager.ballOfGame.GetComponent<BallBehaviour>().lineEffect.enabled = true;
         Invoke("ResetOwnerBall", 0.5f);
     }
 
 
     private void ResetOwnerBall()
     {
-        if (GameManager.Instance.ballOfGame != null)
+        if (GameManager.ballOfGame != null)
         {
-            GameManager.Instance.ballOfGame.GetComponent<BallBehaviour>().IDPreviousOwner = -1;
-            Physics.IgnoreCollision(GameManager.Instance.ballOfGame.GetComponent<Collider>(), GetComponent<Collider>(),false);
+            GameManager.ballOfGame.GetComponent<BallBehaviour>().IDPreviousOwner = -1;
+            Physics.IgnoreCollision(GameManager.ballOfGame.GetComponent<Collider>(), GetComponent<Collider>(),false);
         }
     }
 
     [PunRPC]
     private void CarryBall()
     {
-        if (GameManager.Instance.ballOfGame != null)
-            GameManager.Instance.ballOfGame.transform.position = mainHand.position;
+        if (GameManager.ballOfGame != null)
+            GameManager.ballOfGame.transform.position = mainHand.position;
     }
 
     ////To see the direction of the shoot
@@ -197,6 +200,11 @@ public class PlayerScript : MonoBehaviour {
     //    Gizmos.color = Color.blue;
     //    Gizmos.DrawLine(cameraPlayer.transform.position, cameraPlayer.transform.forward * ShootPower);
     //}
+
+    public void EditLife(float amount)
+    {
+        _currentLife += amount;
+    }
 
     public void EditState(stateCharacter _state)
     {

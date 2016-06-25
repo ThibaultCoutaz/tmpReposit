@@ -3,6 +3,8 @@ using System.Collections;
 
 public class BallBehaviour : MonoBehaviour {
 
+    public Sprite ImgBall;
+
     private Rigidbody rigb;
 
     [HideInInspector]

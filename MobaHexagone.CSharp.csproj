@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.3.5f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -208,6 +210,7 @@
     <Compile Include="Assets\Scripts\Data\GameData.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDConnectInfos.cs" />
+    <Compile Include="Assets\Scripts\HUD\HUDElement\HUDDebug.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDInfosTarget.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDSpell.cs" />
     <Compile Include="Assets\Scripts\InfosCharacter.cs" />
@@ -231,6 +234,7 @@
     <Compile Include="Assets\Scripts\Player\PlayerCameraTest.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerControl.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerScript.cs" />
+    <Compile Include="Assets\Scripts\Player\ShaderManager.cs" />
     <Compile Include="Assets\Scripts\Player\ThirdPersonCharacter.cs" />
     <Compile Include="Assets\Scripts\Player\ThirdPersonUserControl.cs" />
     <Compile Include="Assets\Scripts\Spell\BehaviourProjectil\BehaviourFireBall.cs" />
@@ -258,7 +262,8 @@
     <None Include="Assets\Plugins\Photon3Unity3D.xml" />
     <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
     <None Include="Assets\Plugins\release_history.txt" />
-    <None Include="Assets\Resources\Shaders\OutLineShader.shader" />
+    <None Include="Assets\Resources\Shaders\OutLineDiffusShader.shader" />
+    <None Include="Assets\Resources\Shaders\OutlineOnlyShader.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

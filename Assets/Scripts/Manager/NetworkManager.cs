@@ -10,9 +10,6 @@ public class NetworkManager : Singleton<NetworkManager>
     [SerializeField]
     private GameObject characterPrefab;
 
-    public Transform redSpawn;
-    public Transform blueSpawn;
-
     public float spawn_ray = 1;
 
     public GameObject Ball;
@@ -22,15 +19,15 @@ public class NetworkManager : Singleton<NetworkManager>
     {
         if (PhotonNetwork.isMasterClient)
         {
-             GameManager.Instance.ballOfGame = PhotonNetwork.InstantiateSceneObject("Prefabs/Objects/" + Ball.name, new Vector3(0, 10, 0), Quaternion.identity, 0,null);
+             GameManager.ballOfGame = PhotonNetwork.InstantiateSceneObject("Prefabs/Objects/" + Ball.name, new Vector3(0, 10, 0), Quaternion.identity, 0,null);
         }
         if(PhotonNetwork.player.GetPlayerTeam() == TeamScript.Team.red)
         {
-            GameObject tmpCharacter = PhotonNetwork.Instantiate("Prefabs/Character/" + characterPrefab.name, redSpawn.position + new Vector3(Random.Range(0f, spawn_ray), 0, Random.Range(0f, spawn_ray)), Quaternion.identity, 0);
+            GameObject tmpCharacter = PhotonNetwork.Instantiate("Prefabs/Character/" + characterPrefab.name, GameManager._redSpawn.position + new Vector3(Random.Range(0f, spawn_ray), 0, Random.Range(0f, spawn_ray)), Quaternion.identity, 0);
         }
         else if(PhotonNetwork.player.GetPlayerTeam() == TeamScript.Team.blue)
         {
-            GameObject tmpCharacter = PhotonNetwork.Instantiate("Prefabs/Character/" + characterPrefab.name, blueSpawn.position + new Vector3(Random.Range(0f, spawn_ray), 0, Random.Range(0f, spawn_ray)), Quaternion.identity, 0);
+            GameObject tmpCharacter = PhotonNetwork.Instantiate("Prefabs/Character/" + characterPrefab.name, GameManager._blueSpawn.position + new Vector3(Random.Range(0f, spawn_ray), 0, Random.Range(0f, spawn_ray)), Quaternion.identity, 0);
         }
 
     }

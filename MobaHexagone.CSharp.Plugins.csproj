@@ -105,7 +105,8 @@
     <None Include="Assets\Plugins\Photon3Unity3D.xml" />
     <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
     <None Include="Assets\Plugins\release_history.txt" />
-    <None Include="Assets\Resources\Shaders\OutLineShader.shader" />
+    <None Include="Assets\Resources\Shaders\OutLineDiffusShader.shader" />
+    <None Include="Assets\Resources\Shaders\OutlineOnlyShader.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

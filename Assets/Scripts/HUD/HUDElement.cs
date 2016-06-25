@@ -7,6 +7,7 @@ public class HUDElement : MonoBehaviour
 {
 
     protected Text _text;
+    protected Image _image;
     protected CanvasGroup _group;
 
     public Game.UI_Types type;
@@ -15,6 +16,7 @@ public class HUDElement : MonoBehaviour
     protected virtual void Awake()
     {
         _text = gameObject.GetComponent<Text>();
+        _image = gameObject.GetComponent<Image>();
         _group = gameObject.GetComponent<CanvasGroup>();
         HUDManager.Instance.registerElement(type, this);
     }
@@ -29,10 +31,10 @@ public class HUDElement : MonoBehaviour
         _text.text = string.Format("{0}:{1}", hours.ToString("00"), minutes.ToString("00"));
     }
 
-    public void setChrono(float time)
+    public void setChrono(double time)
     {
-        float minutes = Mathf.Floor(time / 60);
-        float seconds = Mathf.Floor(time % 60);
+        float minutes = Mathf.Floor((float)time / 60);
+        float seconds = Mathf.Floor((float)time % 60);
 
         _text.text = string.Format("{00:00}:{01:00}", minutes, seconds);
     }
@@ -102,6 +104,12 @@ public class HUDElement : MonoBehaviour
     public Vector3 getPos()
     {
         return gameObject.transform.position;
+    }
+
+    public void SetImage(Sprite s)
+    {
+        if (_image != null)
+            _image.sprite = s;
     }
 }
 
