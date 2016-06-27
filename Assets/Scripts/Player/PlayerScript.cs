@@ -112,10 +112,27 @@ public class PlayerScript : MonoBehaviour
     }
 
     private bool displayBall = false;
+    private bool displayShop = false;
 
     void Update () {
         if (currentState != stateCharacter.Dead)
         {
+
+            //OpenShop
+            if (InputManager.Instance.IsShop)
+            {
+                if (!displayShop)
+                {
+                    HUDManager.Instance.DisplayShop(true);
+                    displayShop = true;
+                }
+                else
+                {
+                    HUDManager.Instance.DisplayShop(false);
+                    displayShop = false;
+                }
+                GameManager.GamePause();
+            }
 
             if (_currentLife <= 0)
             {

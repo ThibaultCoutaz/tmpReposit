@@ -62,7 +62,8 @@ public class HUDManager : Singleton<HUDManager>
             key == Game.UI_Types.Targeting ||
             key == Game.UI_Types.InfosTarget ||
             key == Game.UI_Types.GetBall ||
-            key == Game.UI_Types.Debuging)
+            key == Game.UI_Types.Debuging ||
+            key == Game.UI_Types.Shop)
             element.displayGroup(false, .0f, false, false);
     }
 
@@ -288,6 +289,15 @@ public class HUDManager : Singleton<HUDManager>
         if (elements.TryGetValue(Game.UI_Types.Debuging, out debug))
         {
             debug.displayGroup(display, 1);
+        }
+    }
+
+    public void DisplayShop(bool display)
+    {
+        HUDElement shop;
+        if (elements.TryGetValue(Game.UI_Types.Shop, out shop))
+        {
+            shop.displayGroup(display, 1);
         }
     }
 

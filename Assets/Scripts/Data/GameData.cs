@@ -2,12 +2,6 @@
 
 namespace Game
 {
-    //public class Propreties
-    //{
-    //    public float version = 0.1f;
-    //    public float goldPerSecond = 10.0f;
-    //}
-
     public enum Audio_Type
     {
         
@@ -25,7 +19,8 @@ namespace Game
         Targeting,
         InfosTarget,
         GetBall,
-        Debuging
+        Debuging,
+        Shop
     }
 
     public enum Lerp_Type

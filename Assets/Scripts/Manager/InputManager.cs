@@ -3,7 +3,7 @@ using System.Collections;
 
 public class InputManager : MonoBehaviour
 {
-    //protected InputManager() { }
+    //A <Changer avec valeur Static
 
     public static InputManager Instance = null;
 
@@ -35,6 +35,7 @@ public class InputManager : MonoBehaviour
     public bool IsSpellA { get; private set; }
     public bool IsSpellE { get; private set; }
     public bool IsSpellR { get; private set; }
+    public bool IsShop { get; private set; }
 
     private float cdButton = 0.1f;
     private int countButtonFoward = 0;
@@ -51,6 +52,7 @@ public class InputManager : MonoBehaviour
         IsSpellA = Input.GetButton("SpellA");
         IsSpellE = Input.GetButton("SpellE");
         IsSpellR = Input.GetButton("SpellR");
+        IsShop = Input.GetButtonDown("Shop");
 
         IsDashingFoward = false;
         IsDashingRight = false;
