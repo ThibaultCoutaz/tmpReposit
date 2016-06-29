@@ -5,10 +5,13 @@ using Game;
 
 public class PlayerScript : MonoBehaviour
 {
-
-    public bool Debuging = true;
-    [HideInInspector]
-    public string nameCharacter;
+    [System.Serializable]
+    public struct caracteristic
+    {
+        public float PVMax;
+        public float AttaqueMax;
+        public float DefenceMax;
+    }
 
     public enum stateCharacter
     {
@@ -19,8 +22,12 @@ public class PlayerScript : MonoBehaviour
         Dash
     }
 
+    public bool Debuging = true;
+    [HideInInspector]
+    public string nameCharacter;
+
+    public caracteristic caracterisitics;
     //Variable about Life
-    public float maxLife = 500f;
     private float _currentLife;
     public float currentLife
     {
@@ -44,7 +51,6 @@ public class PlayerScript : MonoBehaviour
     
 	void Start ()
     {
-
         if (Debuging)
         {
             HUDManager.Instance.InitDebug(this);
@@ -58,7 +64,7 @@ public class PlayerScript : MonoBehaviour
         name = nameCharacter;
 
       
-        _currentLife = maxLife;
+        _currentLife = caracterisitics.PVMax;
 
         Cursor.lockState = CursorLockMode.Locked;
         HUDManager.Instance.DisplayCharacterInfos(true);
@@ -173,7 +179,7 @@ public class PlayerScript : MonoBehaviour
         {
             transform.position = posSpawn.position;//He is Dead ! AU REVOIR 
             EditState(stateCharacter.Normal);
-            _currentLife = maxLife;
+            _currentLife = caracterisitics.PVMax;
         }
 
     }
@@ -218,14 +224,43 @@ public class PlayerScript : MonoBehaviour
     //    Gizmos.DrawLine(cameraPlayer.transform.position, cameraPlayer.transform.forward * ShootPower);
     //}
 
+    //******************************************ALL Function to Edit Variable from PlayerScript **************************************//
+
+    /// <summary>
+    /// Function to Edit the player's current life
+    /// </summary>
+    /// <param name="amount"></param>
     public void EditLife(float amount)
     {
         _currentLife += amount;
     }
 
+    /// <summary>
+    /// Function to edit the player's state
+    /// </summary>
+    /// <param name="_state"></param>
     public void EditState(stateCharacter _state)
     {
         currentState = _state;
         HUDManager.Instance.EditState(currentState.ToString());
+    }
+
+    /// <summary>
+    /// Function to Edit Player's PVMax
+    /// </summary>
+    /// <param name="_PVMax"></param>
+    public void EditPVMax(float _PVMax)
+    {
+        caracterisitics.PVMax = _PVMax;
+    }
+
+    public void EditAttaqueMax(float _AttaqueMax)
+    {
+        caracterisitics.AttaqueMax = _AttaqueMax;
+    }
+
+    public void EditDefenceMax(float _DefenceMax)
+    {
+        caracterisitics.DefenceMax = _DefenceMax;
     }
 }

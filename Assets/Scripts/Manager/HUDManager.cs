@@ -301,5 +301,23 @@ public class HUDManager : Singleton<HUDManager>
         }
     }
 
+    public void SetCurrentSelectItemShop(Item item)
+    {
+        HUDElement shop;
+        if (elements.TryGetValue(Game.UI_Types.Shop, out shop))
+        {
+            ((HUDShop)shop).SetCurrentSelectItem(item);
+        }
+    }
+
+    public void AddItem(Item item)
+    {
+        HUDElement Item;
+        if (elements.TryGetValue(Game.UI_Types.Items, out Item))
+        {
+            ((HUDItems)Item).AddItems(item);
+        }
+    }
+
 }
 

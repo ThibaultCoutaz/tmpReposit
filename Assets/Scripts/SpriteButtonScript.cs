@@ -8,6 +8,12 @@ public class SpriteButtonScript : MonoBehaviour,
                                      IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler
 {
     private Button button;
+    [HideInInspector]
+    public Item item = null;
+    [HideInInspector]
+    public GameObject PictureOfGameObject;
+    [HideInInspector]
+    public Button BuyItem;
 
     void Start()
     {
@@ -21,7 +27,10 @@ public class SpriteButtonScript : MonoBehaviour,
         {
             if (eventData.button == PointerEventData.InputButton.Left)
             {
-                Debug.LogError("LOUL");
+                Debug.LogError("Item Name and bonus = " + item.name);
+                PictureOfGameObject.GetComponent<Image>().sprite = item.ImgItem;
+                BuyItem.interactable = true;
+                HUDManager.Instance.SetCurrentSelectItemShop(item);
             }
         }
     }
