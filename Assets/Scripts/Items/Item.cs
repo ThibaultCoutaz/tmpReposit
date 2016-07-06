@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Item : MonoBehaviour {
+[System.Serializable]
+public class Item {
 
     public enum type_Item
     {
@@ -19,10 +20,22 @@ public class Item : MonoBehaviour {
         public float DefencePlus;
     }
 
+    public int index = -1;
     public string Name;
     public string Description;
     public Sprite ImgItem;
     public type_Item type;
     public BonusUItem bonus;
 
+    public Item CopyItem()
+    {
+        Item itemtmp = new Item();
+        itemtmp.index = index;
+        itemtmp.Name = Name;
+        itemtmp.Description = Description;
+        itemtmp.ImgItem = ImgItem;
+        itemtmp.type = type;
+        itemtmp.bonus = bonus;
+        return itemtmp;
+    }
 }

@@ -48,6 +48,8 @@ public class PlayerScript : MonoBehaviour
     private float currentAmoutOfGold = 0;
 
     private Transform posSpawn;
+
+
     
 	void Start ()
     {

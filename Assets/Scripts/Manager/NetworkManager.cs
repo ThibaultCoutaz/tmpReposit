@@ -38,4 +38,17 @@ public class NetworkManager : Singleton<NetworkManager>
         HUDManager.Instance.EditTextIsMaster("MasterClient : " + PhotonNetwork.isMasterClient);
         HUDManager.Instance.EditTextPing("Ping : " + PhotonNetwork.GetPing() + "ms");
     }
+
+    public GameObject FindLocalPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject go in players)
+        {
+            if (go.GetComponent<PhotonView>().isMine)
+            {
+                return go;
+            }
+        }
+        return null;
+    }
 }

@@ -210,13 +210,14 @@
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDConnectInfos.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDDebug.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDInfosTarget.cs" />
-    <Compile Include="Assets\Scripts\HUD\HUDElement\HUDItems.cs" />
+    <Compile Include="Assets\Scripts\HUD\HUDElement\HUDInventory.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDShop.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDSpell.cs" />
     <Compile Include="Assets\Scripts\InfosCharacter.cs" />
     <Compile Include="Assets\Scripts\InfosRoom.cs" />
     <Compile Include="Assets\Scripts\InitGame.cs" />
     <Compile Include="Assets\Scripts\Items\Item.cs" />
+    <Compile Include="Assets\Scripts\Items\ItemPrefab.cs" />
     <Compile Include="Assets\Scripts\Manager\CreationManager\CreationRoom.cs" />
     <Compile Include="Assets\Scripts\Manager\CreationManager\LobbyManager.cs" />
     <Compile Include="Assets\Scripts\Manager\CreationManager\MenuManager.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Assets\Scripts\Objects\BallBehaviour.cs" />
     <Compile Include="Assets\Scripts\Objects\ObjectifFloor.cs" />
     <Compile Include="Assets\Scripts\Player\AimCamera.cs" />
+    <Compile Include="Assets\Scripts\Player\ManageInventory.cs" />
     <Compile Include="Assets\Scripts\Player\ManageSpell.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCamera.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCameraTest.cs" />
@@ -243,8 +245,8 @@
     <Compile Include="Assets\Scripts\Spell\FireBall.cs" />
     <Compile Include="Assets\Scripts\Spell\Shield.cs" />
     <Compile Include="Assets\Scripts\Spell\Spell.cs" />
-    <Compile Include="Assets\Scripts\SpriteButtonScript.cs" />
     <Compile Include="Assets\Scripts\SpriteButtonScriptInventory.cs" />
+    <Compile Include="Assets\Scripts\SpriteButtonScriptShop.cs" />
     <Compile Include="Assets\Scripts\Utils\CameraController.cs" />
     <Compile Include="Assets\Scripts\Utils\CustomAssetUtility.cs" />
     <Compile Include="Assets\Scripts\Utils\FPSCounter.cs" />

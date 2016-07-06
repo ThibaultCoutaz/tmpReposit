@@ -4,16 +4,11 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 
-public class SpriteButtonScript : MonoBehaviour,
+public class SpriteButtonScriptShop : MonoBehaviour,
                                      IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler
 {
     private Button button;
-    [HideInInspector]
-    public Item item = null;
-    [HideInInspector]
-    public GameObject PictureOfGameObject;
-    [HideInInspector]
-    public Button BuyItem;
+    public Item item;
 
     void Start()
     {
@@ -27,9 +22,7 @@ public class SpriteButtonScript : MonoBehaviour,
         {
             if (eventData.button == PointerEventData.InputButton.Left)
             {
-                Debug.LogError("Item Name and bonus = " + item.name);
-                PictureOfGameObject.GetComponent<Image>().sprite = item.ImgItem;
-                BuyItem.interactable = true;
+                HUDManager.Instance.DisplaySellBuyButton(false, true);
                 HUDManager.Instance.SetCurrentSelectItemShop(item);
             }
         }

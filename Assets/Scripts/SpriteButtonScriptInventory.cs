@@ -8,12 +8,7 @@ public class SpriteButtonScriptInventory : MonoBehaviour,
                                      IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler
 {
     private Button button;
-    [HideInInspector]
-    public Item item = null;
-    [HideInInspector]
-    public GameObject PictureOfGameObject;
-    [HideInInspector]
-    public Button BuyItem;
+    public Item item;
 
     void Start()
     {
@@ -21,13 +16,19 @@ public class SpriteButtonScriptInventory : MonoBehaviour,
         //button.enabled = true;
     }
 
+    void Update()
+    {
+        //if(item != null)
+        //    Debug.LogError("squalala cest la fete a lindex = " + item.index);
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (button.enabled)
+        if (button.interactable)
         {
             if (eventData.button == PointerEventData.InputButton.Left)
             {
-                Debug.LogError("Item Name and bonus = " + item.name);
+                HUDManager.Instance.DisplaySellBuyButton(true, false);
                 HUDManager.Instance.SetCurrentSelectItemShop(item);
             }
         }

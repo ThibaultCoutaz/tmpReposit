@@ -63,7 +63,8 @@ public class HUDManager : Singleton<HUDManager>
             key == Game.UI_Types.InfosTarget ||
             key == Game.UI_Types.GetBall ||
             key == Game.UI_Types.Debuging ||
-            key == Game.UI_Types.Shop)
+            key == Game.UI_Types.Shop ||
+            key == Game.UI_Types.Inventory)
             element.displayGroup(false, .0f, false, false);
     }
 
@@ -310,12 +311,39 @@ public class HUDManager : Singleton<HUDManager>
         }
     }
 
+    public void DisplaySellBuyButton(bool sell,bool buy)
+    {
+        HUDElement shop;
+        if (elements.TryGetValue(Game.UI_Types.Shop, out shop))
+        {
+            ((HUDShop)shop).SetSellBuyButton(sell,buy);
+        }
+    }
+
+    public void DisplayInventory(bool display)
+    {
+        HUDElement inventory;
+        if (elements.TryGetValue(Game.UI_Types.Inventory, out inventory))
+        {
+            inventory.displayGroup(display,1);
+        }
+    }
+
     public void AddItem(Item item)
     {
-        HUDElement Item;
-        if (elements.TryGetValue(Game.UI_Types.Items, out Item))
+        HUDElement inventory;
+        if (elements.TryGetValue(Game.UI_Types.Inventory, out inventory))
         {
-            ((HUDItems)Item).AddItems(item);
+            ((HUDInventory)inventory).AddItem(item);
+        }
+    }
+
+    public void RemoveItem(int index)
+    {
+        HUDElement inventory;
+        if (elements.TryGetValue(Game.UI_Types.Inventory, out inventory))
+        {
+            ((HUDInventory)inventory).RemoveItem(index);
         }
     }
 
