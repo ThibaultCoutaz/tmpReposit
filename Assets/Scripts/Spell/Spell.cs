@@ -95,7 +95,7 @@ public abstract class Spell : MonoBehaviour {
                     //psTarget.GetComponent<ShaderManager>().GetTarget(true);
                     canCast = true;
                 }
-                HUDManager.Instance.EditInfosTarget(psTarget.nameCharacter, psTarget.currentLife.ToString(), hit.distance.ToString());
+                HUDManager.Instance.EditInfosTarget(psTarget.nameCharacter, psTarget.caracterisiticCurrent.PV.ToString(), hit.distance.ToString());
             }
             else
             {

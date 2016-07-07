@@ -11,9 +11,10 @@ public class HUDInventory : HUDElement {
         Debug.LogError("ACHAT de " + item.Name);
         for(int i =0; i < ListCaseItems.Length; i++)
         {
-            if(ListCaseItems[i].GetComponent<SpriteButtonScriptInventory>().item.index == -1) // SHould do a bool IsEmpty Modify THAT 
+            if(ListCaseItems[i].GetComponent<SpriteButtonScriptInventory>().IsEmpty) // SHould do a bool IsEmpty Modify THAT 
             {
                 Debug.LogError("Ajout a L'Index = " + i +" de litem "+item);
+                ListCaseItems[i].GetComponent<SpriteButtonScriptInventory>().IsEmpty = false;
                 ListCaseItems[i].GetComponent<SpriteButtonScriptInventory>().enabled = true;
                 ListCaseItems[i].GetComponent<SpriteButtonScriptInventory>().item = item;
                 ListCaseItems[i].GetComponent<SpriteButtonScriptInventory>().item.index = i;
@@ -39,6 +40,7 @@ public class HUDInventory : HUDElement {
         {
             NetworkManager.Instance.FindLocalPlayer().GetComponent<ManageInventory>().RemoveItem(index);
             ListCaseItems[index].GetComponent<Button>().interactable = false;
+            ListCaseItems[index].GetComponent<SpriteButtonScriptInventory>().IsEmpty = true;
             ListCaseItems[index].GetComponent<SpriteButtonScriptInventory>().enabled = false;
             ListCaseItems[index].GetComponent<SpriteButtonScriptInventory>().item = null;
             ListCaseItems[index].GetComponent<Image>().sprite = null;

@@ -7,6 +7,7 @@ using System;
 public class SpriteButtonScriptInventory : MonoBehaviour,
                                      IPointerClickHandler, IPointerExitHandler, IPointerEnterHandler
 {
+    public bool IsEmpty = true;
     private Button button;
     public Item item;
 

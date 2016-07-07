@@ -229,6 +229,7 @@
     <Compile Include="Assets\Scripts\Network\PlayerNetworkSetup.cs" />
     <Compile Include="Assets\Scripts\Network\TeamScript.cs" />
     <Compile Include="Assets\Scripts\Objects\BallBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Objects\BaseBehaviour.cs" />
     <Compile Include="Assets\Scripts\Objects\ObjectifFloor.cs" />
     <Compile Include="Assets\Scripts\Player\AimCamera.cs" />
     <Compile Include="Assets\Scripts\Player\ManageInventory.cs" />

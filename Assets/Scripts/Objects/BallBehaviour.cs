@@ -6,12 +6,16 @@ public class BallBehaviour : MonoBehaviour {
     public Sprite ImgBall;
 
     private Rigidbody rigb;
+    private int nbslowAction; // This is to reduce the dmg if it bounce some other gameObject;
 
     [HideInInspector]
     public TrailRenderer lineEffect;
 
     [HideInInspector]
     public int IDPreviousOwner; //could do it with some state like , catch , free , and owned
+
+    [HideInInspector]
+    public int IDSender; //This is to know who send the Ball and so have acces to the sender caracterisitique 
 
     void Awake()
     {
@@ -64,10 +68,8 @@ public class BallBehaviour : MonoBehaviour {
 
     void OnCollisionEnter(Collision col)
     {
-        //Debug.Log("IDOwner = " + IDPreviousOwner);
         if (col.gameObject.GetComponent<PlayerScript>() && IDPreviousOwner != col.gameObject.GetComponent<PhotonView>().viewID)
         {
-            //Debug.LogError("Gotit");
             IDPreviousOwner = col.gameObject.GetComponent<PhotonView>().viewID;
             Physics.IgnoreCollision(col.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
             if (lineEffect.enabled == true)

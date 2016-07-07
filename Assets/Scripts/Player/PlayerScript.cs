@@ -8,9 +8,9 @@ public class PlayerScript : MonoBehaviour
     [System.Serializable]
     public struct caracteristic
     {
-        public float PVMax;
-        public float AttaqueMax;
-        public float DefenceMax;
+        public float PV;
+        public float Attaque;
+        public float Defence;
     }
 
     public enum stateCharacter
@@ -26,14 +26,8 @@ public class PlayerScript : MonoBehaviour
     [HideInInspector]
     public string nameCharacter;
 
-    public caracteristic caracterisitics;
-    //Variable about Life
-    private float _currentLife;
-    public float currentLife
-    {
-        get { return _currentLife; }
-    }
-    //**************************//
+    public caracteristic caracterisiticsMax;
+    public caracteristic caracterisiticCurrent;
 
     public stateCharacter currentState;
     public Camera cameraPlayer;
@@ -66,7 +60,9 @@ public class PlayerScript : MonoBehaviour
         name = nameCharacter;
 
       
-        _currentLife = caracterisitics.PVMax;
+        caracterisiticCurrent.PV = caracterisiticsMax.PV;
+        caracterisiticCurrent.Attaque = caracterisiticsMax.Attaque;
+        caracterisiticCurrent.Defence = caracterisiticsMax.Defence;
 
         Cursor.lockState = CursorLockMode.Locked;
         HUDManager.Instance.DisplayCharacterInfos(true);
@@ -142,7 +138,7 @@ public class PlayerScript : MonoBehaviour
                 GameManager.GamePause();
             }
 
-            if (_currentLife <= 0)
+            if (caracterisiticCurrent.PV <= 0)
             {
                 EditState(stateCharacter.Dead);
             }
@@ -181,7 +177,7 @@ public class PlayerScript : MonoBehaviour
         {
             transform.position = posSpawn.position;//He is Dead ! AU REVOIR 
             EditState(stateCharacter.Normal);
-            _currentLife = caracterisitics.PVMax;
+            caracterisiticCurrent.PV = caracterisiticsMax.PV;
         }
 
     }
@@ -199,6 +195,7 @@ public class PlayerScript : MonoBehaviour
         GameManager.ballOfGame.GetComponent<Rigidbody>().isKinematic = false;
         GameManager.ballOfGame.GetComponent<Rigidbody>().AddForce(camF * ShootPower);
         GameManager.ballOfGame.GetComponent<BallBehaviour>().lineEffect.enabled = true;
+        GameManager.ballOfGame.GetComponent<BallBehaviour>().IDSender = view.viewID;
         Invoke("ResetOwnerBall", 0.5f);
     }
 
@@ -234,7 +231,7 @@ public class PlayerScript : MonoBehaviour
     /// <param name="amount"></param>
     public void EditLife(float amount)
     {
-        _currentLife += amount;
+        caracterisiticCurrent.PV += amount;
     }
 
     /// <summary>
@@ -253,16 +250,16 @@ public class PlayerScript : MonoBehaviour
     /// <param name="_PVMax"></param>
     public void EditPVMax(float _PVMax)
     {
-        caracterisitics.PVMax = _PVMax;
+        caracterisiticsMax.PV = _PVMax;
     }
 
     public void EditAttaqueMax(float _AttaqueMax)
     {
-        caracterisitics.AttaqueMax = _AttaqueMax;
+        caracterisiticsMax.Attaque = _AttaqueMax;
     }
 
     public void EditDefenceMax(float _DefenceMax)
     {
-        caracterisitics.DefenceMax = _DefenceMax;
+        caracterisiticsMax.Defence = _DefenceMax;
     }
 }
