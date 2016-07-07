@@ -208,7 +208,9 @@
     <Compile Include="Assets\Scripts\Data\GameData.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDConnectInfos.cs" />
+    <Compile Include="Assets\Scripts\HUD\HUDElement\HUDDashPower.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDDebug.cs" />
+    <Compile Include="Assets\Scripts\HUD\HUDElement\HUDHoverText.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDInfosTarget.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDInventory.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDShop.cs" />

@@ -39,7 +39,8 @@ public class PlayerScript : MonoBehaviour
     public bool hasBall = false;
 
     private PhotonView view;
-    private float currentAmoutOfGold = 0;
+    public float currentAmountOfGold = 0;
+
 
     private Transform posSpawn;
 
@@ -70,8 +71,8 @@ public class PlayerScript : MonoBehaviour
         currentState = stateCharacter.Normal;
         HUDManager.Instance.EditState(currentState.ToString());
 
-        currentAmoutOfGold = StartingGold;
-        HUDManager.Instance.EditGold(currentAmoutOfGold);
+        currentAmountOfGold = StartingGold;
+        HUDManager.Instance.EditGold(currentAmountOfGold);
         InvokeRepeating("MoneyInPocket", 1.0f, 1.0f);
 
         HUDManager.Instance.EditGetBall(GameManager.ballOfGame.GetComponent<BallBehaviour>().ImgBall);
@@ -127,7 +128,7 @@ public class PlayerScript : MonoBehaviour
             {
                 if (!displayShop)
                 {
-                    HUDManager.Instance.DisplayShop(true);
+                    HUDManager.Instance.DisplayShop(true, currentAmountOfGold);
                     displayShop = true;
                 }
                 else
@@ -185,7 +186,7 @@ public class PlayerScript : MonoBehaviour
     private void MoneyInPocket()
     {
         //currentAmoutOfGold += GameManager.Instance.moneyEarnPerSecond;
-        HUDManager.Instance.EditGold(currentAmoutOfGold);
+        HUDManager.Instance.EditGold(currentAmountOfGold);
     }
 
     [PunRPC]

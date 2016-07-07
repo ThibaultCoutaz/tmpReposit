@@ -64,7 +64,8 @@ public class HUDManager : Singleton<HUDManager>
             key == Game.UI_Types.GetBall ||
             key == Game.UI_Types.Debuging ||
             key == Game.UI_Types.Shop ||
-            key == Game.UI_Types.Inventory)
+            key == Game.UI_Types.Inventory ||
+            key == Game.UI_Types.HoverText)
             element.displayGroup(false, .0f, false, false);
     }
 
@@ -293,12 +294,23 @@ public class HUDManager : Singleton<HUDManager>
         }
     }
 
-    public void DisplayShop(bool display)
+    public void DisplayShop(bool display,float money = 0) //If you forget the money paf = 0;
     {
         HUDElement shop;
         if (elements.TryGetValue(Game.UI_Types.Shop, out shop))
         {
+            if (display)
+                EditMoneyShop(money);
             shop.displayGroup(display, 1);
+        }
+    }
+
+    public void EditMoneyShop(float money)
+    {
+        HUDElement shop;
+        if (elements.TryGetValue(Game.UI_Types.Shop, out shop))
+        {
+            ((HUDShop)shop).InitMoney(money);
         }
     }
 
@@ -344,6 +356,17 @@ public class HUDManager : Singleton<HUDManager>
         if (elements.TryGetValue(Game.UI_Types.Inventory, out inventory))
         {
             ((HUDInventory)inventory).RemoveItem(index);
+        }
+    }
+
+    public void displayHoverText(bool value, string msg = "")
+    {
+        HUDElement text;
+        if (elements.TryGetValue(Game.UI_Types.HoverText, out text))
+        {
+            text.setText(msg);
+            ((HUDHoverText)text).activate = value;
+            text.displayGroup(value,1);
         }
     }
 

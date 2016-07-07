@@ -6,9 +6,17 @@ public class PlayerControl : MonoBehaviour {
     public float speed = 10;
     public float gravity = 10.0f;
     public float jumpHeight = 2.0f;
-    public float powerDashFoward = 100;
+
+    //Dash Area
+    public bool dashMouse = true;
+    private bool canDashClick = false;
+    public Vector2 minMaxPowerDashFowardClick = new Vector2(50, 100);
+    private float CurrentPowerDashFowardClick;
+    public float powerDashFowardKey = 100;
     public float powerDashSize = 40;
     public float maxVelocityChange = 10.0f;
+
+
     public float distanceGround = 0.4f;
     public bool canJump = true;
     public GameObject pivotTrailRenderer; // temporaire a voir avec nouveau model.
@@ -24,7 +32,10 @@ public class PlayerControl : MonoBehaviour {
         rigb.useGravity = false; // to control by my self the gravity 
         anim = GetComponent<Animator>();
         ps = GetComponent<PlayerScript>();
+
+        CurrentPowerDashFowardClick = minMaxPowerDashFowardClick.x;
     }
+
 
 
 	// Update is called once per frame
@@ -57,12 +68,27 @@ public class PlayerControl : MonoBehaviour {
                     rigb.velocity = new Vector3(velocity.x, CalculateJumpVerticalSpeed(), velocity.z);
                 }
 
-                if (InputManager.Instance.IsDashingFoward)
+                if (dashMouse)
                 {
-                    rigb.AddForce(transform.forward * powerDashFoward, ForceMode.VelocityChange);
-                    pivotTrailRenderer.SetActive(true);
-                    ps.EditState(PlayerScript.stateCharacter.Dash);
-                    Invoke("DiseableTrail", 0.5f);
+                    if (InputManager.Instance.IsDashingFowardClick)
+                    {
+                        Debug.LogError("CLick Souris");
+                        canDashClick = true;
+                    }else if (canDashClick)
+                    {
+                        Debug.LogError("JUMP TAMERE");
+                        canDashClick = false;
+                    }
+                }
+                else
+                {
+                    if (InputManager.Instance.IsDashingFowardKey)
+                    {
+                        rigb.AddForce(transform.forward * powerDashFowardKey, ForceMode.VelocityChange);
+                        pivotTrailRenderer.SetActive(true);
+                        ps.EditState(PlayerScript.stateCharacter.Dash);
+                        Invoke("DiseableTrail", 0.5f);
+                    }
                 }
 
                 if (InputManager.Instance.IsDashingLeft)

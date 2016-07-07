@@ -28,7 +28,8 @@ public class InputManager : MonoBehaviour
     public bool IsPassing { get; private set; }
     public bool IsCancelling { get; private set; }
     public bool IsInGodMode { get; private set; }
-    public bool IsDashingFoward { get; private set; }
+    public bool IsDashingFowardKey { get; private set; }
+    public bool IsDashingFowardClick { get; private set; }
     public bool IsDashingRight { get; private set; }
     public bool IsDashingLeft { get; private set; }
     public bool IsUsingSpell { get; private set; }
@@ -54,15 +55,16 @@ public class InputManager : MonoBehaviour
         IsSpellR = Input.GetButton("SpellR");
         IsShop = Input.GetButtonDown("Shop");
 
-        IsDashingFoward = false;
+        IsDashingFowardKey = false;
+        IsDashingFowardClick = Input.GetButton("DashFowardClick");
         IsDashingRight = false;
         IsDashingLeft = false;
 
-        if (Input.GetButtonDown("DashFoward"))
+        if (Input.GetButtonDown("DashFowardKey"))
         {
             if(cdButton > 0 && countButtonFoward == 1)
             {
-                IsDashingFoward = true;
+                IsDashingFowardKey = true;
             }
             else
             {

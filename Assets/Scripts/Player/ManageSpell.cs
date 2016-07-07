@@ -20,7 +20,6 @@ public class ManageSpell : MonoBehaviour {
     private bool displayViseur = false;
 
     void Start () {
-
         ps = GetComponent<PlayerScript>();
         cameraPlayer = ps.cameraPlayer;
 
@@ -38,135 +37,138 @@ public class ManageSpell : MonoBehaviour {
             if (spells[i].reload)
                 spells[i].ManageFilledSpell();
         }
-        
+
         //Imput manage
-        if (InputManager.Instance.IsSpellA && !spells[0].reload && (keyPress == KeyPress.NULL || keyPress == KeyPress.A))
+        if (!GetComponent<PlayerScript>().hasBall)
         {
-            keyPress = KeyPress.A;
-            if (spells[0].targeting != Spell.Type_Spell.HimSelf)
+            if (InputManager.Instance.IsSpellA && !spells[0].reload && (keyPress == KeyPress.NULL || keyPress == KeyPress.A))
             {
-                if (spells[0].projectionSpell == null)
+                keyPress = KeyPress.A;
+                if (spells[0].targeting != Spell.Type_Spell.HimSelf)
                 {
-                    InitFunctionProjection(spells[0]);
-                }
-
-                if (!displayViseur && spells[0].targeting == Spell.Type_Spell.Target)
-                {
-                    HUDManager.Instance.DisplayTargeting(true);
-                    displayViseur = true;
-                }
-
-                spells[0].projectionSpell(ps, pivot.position, cameraPlayer.transform.forward);
-
-                if (InputManager.Instance.IsUsingSpell)
-                    if (spells[0].targeting != Spell.Type_Spell.Target)
+                    if (spells[0].projectionSpell == null)
                     {
-                        spells[0].OnCast(ps);
+                        InitFunctionProjection(spells[0]);
                     }
-                    else
+
+                    if (!displayViseur && spells[0].targeting == Spell.Type_Spell.Target)
                     {
-                        if (spells[0].canCast)
+                        HUDManager.Instance.DisplayTargeting(true);
+                        displayViseur = true;
+                    }
+
+                    spells[0].projectionSpell(ps, pivot.position, cameraPlayer.transform.forward);
+
+                    if (InputManager.Instance.IsUsingSpell)
+                        if (spells[0].targeting != Spell.Type_Spell.Target)
+                        {
                             spells[0].OnCast(ps);
-                    }
+                        }
+                        else
+                        {
+                            if (spells[0].canCast)
+                                spells[0].OnCast(ps);
+                        }
 
-            }
-            else
-            {
-                spells[0].OnCast(ps);
-            }
-        }
-        else if (InputManager.Instance.IsSpellE && !spells[1].reload && (keyPress == KeyPress.NULL || keyPress == KeyPress.E))
-        {
-            keyPress = KeyPress.E;
-            if (spells[1].targeting != Spell.Type_Spell.HimSelf)
-            {
-                if (spells[1].projectionSpell == null)
-                {
-                    InitFunctionProjection(spells[1]);
                 }
-
-                spells[1].projectionSpell(ps, pivot.position, cameraPlayer.transform.forward);
-
-                if (InputManager.Instance.IsUsingSpell)
-                    if (spells[1].targeting != Spell.Type_Spell.Target)
+                else
+                {
+                    spells[0].OnCast(ps);
+                }
+            }
+            else if (InputManager.Instance.IsSpellE && !spells[1].reload && (keyPress == KeyPress.NULL || keyPress == KeyPress.E))
+            {
+                keyPress = KeyPress.E;
+                if (spells[1].targeting != Spell.Type_Spell.HimSelf)
+                {
+                    if (spells[1].projectionSpell == null)
                     {
-                        spells[1].OnCast(ps);
+                        InitFunctionProjection(spells[1]);
                     }
-                    else
-                    {
-                        if (spells[1].canCast)
+
+                    spells[1].projectionSpell(ps, pivot.position, cameraPlayer.transform.forward);
+
+                    if (InputManager.Instance.IsUsingSpell)
+                        if (spells[1].targeting != Spell.Type_Spell.Target)
+                        {
                             spells[1].OnCast(ps);
-                    }
-            }
-            else
-            {
-                spells[1].OnCast(ps);
-            }
-        }
-        else if (InputManager.Instance.IsSpellR && !spells[2].reload && (keyPress == KeyPress.NULL || keyPress == KeyPress.E))
-        {
-            keyPress = KeyPress.R;
-            if (spells[2].targeting != Spell.Type_Spell.HimSelf)
-            {
-                if (spells[2].projectionSpell == null)
-                {
-                    InitFunctionProjection(spells[2]);
+                        }
+                        else
+                        {
+                            if (spells[1].canCast)
+                                spells[1].OnCast(ps);
+                        }
                 }
-
-                spells[2].projectionSpell(ps, pivot.position, cameraPlayer.transform.forward);
-
-                if (InputManager.Instance.IsUsingSpell)
-                    if (spells[2].targeting != Spell.Type_Spell.Target)
+                else
+                {
+                    spells[1].OnCast(ps);
+                }
+            }
+            else if (InputManager.Instance.IsSpellR && !spells[2].reload && (keyPress == KeyPress.NULL || keyPress == KeyPress.E))
+            {
+                keyPress = KeyPress.R;
+                if (spells[2].targeting != Spell.Type_Spell.HimSelf)
+                {
+                    if (spells[2].projectionSpell == null)
                     {
-                        spells[2].OnCast(ps);
+                        InitFunctionProjection(spells[2]);
                     }
-                    else
-                    {
-                        if (spells[2].canCast)
+
+                    spells[2].projectionSpell(ps, pivot.position, cameraPlayer.transform.forward);
+
+                    if (InputManager.Instance.IsUsingSpell)
+                        if (spells[2].targeting != Spell.Type_Spell.Target)
+                        {
                             spells[2].OnCast(ps);
-                    }
+                        }
+                        else
+                        {
+                            if (spells[2].canCast)
+                                spells[2].OnCast(ps);
+                        }
+                }
+                else
+                {
+                    spells[2].OnCast(ps);
+                }
             }
             else
             {
-                spells[2].OnCast(ps);
-            }
-        }
-        else
-        {
-            if(keyPress != KeyPress.NULL)
-            {
-                switch (keyPress)
+                if (keyPress != KeyPress.NULL)
                 {
-                    case KeyPress.A:
-                        if (spells[0].displayInfosTarget)
-                        {
-                            HUDManager.Instance.DisplayInfosTarget(false);
-                            spells[0].displayInfosTarget = false;
-                        }
-                        break;
-                    case KeyPress.E:
-                        if (spells[1].displayInfosTarget)
-                        {
-                            HUDManager.Instance.DisplayInfosTarget(false);
-                            spells[1].displayInfosTarget = false;
-                        }
-                        break;
-                    case KeyPress.R:
-                        if (spells[2].displayInfosTarget)
-                        {
-                            HUDManager.Instance.DisplayInfosTarget(false);
-                            spells[2].displayInfosTarget = false;
-                        }
-                        break;
-                }
-                        
-                keyPress = KeyPress.NULL;
-                //Set all the Display to false
-                //HUDManager.Instance.DisplayInfosTarget(false);
-                if (displayViseur)
-                {
-                    HUDManager.Instance.DisplayTargeting(false);
-                    displayViseur = false;
+                    switch (keyPress)
+                    {
+                        case KeyPress.A:
+                            if (spells[0].displayInfosTarget)
+                            {
+                                HUDManager.Instance.DisplayInfosTarget(false);
+                                spells[0].displayInfosTarget = false;
+                            }
+                            break;
+                        case KeyPress.E:
+                            if (spells[1].displayInfosTarget)
+                            {
+                                HUDManager.Instance.DisplayInfosTarget(false);
+                                spells[1].displayInfosTarget = false;
+                            }
+                            break;
+                        case KeyPress.R:
+                            if (spells[2].displayInfosTarget)
+                            {
+                                HUDManager.Instance.DisplayInfosTarget(false);
+                                spells[2].displayInfosTarget = false;
+                            }
+                            break;
+                    }
+
+                    keyPress = KeyPress.NULL;
+                    //Set all the Display to false
+                    //HUDManager.Instance.DisplayInfosTarget(false);
+                    if (displayViseur)
+                    {
+                        HUDManager.Instance.DisplayTargeting(false);
+                        displayViseur = false;
+                    }
                 }
             }
         }

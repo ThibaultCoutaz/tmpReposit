@@ -35,12 +35,13 @@ public class SpriteButtonScriptInventory : MonoBehaviour,
         }
     }
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-    }
-
     public void OnPointerEnter(PointerEventData eventData)
     {
+        HUDManager.Instance.displayHoverText(true, item.Description);
+    }
 
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        HUDManager.Instance.displayHoverText(false);
     }
 }

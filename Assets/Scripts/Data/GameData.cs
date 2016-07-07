@@ -21,7 +21,9 @@ namespace Game
         GetBall,
         Debuging,
         Shop,
-        Inventory
+        Inventory,
+        DashPower,
+        HoverText
     }
 
     public enum Lerp_Type

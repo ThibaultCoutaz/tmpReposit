@@ -9,6 +9,7 @@ public class HUDShop : HUDElement {
     public Image ImageInfosItem;
     public Button buyButton;
     public Button sellButton;
+    public Text moneyText;
 
     //All part
     public GameObject ListALL;
@@ -106,18 +107,11 @@ public class HUDShop : HUDElement {
     {
         GameObject tmp = Instantiate(prefabItem_Shop);
         tmp.GetComponent<SpriteButtonScriptShop>().item = item;
+        tmp.GetComponent<SpriteButtonScriptShop>().picItem.sprite = item.ImgItem;
+        tmp.GetComponent<SpriteButtonScriptShop>().price.text = item.priceBuying.ToString();
+
         tmp.GetComponent<Image>().sprite = item.ImgItem;
         tmp.transform.parent = parent;
-    }
-
-    private void SetVariableItem(Item intItem, Item extItem)
-    {
-        intItem.index = extItem.index;
-        intItem.ImgItem = extItem.ImgItem;
-        intItem.bonus = extItem.bonus;
-        intItem.Description = extItem.Description;
-        intItem.Name = extItem.Name;
-        intItem.type = extItem.type;
     }
 
     //Function to get value in the different dictionnary
@@ -152,6 +146,18 @@ public class HUDShop : HUDElement {
     {
         buyButton.interactable = interactBuy;
         sellButton.interactable = interactSell;
+    }
+
+    public void InitMoney(float amount)
+    {
+        if (amount > 0)
+        {
+            moneyText.text = amount + "Golds";
+        }
+        else
+        {
+            moneyText.text = amount + "Gold";
+        }
     }
 
     // Function to Open the different Part of the Shop

@@ -26,6 +26,8 @@ public class Item {
     public Sprite ImgItem;
     public type_Item type;
     public BonusUItem bonus;
+    public float priceBuying;
+    public float priceSelling;
 
     public Item CopyItem()
     {
@@ -36,6 +38,8 @@ public class Item {
         itemtmp.ImgItem = ImgItem;
         itemtmp.type = type;
         itemtmp.bonus = bonus;
+        itemtmp.priceBuying = priceBuying;
+        itemtmp.priceSelling = priceSelling;
         return itemtmp;
     }
 }

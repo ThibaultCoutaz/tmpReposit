@@ -8,24 +8,28 @@ public class HUDInventory : HUDElement {
 
     public void AddItem(Item item)
     {
-        Debug.LogError("ACHAT de " + item.Name);
         for(int i =0; i < ListCaseItems.Length; i++)
         {
             if(ListCaseItems[i].GetComponent<SpriteButtonScriptInventory>().IsEmpty) // SHould do a bool IsEmpty Modify THAT 
             {
-                Debug.LogError("Ajout a L'Index = " + i +" de litem "+item);
                 ListCaseItems[i].GetComponent<SpriteButtonScriptInventory>().IsEmpty = false;
                 ListCaseItems[i].GetComponent<SpriteButtonScriptInventory>().enabled = true;
                 ListCaseItems[i].GetComponent<SpriteButtonScriptInventory>().item = item;
                 ListCaseItems[i].GetComponent<SpriteButtonScriptInventory>().item.index = i;
                 ListCaseItems[i].GetComponent<Button>().interactable = true;
                 ListCaseItems[i].GetComponent<Image>().sprite = item.ImgItem;
-                NetworkManager.Instance.FindLocalPlayer().GetComponent<ManageInventory>().AddItem(ListCaseItems[i].GetComponent<SpriteButtonScriptInventory>().item);
+
+
+                GameObject playerLocal = NetworkManager.Instance.FindLocalPlayer();
+                playerLocal.GetComponent<PlayerScript>().currentAmountOfGold -= item.priceBuying;
+                playerLocal.GetComponent<ManageInventory>().AddItem(ListCaseItems[i].GetComponent<SpriteButtonScriptInventory>().item);
+                HUDManager.Instance.EditMoneyShop(playerLocal.GetComponent<PlayerScript>().currentAmountOfGold);
+
+                if (NetworkManager.Instance.FindLocalPlayer().GetComponent<PlayerScript>().currentAmountOfGold < item.priceBuying)
+                    HUDManager.Instance.DisplaySellBuyButton(false, false);
+
                 break; // si ca marche pas changer valeur de i
-            }
-            else
-            {
-                Debug.LogError("Index pas null = " + i);
+
             }
         }
     }
@@ -38,7 +42,11 @@ public class HUDInventory : HUDElement {
     {
         if (ListCaseItems[index].GetComponent<SpriteButtonScriptInventory>().item != null)
         {
-            NetworkManager.Instance.FindLocalPlayer().GetComponent<ManageInventory>().RemoveItem(index);
+            GameObject playerLocal = NetworkManager.Instance.FindLocalPlayer();
+            playerLocal.GetComponent<PlayerScript>().currentAmountOfGold += ListCaseItems[index].GetComponent<SpriteButtonScriptInventory>().item.priceSelling;
+            HUDManager.Instance.EditMoneyShop(playerLocal.GetComponent<PlayerScript>().currentAmountOfGold);
+            playerLocal.GetComponent<ManageInventory>().RemoveItem(index);
+
             ListCaseItems[index].GetComponent<Button>().interactable = false;
             ListCaseItems[index].GetComponent<SpriteButtonScriptInventory>().IsEmpty = true;
             ListCaseItems[index].GetComponent<SpriteButtonScriptInventory>().enabled = false;
