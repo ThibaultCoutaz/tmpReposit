@@ -30,6 +30,7 @@ public class SpriteButtonScriptInventory : MonoBehaviour,
             if (eventData.button == PointerEventData.InputButton.Left)
             {
                 HUDManager.Instance.DisplaySellBuyButton(true, false);
+                HUDManager.Instance.DisplayAmountSellBuy(item.priceSelling);
                 HUDManager.Instance.SetCurrentSelectItemShop(item);
             }
         }
@@ -37,11 +38,13 @@ public class SpriteButtonScriptInventory : MonoBehaviour,
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        HUDManager.Instance.displayHoverText(true, item.Description);
+        if(!IsEmpty)
+            HUDManager.Instance.displayHoverText(true,item.Name+": \n"+ item.Description);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        HUDManager.Instance.displayHoverText(false);
+        if (!IsEmpty)
+            HUDManager.Instance.displayHoverText(false);
     }
 }

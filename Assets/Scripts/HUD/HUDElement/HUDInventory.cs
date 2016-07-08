@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class HUDInventory : HUDElement {
 
     public GameObject[] ListCaseItems = new GameObject[6];
+    public Sprite emptyCase;
 
     public void AddItem(Item item)
     {
@@ -51,7 +52,7 @@ public class HUDInventory : HUDElement {
             ListCaseItems[index].GetComponent<SpriteButtonScriptInventory>().IsEmpty = true;
             ListCaseItems[index].GetComponent<SpriteButtonScriptInventory>().enabled = false;
             ListCaseItems[index].GetComponent<SpriteButtonScriptInventory>().item = null;
-            ListCaseItems[index].GetComponent<Image>().sprite = null;
+            ListCaseItems[index].GetComponent<Image>().sprite = emptyCase;
         }
     }
     

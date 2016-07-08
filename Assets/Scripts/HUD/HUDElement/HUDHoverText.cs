@@ -7,6 +7,6 @@ public class HUDHoverText : HUDElement {
 
 	void Update () {
         if(activate)
-            transform.position = Input.mousePosition;
+            transform.position = Input.mousePosition+ new Vector3(0,0,-10);
     }
 }

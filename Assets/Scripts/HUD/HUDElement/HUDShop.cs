@@ -7,9 +7,12 @@ public class HUDShop : HUDElement {
 
     public GameObject prefabItem_Shop;
     public Image ImageInfosItem;
+    public Text descriptionInfosItem;
     public Button buyButton;
     public Button sellButton;
     public Text moneyText;
+    public Text sellBuyAmount;
+    public Image backgroundSellBuyAmount;
 
     //All part
     public GameObject ListALL;
@@ -128,6 +131,7 @@ public class HUDShop : HUDElement {
     {
         CurrentItemSelect = item;
         ImageInfosItem.sprite = item.ImgItem;
+        descriptionInfosItem.text = item.Description;
     }
 
     public void BuyItem()
@@ -140,12 +144,32 @@ public class HUDShop : HUDElement {
     {
         sellButton.interactable = false;
         HUDManager.Instance.RemoveItem(CurrentItemSelect.index);
+        HUDManager.Instance.DisplayAmountSellBuy(0);
     }
 
     public void SetSellBuyButton(bool interactSell , bool interactBuy)
     {
         buyButton.interactable = interactBuy;
         sellButton.interactable = interactSell;
+    }
+
+    public void SetAmountBuySell(float _amount)
+    {
+        if (_amount > 0)
+        {
+            sellBuyAmount.text = "+ " + _amount.ToString();
+            backgroundSellBuyAmount.color = Color.green;
+        }
+        else if(_amount < 0)
+        {
+            sellBuyAmount.text =  _amount.ToString();
+            backgroundSellBuyAmount.color = Color.red;
+        }
+        else //Case = 0
+        {
+            sellBuyAmount.text = "+ " + _amount.ToString();
+            backgroundSellBuyAmount.color = Color.white;
+        }
     }
 
     public void InitMoney(float amount)

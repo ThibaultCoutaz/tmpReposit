@@ -215,8 +215,6 @@
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDInventory.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDShop.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDSpell.cs" />
-    <Compile Include="Assets\Scripts\InfosCharacter.cs" />
-    <Compile Include="Assets\Scripts\InfosRoom.cs" />
     <Compile Include="Assets\Scripts\InitGame.cs" />
     <Compile Include="Assets\Scripts\Items\Item.cs" />
     <Compile Include="Assets\Scripts\Items\ItemPrefab.cs" />
@@ -248,8 +246,10 @@
     <Compile Include="Assets\Scripts\Spell\FireBall.cs" />
     <Compile Include="Assets\Scripts\Spell\Shield.cs" />
     <Compile Include="Assets\Scripts\Spell\Spell.cs" />
-    <Compile Include="Assets\Scripts\SpriteButtonScriptInventory.cs" />
-    <Compile Include="Assets\Scripts\SpriteButtonScriptShop.cs" />
+    <Compile Include="Assets\Scripts\UI\InfosCharacter.cs" />
+    <Compile Include="Assets\Scripts\UI\InfosRoom.cs" />
+    <Compile Include="Assets\Scripts\UI\SpriteButtonScriptInventory.cs" />
+    <Compile Include="Assets\Scripts\UI\SpriteButtonScriptShop.cs" />
     <Compile Include="Assets\Scripts\Utils\CameraController.cs" />
     <Compile Include="Assets\Scripts\Utils\CustomAssetUtility.cs" />
     <Compile Include="Assets\Scripts\Utils\FPSCounter.cs" />

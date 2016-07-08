@@ -332,6 +332,15 @@ public class HUDManager : Singleton<HUDManager>
         }
     }
 
+    public void DisplayAmountSellBuy(float _amount)
+    {
+        HUDElement shop;
+        if (elements.TryGetValue(Game.UI_Types.Shop, out shop))
+        {
+            ((HUDShop)shop).SetAmountBuySell(_amount);
+        }
+    }
+
     public void DisplayInventory(bool display)
     {
         HUDElement inventory;
@@ -366,7 +375,7 @@ public class HUDManager : Singleton<HUDManager>
         {
             text.setText(msg);
             ((HUDHoverText)text).activate = value;
-            text.displayGroup(value,1);
+            text.displayGroup(value,1,false,false);
         }
     }
 
