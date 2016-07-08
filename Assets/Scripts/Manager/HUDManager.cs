@@ -379,5 +379,23 @@ public class HUDManager : Singleton<HUDManager>
         }
     }
 
+    public void InitialiseDashBar(float max)
+    {
+        HUDElement dash;
+        if (elements.TryGetValue(Game.UI_Types.DashPower, out dash))
+        {
+            ((HUDDashPower)dash).InitialiseBar(55, max);
+        }
+    }
+
+    public void HandleBarDashPower(float value)
+    {
+        HUDElement dash;
+        if (elements.TryGetValue(Game.UI_Types.DashPower, out dash))
+        {
+            ((HUDDashPower)dash).SetText("Power : ", value);
+            ((HUDDashPower)dash).HandleBar(value);
+        }
+    }
 }
 

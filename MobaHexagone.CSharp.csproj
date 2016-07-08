@@ -213,6 +213,7 @@
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDHoverText.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDInfosTarget.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDInventory.cs" />
+    <Compile Include="Assets\Scripts\HUD\HUDElement\HUDListState.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDShop.cs" />
     <Compile Include="Assets\Scripts\HUD\HUDElement\HUDSpell.cs" />
     <Compile Include="Assets\Scripts\InitGame.cs" />
@@ -232,6 +233,7 @@
     <Compile Include="Assets\Scripts\Objects\BaseBehaviour.cs" />
     <Compile Include="Assets\Scripts\Objects\ObjectifFloor.cs" />
     <Compile Include="Assets\Scripts\Player\AimCamera.cs" />
+    <Compile Include="Assets\Scripts\Player\DashManager.cs" />
     <Compile Include="Assets\Scripts\Player\ManageInventory.cs" />
     <Compile Include="Assets\Scripts\Player\ManageSpell.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCamera.cs" />
