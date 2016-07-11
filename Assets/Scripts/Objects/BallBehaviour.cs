@@ -2,6 +2,15 @@
 using System.Collections;
 
 public class BallBehaviour : MonoBehaviour {
+    
+    public enum stateBall
+    {
+        Free,
+        Send,
+        Catch
+    }
+
+    public stateBall state;
 
     public Sprite ImgBall;
 
@@ -12,14 +21,11 @@ public class BallBehaviour : MonoBehaviour {
     public TrailRenderer lineEffect;
 
     [HideInInspector]
-    public int IDPreviousOwner; //could do it with some state like , catch , free , and owned
-
-    [HideInInspector]
     public int IDSender; //This is to know who send the Ball and so have acces to the sender caracterisitique 
 
     void Awake()
     {
-        IDPreviousOwner = -1;
+        state = stateBall.Free;
         rigb = GetComponent<Rigidbody>();
         lineEffect = GetComponent<TrailRenderer>();
         lineEffect.enabled = false;
@@ -68,9 +74,9 @@ public class BallBehaviour : MonoBehaviour {
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.GetComponent<PlayerScript>() && IDPreviousOwner != col.gameObject.GetComponent<PhotonView>().viewID)
+        if (col.gameObject.GetComponent<PlayerScript>() && state == stateBall.Free)
         {
-            IDPreviousOwner = col.gameObject.GetComponent<PhotonView>().viewID;
+            state = stateBall.Catch;
             Physics.IgnoreCollision(col.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
             if (lineEffect.enabled == true)
                 lineEffect.enabled = false;

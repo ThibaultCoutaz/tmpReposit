@@ -18,12 +18,12 @@ namespace Game
         Spell,
         Targeting,
         InfosTarget,
-        GetBall,
         Debuging,
         Shop,
         Inventory,
         DashPower,
-        HoverText
+        HoverText,
+        ListState
     }
 
     public enum Lerp_Type

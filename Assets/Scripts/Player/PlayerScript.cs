@@ -75,8 +75,6 @@ public class PlayerScript : MonoBehaviour
         HUDManager.Instance.EditGold(currentAmountOfGold);
         InvokeRepeating("MoneyInPocket", 1.0f, 1.0f);
 
-        HUDManager.Instance.EditGetBall(GameManager.ballOfGame.GetComponent<BallBehaviour>().ImgBall);
-
         if(PhotonNetwork.player.GetPlayerTeam() == TeamScript.Team.red)
         {
             posSpawn = GameManager._redSpawn;
@@ -97,20 +95,14 @@ public class PlayerScript : MonoBehaviour
         List<PhotonPlayer> listPlayer;
         if (TeamScript.PlayersPerTeam.TryGetValue(TeamScript.Team.red, out listPlayer))
         {
-            foreach (PhotonPlayer p in listPlayer)
-            {
-                nbRed++;
-            }
+                nbRed = listPlayer.Count;
         }
 
 
         //Then Blue Team
         if (TeamScript.PlayersPerTeam.TryGetValue(TeamScript.Team.blue, out listPlayer))
         {
-            foreach (PhotonPlayer p in listPlayer)
-            {
-                nbBlue++;
-            }
+                nbBlue = listPlayer.Count;
         }
 
         Debug.LogError("Team Red = " + nbRed + "/" + "Team Blue = " + nbBlue);
@@ -148,7 +140,8 @@ public class PlayerScript : MonoBehaviour
             {
                 if (!displayBall)
                 {
-                    HUDManager.Instance.DisplayGetBall(true);
+                    //HUDManager.Instance.DisplayGetBall(true);
+                    HUDManager.Instance.AddStateDisplay(0, HUDListState.typeState.NULL, GameManager.ballOfGame.GetComponent<BallBehaviour>().ImgBall);
                     displayBall = true;
                 }
 
@@ -162,7 +155,7 @@ public class PlayerScript : MonoBehaviour
                     }
                     else
                     {
-                        HUDManager.Instance.DisplayGetBall(false);
+                        //HUDManager.Instance.DisplayGetBall(false);
                         displayBall = false;
                         view.RPC("ShootBall", PhotonTargets.AllBuffered, cameraPlayer.transform.forward);
                     }
@@ -197,6 +190,7 @@ public class PlayerScript : MonoBehaviour
         GameManager.ballOfGame.GetComponent<Rigidbody>().AddForce(camF * ShootPower);
         GameManager.ballOfGame.GetComponent<BallBehaviour>().lineEffect.enabled = true;
         GameManager.ballOfGame.GetComponent<BallBehaviour>().IDSender = view.viewID;
+        GameManager.ballOfGame.GetComponent<BallBehaviour>().state = BallBehaviour.stateBall.Send;
         Invoke("ResetOwnerBall", 0.5f);
     }
 
@@ -205,7 +199,7 @@ public class PlayerScript : MonoBehaviour
     {
         if (GameManager.ballOfGame != null)
         {
-            GameManager.ballOfGame.GetComponent<BallBehaviour>().IDPreviousOwner = -1;
+            GameManager.ballOfGame.GetComponent<BallBehaviour>().state = BallBehaviour.stateBall.Free;
             Physics.IgnoreCollision(GameManager.ballOfGame.GetComponent<Collider>(), GetComponent<Collider>(),false);
         }
     }

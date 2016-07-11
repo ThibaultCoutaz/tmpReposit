@@ -52,16 +52,14 @@ public class CreationRoom : Singleton<CreationRoom>
         List<PhotonPlayer> listPlayer;
         if(TeamScript.PlayersPerTeam.TryGetValue(TeamScript.Team.red,out listPlayer))
         {
-            foreach(PhotonPlayer p in listPlayer)
-                nbRed++;
+                nbRed = listPlayer.Count;
         }
 
 
         //Then Blue Team
         if (TeamScript.PlayersPerTeam.TryGetValue(TeamScript.Team.blue, out listPlayer))
         {
-            foreach (PhotonPlayer p in listPlayer)
-                nbBlue++;
+                nbBlue = listPlayer.Count;
         }
 
         if(nbRed > nbBlue && nbBlue < 5)
@@ -106,20 +104,14 @@ public class CreationRoom : Singleton<CreationRoom>
         List<PhotonPlayer> listPlayer;
         if (TeamScript.PlayersPerTeam.TryGetValue(TeamScript.Team.red, out listPlayer))
         {
-            foreach (PhotonPlayer p in listPlayer)
-            {
-                nbRed++;
-            }
+                nbRed = listPlayer.Count;
         }
 
 
         //Then Blue Team
         if (TeamScript.PlayersPerTeam.TryGetValue(TeamScript.Team.blue, out listPlayer))
         {
-            foreach (PhotonPlayer p in listPlayer)
-            {
-                nbBlue++;
-            }
+                nbBlue = listPlayer.Count;
         }
 
         Debug.LogError("Team Red = " + nbRed + "/" + "Team Blue = " + nbBlue);

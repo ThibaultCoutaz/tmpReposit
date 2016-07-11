@@ -3,8 +3,8 @@ using System.Collections;
 
 public class PlayerNetworkSetup : MonoBehaviour {
 
-    [SerializeField]
-    private float speed = 10;
+    //[SerializeField]
+    //private float speed = 10;
 
     [SerializeField]
     GameObject playerCamera;
@@ -17,9 +17,6 @@ public class PlayerNetworkSetup : MonoBehaviour {
     private Rigidbody rigb;
     private PlayerCamera camScript;
     private Animator m_animator;
-
-    //For the RolePlay
-    private float money = 0f;
 
     void Awake()
     {

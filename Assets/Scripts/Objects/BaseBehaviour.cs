@@ -42,7 +42,7 @@ public class BaseBehaviour : MonoBehaviour {
         if (col.gameObject.GetComponent<BallBehaviour>())
         {
             BallBehaviour ballScript = col.gameObject.GetComponent<BallBehaviour>();
-            if (ballScript.IDPreviousOwner == -1 && PhotonView.Find(ballScript.IDSender).GetComponent<PhotonView>().owner.GetPlayerTeam() != team)
+            if (ballScript.state != BallBehaviour.stateBall.Catch && PhotonView.Find(ballScript.IDSender).GetComponent<PhotonView>().owner.GetPlayerTeam() != team)
             {
                 Debug.LogError(PhotonView.Find(ballScript.IDSender).GetComponent<PlayerScript>().caracterisiticCurrent.Attaque);
                 lifePerShield[currentShield - 1] -= PhotonView.Find(ballScript.IDSender).GetComponent<PlayerScript>().caracterisiticCurrent.Attaque;

@@ -8,15 +8,12 @@ public class WaitingRoomManager : MonoBehaviour {
 
     [SerializeField]
     GameObject BackGround;
-
-    [SerializeField]
-    GameObject[] TabPlayerCo;
+    
 
 
 	// Use this for initialization
 	void Start () {
-        //TabPlayerCo = new GameObject[PhotonNetwork.room.maxPlayers];
-        TabPlayerCo = new GameObject[10];
+
     }
 	
 	// Update is called once per frame

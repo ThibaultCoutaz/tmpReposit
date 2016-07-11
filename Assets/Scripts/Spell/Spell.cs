@@ -123,21 +123,21 @@ public abstract class Spell : MonoBehaviour {
 
     public void ProjectionAOE(PlayerScript ps,Vector3 pos, Vector3 direction)
     {
-        Debug.Log("Projection AOE");
-        RaycastHit hit;
+        //Debug.Log("Projection AOE");
+        //RaycastHit hit;
 
-        //A REVOIR
-        if (Physics.Raycast(pos, direction, out hit))
-        {
-            //Remove the Y axis to have the point on the floor
-            CenterAOE = hit.point - new Vector3(0,hit.point.y,0);
-            Debug.LogError("CentreAOE = " + CenterAOE);
-        }
-        else if (Physics.Raycast(pos, direction, out hit))
-        {
-            Vector3 tmpPos = hit.point - new Vector3(0, hit.point.y, 0);
-            Debug.LogError("CentreAOE = " + CenterAOE);
-        }
+        ////A REVOIR
+        //if (Physics.Raycast(pos, direction, out hit))
+        //{
+        //    //Remove the Y axis to have the point on the floor
+        //    CenterAOE = hit.point - new Vector3(0,hit.point.y,0);
+        //    Debug.LogError("CentreAOE = " + CenterAOE);
+        //}
+        //else if (Physics.Raycast(pos, direction, out hit))
+        //{
+        //    Vector3 tmpPos = hit.point - new Vector3(0, hit.point.y, 0);
+        //    Debug.LogError("CentreAOE = " + CenterAOE);
+        //}
     }
 
     public void DetectPlayerRange(Vector3 center)

@@ -248,6 +248,7 @@
     <Compile Include="Assets\Scripts\Spell\FireBall.cs" />
     <Compile Include="Assets\Scripts\Spell\Shield.cs" />
     <Compile Include="Assets\Scripts\Spell\Spell.cs" />
+    <Compile Include="Assets\Scripts\UI\BehaviourStateIcone.cs" />
     <Compile Include="Assets\Scripts\UI\InfosCharacter.cs" />
     <Compile Include="Assets\Scripts\UI\InfosRoom.cs" />
     <Compile Include="Assets\Scripts\UI\SpriteButtonScriptInventory.cs" />

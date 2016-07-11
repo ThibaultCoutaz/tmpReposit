@@ -107,7 +107,7 @@ public static class Utils
 
     public static string SecondToString(float x)
     {
-        int a, b, c, d, e;
+        int a, b, c, d;
         return ((a = (int)(x * 0.00000165343f)) > 0 ? a + " s " : "")
             + ((b = (int)((x -= a * 604800) * 0.00001157407f)) + a > 0 ? b + " j " : "")
             + ((c = (int)((x -= b * 86400) * 0.00027777777f)) + a + b > 0 ? c + " h " : "")

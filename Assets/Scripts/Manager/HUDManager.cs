@@ -61,7 +61,6 @@ public class HUDManager : Singleton<HUDManager>
             key == Game.UI_Types.Spell ||
             key == Game.UI_Types.Targeting ||
             key == Game.UI_Types.InfosTarget ||
-            key == Game.UI_Types.GetBall ||
             key == Game.UI_Types.Debuging ||
             key == Game.UI_Types.Shop ||
             key == Game.UI_Types.Inventory ||
@@ -258,24 +257,6 @@ public class HUDManager : Singleton<HUDManager>
         }
     }
 
-    public void EditGetBall(Sprite s)
-    {
-        HUDElement getBall;
-        if (elements.TryGetValue(Game.UI_Types.GetBall, out getBall))
-        {
-            getBall.SetImage(s);
-        }
-    }
-
-    public void DisplayGetBall(bool display)
-    {
-        HUDElement getBall;
-        if (elements.TryGetValue(Game.UI_Types.GetBall, out getBall))
-        {
-            getBall.displayGroup(display, 1);
-        }
-    }
-
     public void InitDebug(PlayerScript _ps)
     {
         HUDElement debug;
@@ -395,6 +376,15 @@ public class HUDManager : Singleton<HUDManager>
         {
             ((HUDDashPower)dash).SetText("Power : ", value);
             ((HUDDashPower)dash).HandleBar(value);
+        }
+    }
+
+    public void AddStateDisplay(float cooldown,HUDListState.typeState dState = HUDListState.typeState.NULL, Sprite s = null)
+    {
+        HUDElement stateList;
+        if (elements.TryGetValue(Game.UI_Types.ListState, out stateList))
+        {
+            ((HUDListState)stateList).AddActiveState(cooldown,dState, s);
         }
     }
 }

@@ -114,7 +114,7 @@ public class HUDShop : HUDElement {
         tmp.GetComponent<SpriteButtonScriptShop>().price.text = item.priceBuying.ToString();
 
         tmp.GetComponent<Image>().sprite = item.ImgItem;
-        tmp.transform.parent = parent;
+        tmp.transform.SetParent(parent);
     }
 
     //Function to get value in the different dictionnary

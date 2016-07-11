@@ -23,11 +23,11 @@ public class NetworkManager : Singleton<NetworkManager>
         }
         if(PhotonNetwork.player.GetPlayerTeam() == TeamScript.Team.red)
         {
-            GameObject tmpCharacter = PhotonNetwork.Instantiate("Prefabs/Character/" + characterPrefab.name, GameManager._redSpawn.position + new Vector3(Random.Range(0f, spawn_ray), 0, Random.Range(0f, spawn_ray)), Quaternion.identity, 0);
+            PhotonNetwork.Instantiate("Prefabs/Character/" + characterPrefab.name, GameManager._redSpawn.position + new Vector3(Random.Range(0f, spawn_ray), 0, Random.Range(0f, spawn_ray)), Quaternion.identity, 0);
         }
         else if(PhotonNetwork.player.GetPlayerTeam() == TeamScript.Team.blue)
         {
-            GameObject tmpCharacter = PhotonNetwork.Instantiate("Prefabs/Character/" + characterPrefab.name, GameManager._blueSpawn.position + new Vector3(Random.Range(0f, spawn_ray), 0, Random.Range(0f, spawn_ray)), Quaternion.identity, 0);
+            PhotonNetwork.Instantiate("Prefabs/Character/" + characterPrefab.name, GameManager._blueSpawn.position + new Vector3(Random.Range(0f, spawn_ray), 0, Random.Range(0f, spawn_ray)), Quaternion.identity, 0);
         }
 
     }
