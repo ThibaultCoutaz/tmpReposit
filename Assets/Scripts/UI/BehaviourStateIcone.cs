@@ -27,6 +27,7 @@ public class BehaviourStateIcone : MonoBehaviour {
             if (currentCD >= CoolDown)
             {
                 Destroy(this.gameObject);
+                HUDManager.Instance.RemoveEmplacement();
             }
         }
         else
@@ -39,6 +40,7 @@ public class BehaviourStateIcone : MonoBehaviour {
             else if (End)
             {
                 Destroy(this.gameObject);
+                HUDManager.Instance.RemoveEmplacement();
             }
         }
     }

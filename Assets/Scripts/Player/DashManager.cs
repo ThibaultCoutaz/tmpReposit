@@ -75,7 +75,7 @@ public class DashManager : MonoBehaviour {
                         CurrentPowerDashFowardClick = minMaxPowerDashFowardClick.x;
                         HUDManager.Instance.HandleBarDashPower(CurrentPowerDashFowardClick);
                         canDashClick = false;
-                        HUDManager.Instance.AddStateDisplay(DashCooldown,HUDListState.typeState.DashFoward);
+                        HUDManager.Instance.AddStateDisplayCD(DashCooldown,HUDListState.typeState.DashFoward);
                         stateDF = DashState.Cooldown;
                     }
                 }
@@ -112,7 +112,7 @@ public class DashManager : MonoBehaviour {
                 {
                     rigb.AddForce(transform.right * powerDashSize, ForceMode.VelocityChange);
                     stateDR = DashState.Cooldown;
-                    HUDManager.Instance.AddStateDisplay(DashCooldown, HUDListState.typeState.DashRight);
+                    HUDManager.Instance.AddStateDisplayCD(DashCooldown, HUDListState.typeState.DashRight);
                 }
                 break;
             case DashState.Cooldown:
@@ -137,7 +137,7 @@ public class DashManager : MonoBehaviour {
                 {
                     rigb.AddForce(-transform.right * powerDashSize, ForceMode.VelocityChange);
                     stateDL = DashState.Cooldown;
-                    HUDManager.Instance.AddStateDisplay(DashCooldown, HUDListState.typeState.DashLeft);
+                    HUDManager.Instance.AddStateDisplayCD(DashCooldown, HUDListState.typeState.DashLeft);
                 }
                 break;
             case DashState.Cooldown:

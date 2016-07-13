@@ -110,6 +110,7 @@ public class PlayerScript : MonoBehaviour
 
     private bool displayBall = false;
     private bool displayShop = false;
+    private int IDStateBall = -1;
 
     void Update () {
         if (currentState != stateCharacter.Dead)
@@ -141,7 +142,7 @@ public class PlayerScript : MonoBehaviour
                 if (!displayBall)
                 {
                     //HUDManager.Instance.DisplayGetBall(true);
-                    HUDManager.Instance.AddStateDisplay(0, HUDListState.typeState.NULL, GameManager.ballOfGame.GetComponent<BallBehaviour>().ImgBall);
+                    IDStateBall = HUDManager.Instance.AddStateDisplayCD(0, HUDListState.typeState.NULL, GameManager.ballOfGame.GetComponent<BallBehaviour>().ImgBall);
                     displayBall = true;
                 }
 
@@ -155,7 +156,7 @@ public class PlayerScript : MonoBehaviour
                     }
                     else
                     {
-                        //HUDManager.Instance.DisplayGetBall(false);
+                        HUDManager.Instance.RemoveEmplacement(IDStateBall);
                         displayBall = false;
                         view.RPC("ShootBall", PhotonTargets.AllBuffered, cameraPlayer.transform.forward);
                     }

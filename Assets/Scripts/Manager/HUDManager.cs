@@ -379,12 +379,22 @@ public class HUDManager : Singleton<HUDManager>
         }
     }
 
-    public void AddStateDisplay(float cooldown,HUDListState.typeState dState = HUDListState.typeState.NULL, Sprite s = null)
+    public int AddStateDisplayCD(float cooldown,HUDListState.typeState dState = HUDListState.typeState.NULL, Sprite s = null)
     {
         HUDElement stateList;
         if (elements.TryGetValue(Game.UI_Types.ListState, out stateList))
         {
-            ((HUDListState)stateList).AddActiveState(cooldown,dState, s);
+            return ((HUDListState)stateList).AddActiveStateCD(cooldown,dState, s);
+        }
+        return -1;
+    }
+
+    public void RemoveEmplacement(int _ID = 0)
+    {
+        HUDElement stateList;
+        if (elements.TryGetValue(Game.UI_Types.ListState, out stateList))
+        {
+            ((HUDListState)stateList).RemoveEmplacement(_ID);
         }
     }
 }

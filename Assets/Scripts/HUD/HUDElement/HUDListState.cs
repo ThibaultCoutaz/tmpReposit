@@ -16,8 +16,9 @@ public class HUDListState : HUDElement {
 
     public Transform parentList;
     public GameObject statePic;
-
-    GameObject[] listState = new GameObject[8]; // A REVOIR CA !
+    public int nbEmplacement=8;
+    private int currentnbEmplacement = 0;
+    private int IDIncrement = 0;
 
     Dictionary<string, Sprite> spriteState;
 
@@ -35,30 +36,28 @@ public class HUDListState : HUDElement {
         }
     }
 	
-    public void AddActiveState(float cooldown,typeState dState = typeState.NULL,Sprite s = null)
+    public int AddActiveStateCD(float cooldown,typeState dState = typeState.NULL,Sprite s = null)
     {
         if (dState == typeState.NULL && s == null)
         {
             Debug.LogError("THis State can't be initialise because no type and no sprite pass in parameter");
+            return -1;
         }
         else
         {
-            for(int i = 0; i < listState.Length; i++)
+            if (currentnbEmplacement < nbEmplacement)
             {
-                if(listState[i] == null)
+                if (dState != typeState.NULL)
                 {
-                    if(dState!= typeState.NULL)
-                    {
-                        CreateSprite(listState[i], getSpriteState(dState.ToString()),cooldown);
-                    }
-                    else if (s != null)
-                    {
-                        CreateSprite(listState[i], s,cooldown);
-                    }
-                    break;
+                    return CreateSprite(getSpriteState(dState.ToString()), cooldown);
+                }
+                else if (s != null)
+                {
+                    return CreateSprite(s, cooldown);
                 }
             }
         }
+        return -1;
     }
 
     //Function to get value in the different dictionnary
@@ -71,15 +70,40 @@ public class HUDListState : HUDElement {
             return null;
     }
 
-    private void CreateSprite(GameObject emplacement,Sprite s,float cooldown)
+    /// <summary>
+    /// Without a return
+    /// </summary>
+    /// <param name="s"></param>
+    /// <param name="cooldown"></param>
+    private int CreateSprite(Sprite s,float cooldown)
     {
-        emplacement = Instantiate(statePic);
-        emplacement.transform.SetParent(parentList);
-        emplacement.GetComponent<Image>().sprite = s;
-        emplacement.GetComponent<BehaviourStateIcone>().CoolDown = cooldown;
+        GameObject tmp = Instantiate(statePic);
+        tmp.transform.SetParent(parentList);
+        tmp.GetComponent<Image>().sprite = s;
+        tmp.GetComponent<BehaviourStateIcone>().CoolDown = cooldown;
+        tmp.GetComponent<BehaviourStateIcone>().ID = IDIncrement;
+        currentnbEmplacement++;
+        return IDIncrement++;
     }
 
-    public void RemoveState()
+    public void RemoveEmplacement(int _ID = -1)
     {
+        if(_ID != -1)
+        {
+            foreach(Transform child in parentList)
+            {
+                if(child.gameObject.GetComponent<BehaviourStateIcone>().ID == _ID)
+                {
+                    child.gameObject.GetComponent<BehaviourStateIcone>().End = true;
+                    if (currentnbEmplacement > 0)
+                        currentnbEmplacement--;
+                }
+            }
+        }
+        else
+        {
+            if (currentnbEmplacement > 0)
+                currentnbEmplacement--;
+        }
     }
 }
